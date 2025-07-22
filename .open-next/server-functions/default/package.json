@@ -9,9 +9,8 @@
     "lint": "next lint",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-   "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
-
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
@@ -43,6 +42,6 @@
     "prettier-plugin-tailwindcss": "^0.6.10",
     "tailwindcss": "^4.0.0",
     "typescript": "^5",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.25.1"
   }
 }
