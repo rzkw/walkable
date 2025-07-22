@@ -25,7 +25,7 @@ I bought a domain with the idea to create a portfolio website under my LLC (US-b
 
 ## How?
 
-I faffed with the deployment a few times before settling on using the template off of the original GitHub repo. After editing the data, I committed/pushed on to my remote [repo](https://github.com/rzkw/walkable). I then used the Cloudflare Docs to [deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/), namely installing opennextjs, Wrangler CLI and a Wrangler/OpenNext config file. I'm still deploying from the GitHub repo instead of the workers.dev subdomain as that's how I started. 
+I faffed with the deployment a few times before settling on using the template off of the original GitHub repo. After editing the data, I committed/pushed on to my remote [repo](https://github.com/rzkw/walkable). I then used the Cloudflare Docs to [deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/), namely installing opennextjs, Wrangler CLI and a Wrangler/OpenNext config file. I'm still deploying from the GitHub repo instead of the workers.dev subdomain as that's how I started. I then altered the Custom Domain through Routes, which took a bit of reading and AI help as well (setting up a placeholder DNS A record pointing at 192.0.2.1 before setting up .walk-llc.com/).
 
 ### Challenges
 
