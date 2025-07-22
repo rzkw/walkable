@@ -1,0 +1,53 @@
+export const metadata = {
+  title: 'Setting up my website with Cloudflare',
+  description:
+    'From domain registrar to routes',
+  alternates: {
+    canonical: '/blog/setting-up-cloudflare',
+  },
+};
+
+<Cover
+  src="https://cdn.stocksnap.io/img-thumbs/960w/sunset-sea_YAA7WLGAQU.jpg"
+  alt="Sergei Gussev"
+  caption="stocksnap.io"
+/>
+
+# Setting up my website with Cloudflare
+
+Figuring out what hosting is, how to route my traffic through Cloudflare, and setting up DNS records.
+
+---
+
+## Buying my domain
+
+I bought a domain with the idea to create a portfolio website under my LLC (US-based) to show my projects, homelabs and whatever else I may do in future. I bought one through [Cloudflare's registrar](https://www.cloudflare.com/en-au/products/registrar/) for around $10-16 a year. Afterwards, I used a template from [Vercel](https://vercel.com/templates/portfolio) that looked neat and professional, after trying to build one from scratch (still active in my GitHub!). After [picking](https://vercel.com/templates/portfolio/nim-minimalist-personal-site) one, it took a bit of configuring and trying out multiple deployments to figure out how to set up my deployment on GitHub and connect it to Cloudflare.
+
+## How?
+
+I faffed with the deployment a few times before settling on using the template off of the original GitHub repo. After editing the data, I committed/pushed on to my remote [repo](https://github.com/rzkw/walkable). I then used the Cloudflare Docs to [deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/), namely installing opennextjs, Wrangler CLI and a Wrangler/OpenNext config file. I'm still deploying from the GitHub repo instead of the workers.dev subdomain as that's how I started. 
+
+### Challenges
+
+- **DNS Records**: This was covered in my CompTIA A+ exam but it didn't go through actual configurations, and Cloudflare allows me to set them up manually, something I haven't done with other cloud providers where I didn't have a custom domain. Took a lot of consulting documentation and Gemini/AI help to ensure I correctly set up A and CNAME records. 
+- **Routing**: I thought setting up www and connecting it to my custom domain was simple, but the template I used was a full stack Next.js app. So I had to go backwards and figure out what routing was! I probably need a refresher already but the Cloudflare docs combined with AI and good old Google makes it easy enough. 
+- **Build Errors**: I had multiple build errors initially when figuring out deployment issues - turned out to be compatibility and probably bits leftover in the build cache.
+
+---
+
+## Conclusion
+
+I probably wouldn't have gone with a template off Vercel for a starter website while I'm also trying to figure out DNS config as a beginner. It was a bit of an uphill climb but here we are!
+
+---
+
+
+### References
+
+- [Cloudflare Docs: Deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/#deploy-an-existing-nextjs-project-on-workers)
+- [What is Cloudflare Workers?](https://developers.cloudflare.com/workers/)
+- [What is a DNS CNAME record?](https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/)
+
+---
+
+

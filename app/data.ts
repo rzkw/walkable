@@ -89,10 +89,10 @@ export const BLOG_POSTS: BlogPost[] = [
     uid: 'blog-2',
   },
   {
-    title: 'What I learned from my first year of freelancing',
+    title: 'Setting up Cloudflare',
     description:
-      'A look back at my first year of freelancing and what I learned',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
+      'Figuring out how to set up a domain through Cloudflare',
+    link: '/blog/setting-up-cloudflare',
     uid: 'blog-3',
   },
   // {
