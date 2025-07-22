@@ -45,6 +45,12 @@
       "namedRegex": "^/blog/exploring\\-the\\-intersection\\-of\\-design\\-ai\\-and\\-design\\-engineering(?:/)?$"
     },
     {
+      "page": "/blog/setting-up-cloudflare",
+      "regex": "^/blog/setting\\-up\\-cloudflare(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/setting\\-up\\-cloudflare(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
