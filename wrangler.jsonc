@@ -8,5 +8,13 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "*.walk-llc.com/*",
+      "zone_name": "walk-llc.com"
+    }
+  ]
+
+  
 }
