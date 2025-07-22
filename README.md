@@ -1,8 +1,8 @@
-<img src="/public/cover.jpg" alt="Cover image representing Nim, a personal website template" width="100%" />
+<img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable, my LLC Website" width="100%" />
 
 A website for my LLC to structure my self-driven projects and professional development. I'll be using this to document my homelabs. 
 
-Live demo: [https://nim-fawn.vercel.app](https://nim-fawn.vercel.app)
+Live: [Walkable Limited Liability Company](https://www.walk-llc.com)
 
 ## Features
 
@@ -31,4 +31,4 @@ Contributions are welcome! Feel free to open issues or submit pull requests to i
 
 ## About
 
-Nim is designed to make personal branding effortless and beautiful. If you enjoy it, consider sharing it and exploring [Motion-Primitives Pro](https://pro.motion-primitives.com/).
+Used a [template](https://github.com/ibelick/nim) built with Next.js 15, React 19, Tailwind CSS v4, and [Motion-Primitives Pro](https://pro.motion-primitives.com/).
