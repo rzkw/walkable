@@ -1,0 +1,8 @@
+{
+  "/favicon.ico/route": "/favicon.ico",
+  "/robots.txt/route": "/robots.txt",
+  "/_not-found/page": "/_not-found",
+  "/page": "/",
+  "/blog/exploring-the-intersection-of-design-ai-and-design-engineering/page": "/blog/exploring-the-intersection-of-design-ai-and-design-engineering",
+  "/blog/example-mdx-metadata/page": "/blog/example-mdx-metadata"
+}
