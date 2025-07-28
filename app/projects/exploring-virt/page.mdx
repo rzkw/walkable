@@ -1,0 +1,68 @@
+export const metadata = {
+  title: 'Exploring Virtualisation',
+  description:
+    'Using VMWare Fusion',
+  alternates: {
+    canonical: '/projects/exploring-virt',
+  },
+};
+
+<Cover
+  src="https://images.pexels.com/photos/17484901/pexels-photo-17484901.png"
+  alt="from pexels.com"
+  caption="pexels.com"
+/>
+
+# Exploring Virtualisation using VMWare Fusion
+
+and figuring out where to go from here.
+
+---
+
+## Why?
+
+I wanted a way to set up a homelab without spending a lot of money (if any). My daily driver is a Macbook Air and when studying for my CompTIA A+ exam, Windows 10/11 settings came up frequently. I wanted to be able to play around with various settings, maybe try out some basic networking without going to the trouble of buying a new device.
+
+## How?
+
+My setup:
+
+- Model Name:	MacBook Air
+- Chip:	Apple M1 (arm64)
+- Total Number of Cores:	8 (4 performance and 4 efficiency)
+- Memory:	16 GB
+
+
+After noodling around on Reddit I initially tried [UTM](https://mac.getutm.app/). Supposedly it runs ARM64 OSs on Apple Silicon at 'near native speeds'. I found it was a bit buggy - had issues with black screens and installing the Windows image. I chose to uninstall it and went with [VMWare Fusion Pro](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion) instead, free for personal use. Seemed a better choice because it comes up a lot in job ads. 
+
+I downloaded the Windows 11 image from the [Windows Insider Preview Builds](https://www.microsoft.com/en-us/windowsinsider/preview-windows), after registering for the program. 
+
+From there it was pretty straightforward - setting up a virtual machine (VM) with the Windows 11 ISO I downloaded earlier, and just following the wizard. I chose UEFI Secure Boot in case the process was buggy like with UTM, but it wasn't.
+
+I also set up an Ubuntu Server VM with the ISO from [Canonical](https://ubuntu.com/download/server/arm). A few months back I asked Claude for a tutorial to set up a server and I thought it would be 'fun' to set up an Ubuntu Server VM now. 
+
+## Now what?
+
+I ran Windows Update and did the same with Defender to make sure I'm up to date on the latest patches/security definitions. So far I've tweaked Remote Desktop settings to use my Mac host and Windows App to 'remotely' connect to my Windows 11 VM. 
+
+I've also connected to my Ubuntu server from Terminal and Powershell through SSH. Most of the time this works fine, occasionally a few hiccups with IP address/connection issues. 
+
+- **Learning Curve**: I've had a couple of patchy issues connecting to my Windows VM from my Mac host and vice versa. Eventually I learned to set up an inbound firewall rule through Windows Defender Firewall. I allowed ICMPv4 (for ping), set the IP address to my Mac host and also disabled Stealth mode on my Mac firewall. 
+
+
+- **Challenges**: Driver issues with installing Windows 11 image - I uninstalled the UTM Guest Tools and had to adjust my Mac Accessibility settings. VMWare/Broadcom website a bit tricky to navigate. 
+
+
+
+## Conclusion
+
+Exciting to run Windows on my Mac without having to buy a new PC! Still exploring what I can do with my VMs, both the server and Windows client. I'm planning to set up a VLAN with my Ubuntu server, Mac host and Windows 11 VM.
+
+## References
+
+- [Firewall for allow ping from specified IP](https://learn.microsoft.com/en-us/answers/questions/2112089/firewall-for-allow-ping-from-specified-ip)
+- [Fresh Install of Windows 11 Arm to VMware Fusion (Pro?)](https://community.broadcom.com/vmware-cloud-foundation/discussion/fresh-install-of-windows-11-arm-to-vmware-fusion-pro-1362-stuck-on-lets-connect-you-to-network-window)
+
+
+
+---
