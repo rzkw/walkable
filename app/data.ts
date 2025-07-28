@@ -6,7 +6,7 @@ type Project = {
   id: string
 }
 
-type WorkExperience = {
+type Certifications = {
   company: string
   title: string
   start: string
@@ -47,31 +47,24 @@ export const PROJECTS: Project[] = [
   },
 ]
 
-export const WORK_EXPERIENCE: WorkExperience[] = [
+export const CERTIFICATIONS: Certifications[] = [
   {
-    company: 'Walkable Limited Liability Company',
-    title: 'Independent IT/Cloud Support Specialist',
+    company: 'Microsoft',
+    title: 'Azure Fundamentals',
     start: '2025',
     end: 'Present',
-    link: 'https://walk-llc.com',
-    id: 'work1',
+    link: 'https://learn.microsoft.com/api/credentials/share/en-us/rzkw-8395/BFCE0D9347A25B10?sharingId=6C88A99A20F976E9',
+    id: 'cert1',
   },
   {
-    company: 'Sous Chef',
-    title: 'Adeney Milk Bar',
-    start: '2022',
-    end: '2024',
-    link: 'https://www.instagram.com/adeney_milkbar/?hl=en',
-    id: 'work2',
+    company: 'A+',
+    title: 'CompTIA',
+    start: '2025',
+    end: '2028',
+    link: 'https://www.credly.com/badges/d70f98c5-f558-466f-a2f9-b770485c14d0',
+    id: 'cert2',
   },
-  // {
-  //   company: 'Freelance',
-  //   title: 'Front-end Developer',
-  //   start: '2017',
-  //   end: 'Present',
-  //   link: 'https://ibelick.com',
-  //   id: 'work3',
-  // },
+
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -84,7 +77,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     title: 'Setting up SMTP with Migadu',
     description:
-      'Linking an email/SMTP provider to my custom domain',
+      'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
     uid: 'blog-2',
   },
