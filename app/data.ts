@@ -57,8 +57,8 @@ export const CERTIFICATIONS: Certifications[] = [
     id: 'cert1',
   },
   {
-    company: 'A+',
-    title: 'CompTIA',
+    company: 'CompTIA',
+    title: 'A+',
     start: '2025',
     end: '2028',
     link: 'https://www.credly.com/badges/d70f98c5-f558-466f-a2f9-b770485c14d0',
