@@ -1,0 +1,47 @@
+export const metadata = {
+  title: 'Setting up my custom domain with an SMTP provider',
+  description:
+    'Using Migadu, an email service',
+  alternates: {
+    canonical: '/blog/setting-up-smtp',
+  },
+};
+
+<Cover
+  src="/email.jpg"
+  alt="from vecteezy.com"
+  caption="vecteezy.com"
+/>
+
+# Setting up my custom domain with an SMTP provider
+
+I wanted to use a custom email address linked to this domain, and sought to find out how. 
+
+---
+
+## Why?
+
+I initally just went with Email Routing through Cloudflare after registering my domain with them. While it does a good job of email forwarding, I also wanted to be able to send emails from a custom address linked to my domain. 
+
+## How?
+
+I found [Migadu](https://migadu.com/) while going down a Reddit rabbit hole on SMTP providers. Initially I went with Brevo but seemingly it prevented me from setting up a simple account for supposed spam reasons, even though I never set an account with them before. 
+
+It involved setting up my domain with Migadu and manually entering the DNS records provided into Cloudflare. The records included TXT (unique verification of domain ownership to prevent hijacking), MX ([Mail exchanger](https://en.wikipedia.org/wiki/MX_record)), [DomainKeys Identified Mail (DKIM)](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) for email auth through public cryptography, [Authenticated Received Chain (ARC)](https://en.wikipedia.org/wiki/Authenticated_Received_Chain) and [SPF](https://en.wikipedia.org/wiki/Sender_Policy_Framework). Optional were the [DMARC](https://en.wikipedia.org/wiki/DMARC) and Autoconfig/Autodiscovery. I manually entered these into Cloudflare's DNS records for my domain. 
+
+Afterwards, I followed the guide to configure Migadu with [Apple Mail](https://migadu.com/guides/apple_mail/). I had some difficulty with the ports here and wound up just automatically setting it with Mail, as manual port setting didn't work. 
+
+Migadu then asked to confirm by running tests and now I'm able to send/receive emails with my custom domain! I also set up an alias to put on my CVs. 
+
+
+- **Learning Curve**: Not quite but manually having to enter each DNS record into Cloudflare, fine for one website but probably would be a hassle if I had multiple domains. 
+
+
+- **Challenges**: Some difficulty with setting up the DKIM record - I had to turn off the proxy in Cloudflare to successfully set it up. 
+
+
+## Conclusion
+
+Learned a bit about setting up an SMTP server/provider with a custom domain!
+
+---

@@ -82,10 +82,10 @@ export const BLOG_POSTS: BlogPost[] = [
     uid: 'blog-1',
   },
   {
-    title: 'Why I left my job to start my own company',
+    title: 'Setting up SMTP with Migadu',
     description:
-      'A deep dive into my decision to leave my job and start my own company',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
+      'Linking an email/SMTP provider to my custom domain',
+    link: '/blog/setting-up-smtp',
     uid: 'blog-2',
   },
   {
