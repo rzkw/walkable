@@ -1,4 +1,3 @@
-// components/ui/CodeBlock.tsx
 'use client';
 import { Highlight, themes } from 'prism-react-renderer';
 import { useState } from 'react';
@@ -32,7 +31,7 @@ const CodeBlock = ({ children, language = 'bash', title }: CodeBlockProps) => {
         </button>
       </div>
       <Highlight
-        theme={themes.nightOwl}
+        theme={themes.synthwave84}
         code={children.trim()}
         language={language}
       >
