@@ -1,9 +1,11 @@
 {
+  "/_not-found/page": "/_not-found",
   "/robots.txt/route": "/robots.txt",
   "/favicon.ico/route": "/favicon.ico",
-  "/_not-found/page": "/_not-found",
   "/page": "/",
-  "/blog/exploring-the-intersection-of-design-ai-and-design-engineering/page": "/blog/exploring-the-intersection-of-design-ai-and-design-engineering",
   "/blog/setting-up-cloudflare/page": "/blog/setting-up-cloudflare",
-  "/blog/example-mdx-metadata/page": "/blog/example-mdx-metadata"
+  "/blog/example-mdx-metadata/page": "/blog/example-mdx-metadata",
+  "/projects/old-laptop-server/page": "/projects/old-laptop-server",
+  "/blog/setting-up-smtp/page": "/blog/setting-up-smtp",
+  "/projects/exploring-virt/page": "/projects/exploring-virt"
 }

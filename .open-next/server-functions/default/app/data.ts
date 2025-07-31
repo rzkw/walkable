@@ -6,7 +6,7 @@ type Project = {
   id: string
 }
 
-type WorkExperience = {
+type Certifications = {
   company: string
   title: string
   start: string
@@ -32,7 +32,7 @@ export const PROJECTS: Project[] = [
     name: 'Converting resource-constrained hardware into a web/dev server',
     description:
       'turning an old laptop into an Ubuntu/Nginx server',
-    link: 'https://pro.motion-primitives.com/',
+    link: '/projects/old-laptop-server',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
     id: 'project1',
@@ -40,52 +40,45 @@ export const PROJECTS: Project[] = [
   {
     name: 'Exploring Virtualisation',
     description: 'Using VMWare Fusion',
-    link: 'https://motion-primitives.com/',
+    link: '/projects/exploring-virt',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/XSfIvT7BUWbPRXhrbLed/ee6871c9-8400-49d2-8be9-e32675eabf7e.mp4?_a=DATAdtAAZAA0',
     id: 'project2',
   },
 ]
 
-export const WORK_EXPERIENCE: WorkExperience[] = [
+export const CERTIFICATIONS: Certifications[] = [
   {
-    company: 'Walkable Limited Liability Company',
-    title: 'Independent IT/Cloud Support Specialist',
+    company: 'Microsoft',
+    title: 'Azure Fundamentals',
     start: '2025',
     end: 'Present',
-    link: 'https://walk-llc.com',
-    id: 'work1',
+    link: 'https://learn.microsoft.com/api/credentials/share/en-us/rzkw-8395/BFCE0D9347A25B10?sharingId=6C88A99A20F976E9',
+    id: 'cert1',
   },
   {
-    company: 'Sous Chef',
-    title: 'Adeney Milk Bar',
-    start: '2022',
-    end: '2024',
-    link: 'https://www.instagram.com/adeney_milkbar/?hl=en',
-    id: 'work2',
+    company: 'CompTIA',
+    title: 'A+',
+    start: '2025',
+    end: '2028',
+    link: 'https://www.credly.com/badges/d70f98c5-f558-466f-a2f9-b770485c14d0',
+    id: 'cert2',
   },
-  // {
-  //   company: 'Freelance',
-  //   title: 'Front-end Developer',
-  //   start: '2017',
-  //   end: 'Present',
-  //   link: 'https://ibelick.com',
-  //   id: 'work3',
-  // },
+
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
+  // {
+  //   title: 'How I turned an old laptop into a web/dev server',
+  //   description: 'Expanding my basic server admin knowledge',
+  //   link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
+  //   uid: 'blog-1',
+  // },
   {
-    title: 'How I turned an old laptop into a web/dev server',
-    description: 'Expanding my basic server admin knowledge',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
-    uid: 'blog-1',
-  },
-  {
-    title: 'Why I left my job to start my own company',
+    title: 'Setting up SMTP with Migadu',
     description:
-      'A deep dive into my decision to leave my job and start my own company',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
+      'Linking an email/SMTP provider to my custom domain, configuring DNS records',
+    link: '/blog/setting-up-smtp',
     uid: 'blog-2',
   },
   {
@@ -95,12 +88,14 @@ export const BLOG_POSTS: BlogPost[] = [
     link: '/blog/setting-up-cloudflare',
     uid: 'blog-3',
   },
-  // {
-  //   title: 'How to Export Metadata from MDX for Next.js SEO',
-  //   description: 'A guide on exporting metadata from MDX files to leverage Next.js SEO features.',
-  //   link: '/blog/example-mdx-metadata',
-  //   uid: 'blog-4',
-  // },
+    {
+    title: 'Setting up deploy previews on Netlify',
+    description:
+      'for working non-production branches',
+    link: '/blog/deploy-preview',
+    uid: 'blog-4',
+  },
+
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
@@ -116,10 +111,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'LinkedIn',
     link: 'https://www.linkedin.com/in/rizky-ramadhani3056/',
   },
-  // {
-  //   label: 'Instagram',
-  //   link: 'https://www.instagram.com/ibelick',
-  // },
 ]
 
 export const EMAIL = 'hello@walk-llc.com'
