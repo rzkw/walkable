@@ -1,3 +1,5 @@
+import CodeBlock from '@/components/ui/Codeblock'
+
 export const metadata = {
   title: 'Converting resource-constrained hardware into a web/dev server',
   description: 'turning an old laptop into an Ubuntu/Nginx server',
@@ -44,7 +46,20 @@ After refining the prompt several times, I got it to the following [artifact](ht
 
 I used the following scripts in Powershell as Administrator after necessary Windows Defender updates to remove apps that consume memory:
 
-- [PowerShell app removal code]()
+- <CodeBlock language="powershell" title="Remove Windows Bloatware & Optimize Performance">
+{`# Open PowerShell as Administrator
+# Remove unnecessary Windows apps that consume memory
+Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
+
+# Disable memory-intensive services
+Get-Service "Superfetch" | Set-Service -StartupType Disabled
+Get-Service "Windows Search" | Set-Service -StartupType Disabled
+Get-Service "Fax" | Set-Service -StartupType Disabled`}
+</CodeBlock>
 
 I then disabled memory-intensive services:
 
