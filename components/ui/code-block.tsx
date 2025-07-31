@@ -1,3 +1,4 @@
+// components/ui/CodeBlock.tsx
 'use client';
 import { Highlight, themes } from 'prism-react-renderer';
 import { useState } from 'react';
@@ -18,7 +19,7 @@ const CodeBlock = ({ children, language = 'bash', title }: CodeBlockProps) => {
   };
 
   return (
-    <div className="relative rounded-lg overflow-hidden border border-gray-700 my-6">
+    <div className="relative rounded-lg overflow-hidden my-6">
       <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
         <span className="text-gray-300 text-sm font-medium">
           {title || language}
@@ -31,14 +32,14 @@ const CodeBlock = ({ children, language = 'bash', title }: CodeBlockProps) => {
         </button>
       </div>
       <Highlight
-        theme={themes.synthwave84}
+        theme={themes.dracula}
         code={children.trim()}
         language={language}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre 
             className={`${className} p-4 overflow-x-auto text-sm`}
-            style={{ ...style, backgroundColor: 'transparent' }}
+            style={style}
           >
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
