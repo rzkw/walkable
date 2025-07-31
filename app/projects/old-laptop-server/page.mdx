@@ -1,11 +1,10 @@
 export const metadata = {
   title: 'Converting resource-constrained hardware into a web/dev server',
-  description:
-    'turning an old laptop into an Ubuntu/Nginx server',
+  description: 'turning an old laptop into an Ubuntu/Nginx server',
   alternates: {
     canonical: '/projects/old-laptop-server',
   },
-};
+}
 
 <Cover
   src="https://images.pexels.com/photos/17484901/pexels-photo-17484901.png"
@@ -21,14 +20,14 @@ turning an old laptop into an Ubuntu/Nginx server
 
 ## Why?
 
-To stand out in the crowded junior dev market. Many other candidates will have built similar portfolio projects like I have - JavaScript to do lists, weather apps and similar HTML/CSS websites. I also want to demonstrate a willingness to wear multiple hats in professional environments, demonstrating an understanding of the infrastructure side of development. 
+To stand out in the crowded junior dev market. Many other candidates will have built similar portfolio projects like I have - JavaScript to do lists, weather apps and similar HTML/CSS websites. I also want to demonstrate a willingness to wear multiple hats in professional environments, demonstrating an understanding of the infrastructure side of development.
 
 ## How?
 
 The old laptop I had lying around had these specs:
 
-- Model Name:	Acer Swift
-- Processor: Intel(R) Celeron(R) CPU N3450 @ 1.10GHz   1.10 GHz
+- Model Name: Acer Swift
+- Processor: Intel(R) Celeron(R) CPU N3450 @ 1.10GHz 1.10 GHz
 - Installed RAM: 4.00 GB (3.84 GB usable, non-upgradeable)
 - Storage: 58 GB SSD VID:90 HCG4a2
 - Graphics Card: Intel(R) HD Graphics (128 MB)
@@ -36,7 +35,7 @@ The old laptop I had lying around had these specs:
 
 I made sure to back up all existing files onto an external SSD before starting, followed by a clean install of Windows 10. I then generated a tutorial via Claude, with the following prompt:
 
-*“you are a software engineering tutor at a leading university. create a detailed step by step tutorial on converting an old windows 10 laptop into a dev server. include instructions on updating RAM module”*
+_“you are a software engineering tutor at a leading university. create a detailed step by step tutorial on converting an old windows 10 laptop into a dev server. include instructions on updating RAM module”_
 
 After refining the prompt several times, I got it to the following [artifact](https://claude.ai/public/artifacts/af8635e3-14e0-426a-bb4b-c7b11dec1efa) that includes the sticking points I needed:
 
@@ -45,28 +44,38 @@ After refining the prompt several times, I got it to the following [artifact](ht
 
 I used the following scripts in Powershell as Administrator after necessary Windows Defender updates to remove apps that consume memory:
 
-Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
+- [PowerShell app removal code]()
 
+I then disabled memory-intensive services:
 
+- [PowerShell app removal code]()
+
+To optimise performance from Windows, I disabled hibernation, set power settings to High Performance mode, and prevented sleep when plugged in:
+
+- [PowerShell app performance settings code]()
+
+To reduce RAM usage by the GUI:
+
+- Start > type "this PC" > Right click "This PC" > Properties > Advanced system settings > Advanced tab
+- Performance > Settings... > "Adjust for best performance" in the Visual Effects tab 
+
+I also changed the page file size:
+
+- Advanced tab > Virtual memory > Change...
+- Custom size: Initial: 6144MB, Maximum 8192MB > Set > OK > OK
+
+I installed [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to install Linux on my RAM-constrained hardware without needing to run a virtual machine (VM). 
+
+- [wsl --install]()
 
 
 ## Now what?
 
+- **Learning Curve**:
 
-
-- **Learning Curve**: 
-
-
-- **Challenges**: 
-
-
+- **Challenges**:
 
 ## Conclusion
-
 
 ## Artifacts
 
@@ -74,8 +83,6 @@ Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
 
 ## References
 
-- 
-
-
+- [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ---

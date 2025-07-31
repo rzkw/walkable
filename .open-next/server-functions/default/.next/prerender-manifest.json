@@ -59,7 +59,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/example-mdx-metadata": {
+    "/blog/setting-up-smtp": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -72,8 +72,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/example-mdx-metadata",
-      "dataRoute": "/blog/example-mdx-metadata.rsc",
+      "srcRoute": "/blog/setting-up-smtp",
+      "dataRoute": "/blog/setting-up-smtp.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -107,7 +107,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/setting-up-smtp": {
+    "/blog/example-mdx-metadata": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -120,32 +120,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/setting-up-smtp",
-      "dataRoute": "/blog/setting-up-smtp.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/blog/setting-up-cloudflare": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/setting-up-cloudflare",
-      "dataRoute": "/blog/setting-up-cloudflare.rsc",
+      "srcRoute": "/blog/example-mdx-metadata",
+      "dataRoute": "/blog/example-mdx-metadata.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -170,6 +146,30 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/projects/exploring-virt",
       "dataRoute": "/projects/exploring-virt.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/blog/setting-up-cloudflare": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/blog/setting-up-cloudflare",
+      "dataRoute": "/blog/setting-up-cloudflare.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",

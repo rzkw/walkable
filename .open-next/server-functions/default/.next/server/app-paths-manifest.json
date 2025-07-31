@@ -1,11 +1,11 @@
 {
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/robots.txt/route": "app/robots.txt/route.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
-  "/blog/example-mdx-metadata/page": "app/blog/example-mdx-metadata/page.js",
-  "/projects/exploring-virt/page": "app/projects/exploring-virt/page.js",
-  "/blog/setting-up-smtp/page": "app/blog/setting-up-smtp/page.js",
   "/blog/setting-up-cloudflare/page": "app/blog/setting-up-cloudflare/page.js",
-  "/projects/old-laptop-server/page": "app/projects/old-laptop-server/page.js"
+  "/blog/example-mdx-metadata/page": "app/blog/example-mdx-metadata/page.js",
+  "/projects/old-laptop-server/page": "app/projects/old-laptop-server/page.js",
+  "/blog/setting-up-smtp/page": "app/blog/setting-up-smtp/page.js",
+  "/projects/exploring-virt/page": "app/projects/exploring-virt/page.js"
 }
