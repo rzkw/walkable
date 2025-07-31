@@ -32,7 +32,7 @@ const CodeBlock = ({ children, language = 'bash', title }: CodeBlockProps) => {
         </button>
       </div>
       <Highlight
-        theme={themes.dracula}
+        theme={themes.vsDark}
         code={children.trim()}
         language={language}
       >
