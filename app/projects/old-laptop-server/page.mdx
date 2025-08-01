@@ -1,5 +1,3 @@
-import CodeBlock from '@/components/ui/code-block'
-
 export const metadata = {
   title: 'Converting resource-constrained hardware into a web/dev server',
   description: 'turning an old laptop into an Ubuntu/Nginx server',
@@ -37,7 +35,7 @@ The old laptop I had lying around had these specs:
 
 I made sure to back up all existing files onto an external SSD before starting, followed by a clean install of Windows 10. I then generated a tutorial via Claude, with the following prompt:
 
-_“you are a software engineering tutor at a leading university. create a detailed step by step tutorial on converting an old windows 10 laptop into a dev server. include instructions on updating RAM module”_
+> you are a software engineering tutor at a leading university. create a detailed step by step tutorial on converting an old windows 10 laptop into a dev server. include instructions on updating RAM module
 
 After refining the prompt several times, I got it to the following [artifact](https://claude.ai/public/artifacts/af8635e3-14e0-426a-bb4b-c7b11dec1efa) that includes the sticking points I needed:
 
@@ -46,28 +44,32 @@ After refining the prompt several times, I got it to the following [artifact](ht
 
 I used the following scripts in Powershell as Administrator after necessary Windows Defender updates to remove apps that consume memory:
 
-<CodeBlock title="Remove Windows Bloatware & Optimize Performance">
-  {`# Open PowerShell as Administrator
-  # Remove unnecessary Windows apps that consume memory
+```
   Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
   Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
   Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
   Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
   Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
 
-  # Disable memory-intensive services
-  Get-Service "Superfetch" | Set-Service -StartupType Disabled
-  Get-Service "Windows Search" | Set-Service -StartupType Disabled
-  Get-Service "Fax" | Set-Service -StartupType Disabled`}
-</CodeBlock>
+```
 
 I then disabled memory-intensive services:
 
-- [PowerShell app removal code]()
+```
+  Get-Service "Superfetch" | Set-Service -StartupType Disabled
+  Get-Service "Windows Search" | Set-Service -StartupType Disabled
+  Get-Service "Fax" | Set-Service -StartupType Disabled
+
+```
 
 To optimise performance from Windows, I disabled hibernation, set power settings to High Performance mode, and prevented sleep when plugged in:
 
-- [PowerShell app performance settings code]()
+```
+powercfg -h off
+powercfg -s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+powercfg -change -standby-timeout-ac 0
+
+```
 
 To reduce RAM usage by the GUI:
 
@@ -81,7 +83,10 @@ I also changed the page file size:
 
 I installed [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to install Linux on my RAM-constrained hardware without needing to run a virtual machine (VM). 
 
-- [wsl --install]()
+```
+wsl --install
+
+```
 
 
 ## Now what?

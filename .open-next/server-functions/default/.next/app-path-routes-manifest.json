@@ -3,9 +3,9 @@
   "/robots.txt/route": "/robots.txt",
   "/favicon.ico/route": "/favicon.ico",
   "/page": "/",
-  "/blog/setting-up-cloudflare/page": "/blog/setting-up-cloudflare",
   "/blog/example-mdx-metadata/page": "/blog/example-mdx-metadata",
-  "/projects/old-laptop-server/page": "/projects/old-laptop-server",
   "/blog/setting-up-smtp/page": "/blog/setting-up-smtp",
-  "/projects/exploring-virt/page": "/projects/exploring-virt"
+  "/blog/setting-up-cloudflare/page": "/blog/setting-up-cloudflare",
+  "/projects/exploring-virt/page": "/projects/exploring-virt",
+  "/projects/old-laptop-server/page": "/projects/old-laptop-server"
 }

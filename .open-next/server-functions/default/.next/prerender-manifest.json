@@ -59,7 +59,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/setting-up-smtp": {
+    "/blog/example-mdx-metadata": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -72,8 +72,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/setting-up-smtp",
-      "dataRoute": "/blog/setting-up-smtp.rsc",
+      "srcRoute": "/blog/example-mdx-metadata",
+      "dataRoute": "/blog/example-mdx-metadata.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -107,7 +107,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/example-mdx-metadata": {
+    "/projects/old-laptop-server": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -120,8 +120,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/example-mdx-metadata",
-      "dataRoute": "/blog/example-mdx-metadata.rsc",
+      "srcRoute": "/projects/old-laptop-server",
+      "dataRoute": "/projects/old-laptop-server.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -131,7 +131,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/projects/exploring-virt": {
+    "/blog/setting-up-smtp": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -144,8 +144,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/projects/exploring-virt",
-      "dataRoute": "/projects/exploring-virt.rsc",
+      "srcRoute": "/blog/setting-up-smtp",
+      "dataRoute": "/blog/setting-up-smtp.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -179,7 +179,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/projects/old-laptop-server": {
+    "/projects/exploring-virt": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -192,8 +192,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/projects/old-laptop-server",
-      "dataRoute": "/projects/old-laptop-server.rsc",
+      "srcRoute": "/projects/exploring-virt",
+      "dataRoute": "/projects/exploring-virt.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",

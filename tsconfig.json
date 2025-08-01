@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-  ],
+, "components/ui/code-block.tsx"  ],
   "exclude": ["node_modules"]
 }
