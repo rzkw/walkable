@@ -45,20 +45,20 @@ After refining the prompt several times, I got it to the following [artifact](ht
 I used the following scripts in Powershell as Administrator after necessary Windows Defender updates to remove apps that consume memory:
 
 ```
-  Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
-  Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
-  Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
-  Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
-  Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
 
 ```
 
 I then disabled memory-intensive services:
 
 ```
-  Get-Service "Superfetch" | Set-Service -StartupType Disabled
-  Get-Service "Windows Search" | Set-Service -StartupType Disabled
-  Get-Service "Fax" | Set-Service -StartupType Disabled
+Get-Service "Superfetch" | Set-Service -StartupType Disabled
+Get-Service "Windows Search" | Set-Service -StartupType Disabled
+Get-Service "Fax" | Set-Service -StartupType Disabled
 
 ```
 
@@ -73,7 +73,7 @@ powercfg -change -standby-timeout-ac 0
 
 To reduce RAM usage by the GUI:
 
-- Start > type "this PC" > Right click "This PC" > Properties > Advanced system settings > Advanced tab
+- Start > type "this PC" > Properties > Advanced system settings > Advanced tab
 - Performance > Settings... > "Adjust for best performance" in the Visual Effects tab 
 
 I also changed the page file size:
@@ -81,12 +81,33 @@ I also changed the page file size:
 - Advanced tab > Virtual memory > Change...
 - Custom size: Initial: 6144MB, Maximum 8192MB > Set > OK > OK
 
-I installed [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to install Linux on my RAM-constrained hardware without needing to run a virtual machine (VM). 
+I installed [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to install Linux on my RAM-constrained hardware without needing to run a virtual machine (VM). The distribution I chose was Ubuntu seeing as it's well documented.
 
 ```
-wsl --install
+wsl --install -d Ubuntu
 
 ```
+
+After a restart, I installed [Chocolatey, a package manager](https://chocolatey.org/how-chocolatey-works) to easily keep my packages up to date later on. I then installed the following dev tools and utilities:
+
+```
+<!---Dev tools: Git, Visual Studio Code, Node.js, and Python --->
+choco install git -y
+choco install vscode -y
+choco install nodejs-lts -y
+choco install python -y
+
+```
+
+```
+<!--- System utilities: wget, curl, and 7zip --->
+choco install wget -y
+choco install curl -y
+choco install 7zip -y
+
+```
+
+
 
 
 ## Now what?
@@ -104,5 +125,6 @@ wsl --install
 ## References
 
 - [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+- [wget vs curl: What Are the Differences?](https://phoenixnap.com/kb/wget-vs-curl)
 
 ---

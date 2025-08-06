@@ -33,6 +33,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/blog/cache-r2bindings",
+      "regex": "^/blog/cache\\-r2bindings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/cache\\-r2bindings(?:/)?$"
+    },
+    {
       "page": "/blog/example-mdx-metadata",
       "regex": "^/blog/example\\-mdx\\-metadata(?:/)?$",
       "routeKeys": {},
