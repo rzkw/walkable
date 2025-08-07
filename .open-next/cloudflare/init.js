@@ -49,7 +49,7 @@ function initRuntime() {
   };
   Object.assign(globalThis, {
     Request: CustomRequest,
-    __BUILD_TIMESTAMP_MS__: 1754479487078,
+    __BUILD_TIMESTAMP_MS__: 1754545336464,
     __NEXT_BASE_PATH__: "",
     __ASSETS_RUN_WORKER_FIRST__: false,
     // The external middleware will use the convertTo function of the `edge` converter

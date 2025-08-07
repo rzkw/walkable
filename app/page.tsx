@@ -138,6 +138,8 @@ export default function Personal() {
         <div className="flex-1">
           <p className="text-zinc-600 dark:text-zinc-400">
             Transitioning into the tech/IT sector after a career in hospitality. A space to showcase my homelabs, self-driven projects and professional development.
+
+            ⚠️ A work in progress - juggling documentation with ongoing daily learning! Projects may be unfinished or buggy
           </p>
         </div>
       </motion.section>

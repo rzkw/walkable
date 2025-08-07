@@ -1,12 +1,12 @@
 {
   "/_not-found/page": "/_not-found",
-  "/favicon.ico/route": "/favicon.ico",
   "/robots.txt/route": "/robots.txt",
+  "/favicon.ico/route": "/favicon.ico",
   "/page": "/",
-  "/projects/exploring-virt/page": "/projects/exploring-virt",
+  "/projects/old-laptop-server/page": "/projects/old-laptop-server",
   "/blog/cache-r2bindings/page": "/blog/cache-r2bindings",
   "/blog/setting-up-smtp/page": "/blog/setting-up-smtp",
-  "/blog/setting-up-cloudflare/page": "/blog/setting-up-cloudflare",
+  "/projects/exploring-virt/page": "/projects/exploring-virt",
   "/blog/example-mdx-metadata/page": "/blog/example-mdx-metadata",
-  "/projects/old-laptop-server/page": "/projects/old-laptop-server"
+  "/blog/setting-up-cloudflare/page": "/blog/setting-up-cloudflare"
 }

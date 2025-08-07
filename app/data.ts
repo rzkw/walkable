@@ -68,14 +68,9 @@ export const CERTIFICATIONS: Certifications[] = [
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
-  // {
-  //   title: 'How I turned an old laptop into a web/dev server',
-  //   description: 'Expanding my basic server admin knowledge',
-  //   link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
-  //   uid: 'blog-1',
-  // },
+
   {
-    title: 'Setting up SMTP with Migadu',
+    title: 'SMTP with Migadu',
     description:
       'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
@@ -89,7 +84,7 @@ export const BLOG_POSTS: BlogPost[] = [
     uid: 'blog-3',
   },
     {
-    title: 'Setting up deploy previews on Netlify',
+    title: 'Deploy previews on Netlify',
     description:
       'for working non-production branches',
     link: '/blog/deploy-preview',

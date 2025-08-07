@@ -75,7 +75,7 @@ export const BLOG_POSTS: BlogPost[] = [
   //   uid: 'blog-1',
   // },
   {
-    title: 'Setting up SMTP with Migadu',
+    title: 'SMTP with Migadu',
     description:
       'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
@@ -89,7 +89,7 @@ export const BLOG_POSTS: BlogPost[] = [
     uid: 'blog-3',
   },
     {
-    title: 'Setting up deploy previews on Netlify',
+    title: 'Deploy previews on Netlify',
     description:
       'for working non-production branches',
     link: '/blog/deploy-preview',
