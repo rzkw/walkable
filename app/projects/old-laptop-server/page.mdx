@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Converting resource-constrained hardware into a web/dev server',
-  description: 'turning an old laptop into an Ubuntu/Nginx server',
+  title: 'Converting resource-constrained hardware into a server',
+  description: 'turning an old laptop into an Ubuntu server',
   alternates: {
     canonical: '/projects/old-laptop-server',
   },
@@ -12,15 +12,15 @@ export const metadata = {
   caption="pexels.com"
 />
 
-# Converting resource-constrained hardware into a web/dev server
+# Converting resource-constrained hardware into a server
 
-turning an old laptop into an Ubuntu/Nginx server
+turning an old laptop into an Ubuntu server
 
 ---
 
 ## Why?
 
-To stand out in the crowded junior dev market. Many other candidates will have built similar portfolio projects like I have - JavaScript to do lists, weather apps and similar HTML/CSS websites. I also want to demonstrate a willingness to wear multiple hats in professional environments, demonstrating an understanding of the infrastructure side of development.
+To stand out in the crowded junior dev/tech support market. Many other candidates will have built similar portfolio projects like I have - JavaScript to do lists, weather apps and similar HTML/CSS/JavaScript websites. I also want to demonstrate a willingness to wear multiple hats in professional environments, demonstrating an understanding of the infrastructure side of development.
 
 ## How?
 
@@ -33,101 +33,58 @@ The old laptop I had lying around had these specs:
 - Graphics Card: Intel(R) HD Graphics (128 MB)
 - OS: Windows 10 Home Build 19045.5965, x64
 
-I made sure to back up all existing files onto an external SSD before starting, followed by a clean install of Windows 10. I then generated a tutorial via Claude, with the following prompt:
+I made sure to back up all existing files/data onto an external SSD before starting. I downloaded the latest version of [Ubuntu Server 25.04](https://ubuntu.com/download/server) and installed [balenaEtcher](https://etcher.balena.io/) to create a bootable USB flash drive with the server image. 
 
-> you are a software engineering tutor at a leading university. create a detailed step by step tutorial on converting an old windows 10 laptop into a dev server. include instructions on updating RAM module
+I used the Advanced startup settings in Windows to boot from EFI/USB, then pressed F12 during boot to install Ubuntu server. Choosing the correct SSID for my WLAN, I set a static IP (manual IPv4) in the Network Configuration step so that I can always connect to the server with the same address. I also installed OpenSSH server so I can remote into it from my Mac. 
 
-After refining the prompt several times, I got it to the following [artifact](https://claude.ai/public/artifacts/af8635e3-14e0-426a-bb4b-c7b11dec1efa) that includes the sticking points I needed:
+The wizard then asked me to reboot to finish the setup.
 
-- Resource/performance optimisation for my 4GB non-upgradeable RAM constraints
-- Basic Linux and PowerShell to reflect real-world impact
-
-I used the following scripts in Powershell as Administrator after necessary Windows Defender updates to remove apps that consume memory:
+After login, I used the following command to update and upgrade the packages that came with the install:
 
 ```
-Get-AppxPackage | Where-Object {$_.Name -like "*Xbox*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Candy*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Photos*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Music*"} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -like "*Skype*"} | Remove-AppxPackage
-
+sudo apt update && sudo apt upgrade
 ```
 
-I then disabled memory-intensive services:
+That was pretty much it! It was a very straightforward process. Only issue I had was mistyping my WiFi password and having to use nano, the text editor, to change it within Netplan, Ubuntu's networking configuration tool.  
+
+I looked for the configuration file:
 
 ```
-Get-Service "Superfetch" | Set-Service -StartupType Disabled
-Get-Service "Windows Search" | Set-Service -StartupType Disabled
-Get-Service "Fax" | Set-Service -StartupType Disabled
-
+ls /etc/netplan
 ```
 
-To optimise performance from Windows, I disabled hibernation, set power settings to High Performance mode, and prevented sleep when plugged in:
+...then opened it for editing:
 
 ```
-powercfg -h off
-powercfg -s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
-powercfg -change -standby-timeout-ac 0
-
+sudo nano /etc/netplan/50-cloud-init.yaml
 ```
 
-To reduce RAM usage by the GUI:
+I used `Ctrl+O` to write out the changes to the file, then `Enter` and `Ctrl+X` to exit. 
 
-- Start > type "this PC" > Properties > Advanced system settings > Advanced tab
-- Performance > Settings... > "Adjust for best performance" in the Visual Effects tab 
-
-I also changed the page file size:
-
-- Advanced tab > Virtual memory > Change...
-- Custom size: Initial: 6144MB, Maximum 8192MB > Set > OK > OK
-
-I installed [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to install Linux on my RAM-constrained hardware without needing to run a virtual machine (VM). The distribution I chose was Ubuntu seeing as it's well documented.
-
-```
-wsl --install -d Ubuntu
-
-```
-
-After a restart, I installed [Chocolatey, a package manager](https://chocolatey.org/how-chocolatey-works) to easily keep my packages up to date later on. I then installed the following dev tools and utilities:
-
-Dev tools: Git, Visual Studio Code, Node.js, and Python
-```
-choco install git -y
-choco install vscode -y
-choco install nodejs-lts -y
-choco install python -y
-
-```
-
-System utilities: wget, curl, and 7zip
-```
-
-choco install wget -y
-choco install curl -y
-choco install 7zip -y
-
-```
-
-
-
-
-
+I'm keeping my server headless (without a GUI) to allow lots of practice with the terminal, also reducing the potential attack vectors and optimising performance due to the very limited RAM (4GB).
 
 ## Now what?
 
-- **Learning Curve**:
+I set up remote login using SSH, a secure protocol that allows me to manage my server remotely (from the dinner table, or the cafe). To be detailed in another post!
 
-- **Challenges**:
+## Learning Curve**:
+
+Setting a static IP - I didn't use advanced router configuration as my router has its firmware restricted by my ISP. I chose an IP outside the given DHCP range but within the same existing subnet. 
+
+I used [Google's](https://developers.google.com/speed/public-dns) and [Cloudflare's DNS resolvers](https://www.cloudflare.com/learning/dns/what-is-1.1.1.1/) to speed up browsing. 
 
 ## Conclusion
 
+The Ubuntu wizard makes the process very easy, and it's a good distro for all the documentation, forum posts and community support you can find for it. Looking forward to loading my server with services, touching on automation and whatever else I can get it to do!
+
 ## Artifacts
 
-- [Claude: Building a Career-Boosting Homelab Development Server](https://claude.ai/public/artifacts/af8635e3-14e0-426a-bb4b-c7b11dec1efa)
+- [Gemini: Ubuntu Server Static IP Configuration](https://g.co/gemini/share/cc38e037fb95)
 
 ## References
 
-- [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
-- [wget vs curl: What Are the Differences?](https://phoenixnap.com/kb/wget-vs-curl)
+- [SSH Protocol – Secure Remote Login and File Transfer](https://www.ssh.com/academy/ssh/protocol)
+- [Ubuntu Server documentation: Basic installation](https://documentation.ubuntu.com/server/tutorial/basic-installation/#basic-installation)
+
 
 ---

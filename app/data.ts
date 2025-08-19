@@ -6,6 +6,7 @@ type Project = {
   id: string
 }
 
+
 type Certifications = {
   company: string
   title: string
@@ -29,9 +30,9 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
-    name: 'Converting resource-constrained hardware into a web/dev server',
+    name: 'Converting resource-constrained hardware into a server',
     description:
-      'turning an old laptop into an Ubuntu/Nginx server',
+      'turning an old laptop into an Ubuntu server',
     link: '/projects/old-laptop-server',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',

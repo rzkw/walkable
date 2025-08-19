@@ -1,54 +1,6 @@
 {
   "version": 4,
   "routes": {
-    "/blog/cache-r2bindings": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/cache-r2bindings",
-      "dataRoute": "/blog/cache-r2bindings.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/projects/old-laptop-server": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/projects/old-laptop-server",
-      "dataRoute": "/projects/old-laptop-server.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/favicon.ico": {
       "initialHeaders": {
         "cache-control": "public, max-age=0, must-revalidate",
@@ -78,7 +30,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/": {
+    "/blog/setting-up-smtp": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -91,8 +43,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/",
-      "dataRoute": "/index.rsc",
+      "srcRoute": "/blog/setting-up-smtp",
+      "dataRoute": "/blog/setting-up-smtp.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -102,7 +54,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/projects/exploring-virt": {
+    "/blog/setting-up-cloudflare": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -115,8 +67,32 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/projects/exploring-virt",
-      "dataRoute": "/projects/exploring-virt.rsc",
+      "srcRoute": "/blog/setting-up-cloudflare",
+      "dataRoute": "/blog/setting-up-cloudflare.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/blog/cache-r2bindings": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/blog/cache-r2bindings",
+      "dataRoute": "/blog/cache-r2bindings.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -155,6 +131,54 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/projects/old-laptop-server": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/projects/old-laptop-server",
+      "dataRoute": "/projects/old-laptop-server.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/",
+      "dataRoute": "/index.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/blog/example-mdx-metadata": {
       "experimentalBypassFor": [
         {
@@ -179,7 +203,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/setting-up-cloudflare": {
+    "/projects/exploring-virt": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -192,32 +216,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/setting-up-cloudflare",
-      "dataRoute": "/blog/setting-up-cloudflare.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/blog/setting-up-smtp": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/setting-up-smtp",
-      "dataRoute": "/blog/setting-up-smtp.rsc",
+      "srcRoute": "/projects/exploring-virt",
+      "dataRoute": "/projects/exploring-virt.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -231,8 +231,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "d273bd0305f5929475d4246919e8cc76",
-    "previewModeSigningKey": "49d634213521a1726a56f1780023abdcc230638a13aebe09889f99791840d9e9",
-    "previewModeEncryptionKey": "03570a99808560ce7a598add88ffd49eae77852fd3efdf1a15c166ee5f43cb4f"
+    "previewModeId": "017660972eac79b6df2438abeaaea43e",
+    "previewModeSigningKey": "41857a7c013791e6989df747fc1dbca26836b78c5827382c702b84018f834c76",
+    "previewModeEncryptionKey": "412322d1af78d6dc2185f8d73341072f0e1a004778f4245cb70ab9b2186b6bda"
   }
 }

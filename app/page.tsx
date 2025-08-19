@@ -135,11 +135,15 @@ export default function Personal() {
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
-        <div className="flex-1">
+        <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Transitioning into the tech/IT sector after a career in hospitality. A space to showcase my homelabs, self-driven projects and professional development.
-
-            ⚠️ A work in progress - juggling documentation with ongoing daily learning! Projects may be unfinished or buggy
+            A space to showcase my home labs, self-driven projects and professional development.
+          </p>
+          <p className="text-zinc-600 dark:text-zinc-400">
+             
+          </p>
+          <p className="text-zinc-600 dark:text-zinc-400">
+           ⚠️ A work in progress - juggling documentation with ongoing daily learning! Projects may be unfinished or buggy
           </p>
         </div>
       </motion.section>
