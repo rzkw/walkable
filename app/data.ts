@@ -30,9 +30,9 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
-    name: 'Converting resource-constrained hardware into a server',
+    name: 'My $0 Home Lab: Converting an old Windows 10 Laptop into a server',
     description:
-      'turning an old laptop into an Ubuntu server',
+      'Turning a resource-constrained machine into a headless Ubuntu node',
     link: '/projects/old-laptop-server',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
