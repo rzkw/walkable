@@ -33,16 +33,16 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/blog/cache-r2bindings",
+      "regex": "^/blog/cache\\-r2bindings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/cache\\-r2bindings(?:/)?$"
+    },
+    {
       "page": "/blog/example-mdx-metadata",
       "regex": "^/blog/example\\-mdx\\-metadata(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/example\\-mdx\\-metadata(?:/)?$"
-    },
-    {
-      "page": "/blog/exploring-the-intersection-of-design-ai-and-design-engineering",
-      "regex": "^/blog/exploring\\-the\\-intersection\\-of\\-design\\-ai\\-and\\-design\\-engineering(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/blog/exploring\\-the\\-intersection\\-of\\-design\\-ai\\-and\\-design\\-engineering(?:/)?$"
     },
     {
       "page": "/blog/setting-up-cloudflare",
@@ -51,10 +51,28 @@
       "namedRegex": "^/blog/setting\\-up\\-cloudflare(?:/)?$"
     },
     {
+      "page": "/blog/setting-up-smtp",
+      "regex": "^/blog/setting\\-up\\-smtp(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/setting\\-up\\-smtp(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/projects/exploring-virt",
+      "regex": "^/projects/exploring\\-virt(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/projects/exploring\\-virt(?:/)?$"
+    },
+    {
+      "page": "/projects/old-laptop-server",
+      "regex": "^/projects/old\\-laptop\\-server(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/projects/old\\-laptop\\-server(?:/)?$"
     },
     {
       "page": "/robots.txt",

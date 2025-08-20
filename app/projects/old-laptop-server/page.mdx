@@ -1,0 +1,114 @@
+export const metadata = {
+  title: 'My $0 Home Lab: Converting an old Windows 10 Laptop into a performance-optimised server',
+  description: 'project turning a resource-constrained machine into a headless Ubuntu server',
+  alternates: {
+    canonical: '/projects/old-laptop-server',
+  },
+  tags: ['hardware', 'ubuntu', 'server', 'networking', ]
+}
+
+<Cover
+  src="https://images.pexels.com/photos/17484901/pexels-photo-17484901.png"
+  alt="from pexels.com"
+  caption="pexels.com"
+/>
+
+# My $0 Home Lab: Converting an old Windows 10 Laptop into a performance-optimised server
+
+A project to turn a resource-constrained machine gathering dust to a fully functional, headless Ubuntu server that can keep up with the latest cloud tech and what I learned along the way
+
+---
+
+## Why?
+
+To stand out in the crowded junior dev/tech support market. Many other candidates will have built similar portfolio projects like I have - JavaScript to do lists, weather apps and similar HTML/CSS/JavaScript websites. I also want to demonstrate a willingness to wear multiple hats in professional environments, demonstrating an understanding of the infrastructure side of development. Also to give myself a foundation in DevOps, seemingly bridging the gap between my interests in IT Operations and Dev.
+
+## How?
+
+The old laptop I had lying around had these specs:
+
+- Model Name: Acer Swift
+- Processor: Intel(R) Celeron(R) CPU N3450 @ 1.10GHz 1.10 GHz
+- Installed RAM: 4.00 GB (3.84 GB usable, non-upgradeable)
+- Storage: 58 GB SSD VID:90 HCG4a2
+- Graphics Card: Intel(R) HD Graphics (128 MB)
+- OS: Windows 10 Home Build 19045.5965, x64
+
+I made sure to back up all existing files/data onto an external SSD before starting. I downloaded the latest version of [Ubuntu Server 25.04](https://ubuntu.com/download/server) and installed [balenaEtcher](https://etcher.balena.io/) to create a bootable USB flash drive with the server image. 
+
+I used the Advanced startup settings in Windows to boot from EFI/USB, then pressed F12 during boot to install Ubuntu server. Choosing the correct SSID for my WLAN, I set a static IP (manual IPv4) in the Network Configuration step so that I can always connect to the server with the same address. To potentially speed up browsing, I used [Google's 8.8.8.8](https://developers.google.com/speed/public-dns) and [Cloudflare's 1.1.1.1 DNS resolvers](https://www.cloudflare.com/learning/dns/what-is-1.1.1.1/) . I also installed OpenSSH server so I can remote into it from my Mac. 
+
+The wizard then asked me to reboot to finish the setup.
+
+After login, I used the following command to update and upgrade the packages that came with the install:
+
+```
+sudo apt update && sudo apt upgrade
+```
+
+That was pretty much it! It was a very straightforward process. Only issue I had to troubleshoot was mistyping my WiFi password and having to use nano, the text editor, to change it within Netplan, Ubuntu's networking configuration tool.  
+
+I looked for the configuration file:
+
+```
+ls /etc/netplan
+```
+
+...then opened it for editing:
+
+```
+sudo nano /etc/netplan/50-cloud-init.yaml
+```
+
+I used `Ctrl+O` to write out the changes to the file, then `Enter` and `Ctrl+X` to exit. 
+
+I automated security and other upgrades with the unattended-upgrades package:
+
+```
+sudo apt install unattended-upgrades 
+```
+
+It saves me a bit of time and effort to ensure my server is always up-to-date with the latest security patches, reducing risk of vulnerabilities. It also ensures stability of installed packages. 
+
+I enabled unattended-upgrades so it starts on boot without having to manually check:
+
+```
+sudo systemctl enable unattended-upgrades
+```
+
+I'm keeping my server headless (without a GUI) to allow lots of practice with the terminal, also reducing the potential attack vectors and optimising performance due to the very limited RAM (4GB).
+
+## Now what?
+
+I set up remote login using SSH, a secure protocol that allows me to manage my server remotely (from the dinner table, or the cafe). This means I can be away from home and still tinker with my server as long as it's powered on, opening the terminal on my Mac and typing:
+
+```
+ssh my_username@my.servers.static.ip
+```
+
+I've also set up integrations with Grafana to gain further experience in infrastructure management and monitoring the server's stats, and Jira/Slack for service alerts. SSH, firewall/security hardening and integrations to be detailed in another post!
+
+## Learning Curve:
+
+Setting a static IP - I didn't use advanced router configuration as my router has its firmware restricted by my ISP. I chose an IP outside the given DHCP range but within the same existing subnet. 
+
+
+## Conclusion
+
+- Memory Efficiency: With the OS running Windows 10, the system would have used around 1.8-2.5GB or 40-65% of the non-upgradable RAM just sitting idle. Now running as a lightweight headless server, I've managed to reduce that to 378MiB idle or **16.7%**, a huge improvement to breathe new life into an older system. This means there's much more of the RAM available for running services I'd want to include in future, such as a reverse proxy, a web server or even containers. 
+
+- Install: The Ubuntu wizard makes the process very easy, and it's a good distro for all the documentation, forum posts and community support you can find for it. Looking forward to loading my server with services, touching on automation and whatever else I can get it to do!
+
+## Artifacts
+
+- [Gemini: Ubuntu Server Static IP Configuration](https://g.co/gemini/share/cc38e037fb95)
+
+## References
+
+- [SSH Protocol – Secure Remote Login and File Transfer](https://www.ssh.com/academy/ssh/protocol)
+- [Ubuntu Server documentation: Basic installation](https://documentation.ubuntu.com/server/tutorial/basic-installation/#basic-installation)
+- [How to Configure Unattended Upgrades on Ubuntu 24.04, 22.04 or 20.04](https://linuxcapable.com/how-to-configure-unattended-upgrades-on-ubuntu-linux/)
+- [Automatic Server Updates - unattendedUpgrades with email notifications](https://www.ajfriesen.com/automatic-server-updates/)
+
+
+---

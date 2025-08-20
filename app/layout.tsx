@@ -12,15 +12,15 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nim-fawn.vercel.app/'),
+  metadataBase: new URL('https://www.walk-llc.com'),
   alternates: {
     canonical: '/'
   },
   title: {
     default: 'Walkable',
-    template: '%s | Nim'
+    template: '%s | Walkable'
   },
-  description:  'Nim is a free and open-source personal website template built with Next.js 15, React 19 and Motion-Primitives.',
+  description:  'Walkable is a US-based LLC to structure my home labs, professional development and projects.',
 };
 
 const geist = Geist({

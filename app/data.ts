@@ -6,6 +6,7 @@ type Project = {
   id: string
 }
 
+
 type Certifications = {
   company: string
   title: string
@@ -29,10 +30,10 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
-    name: 'Converting resource-constrained hardware into a web/dev server',
+    name: 'My $0 Home Lab: Converting an old Windows 10 Laptop into a server',
     description:
-      'turning an old laptop into an Ubuntu/Nginx server',
-    link: 'https://pro.motion-primitives.com/',
+      'Turning a resource-constrained machine into a headless Ubuntu node',
+    link: '/projects/old-laptop-server',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
     id: 'project1',
@@ -68,14 +69,9 @@ export const CERTIFICATIONS: Certifications[] = [
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
+
   {
-    title: 'How I turned an old laptop into a web/dev server',
-    description: 'Expanding my basic server admin knowledge',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
-    uid: 'blog-1',
-  },
-  {
-    title: 'Setting up SMTP with Migadu',
+    title: 'SMTP with Migadu',
     description:
       'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
@@ -88,12 +84,14 @@ export const BLOG_POSTS: BlogPost[] = [
     link: '/blog/setting-up-cloudflare',
     uid: 'blog-3',
   },
-  // {
-  //   title: 'How to Export Metadata from MDX for Next.js SEO',
-  //   description: 'A guide on exporting metadata from MDX files to leverage Next.js SEO features.',
-  //   link: '/blog/example-mdx-metadata',
-  //   uid: 'blog-4',
-  // },
+    {
+    title: 'Deploy previews on Netlify',
+    description:
+      'for working non-production branches',
+    link: '/blog/deploy-preview',
+    uid: 'blog-4',
+  },
+
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
@@ -109,10 +107,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'LinkedIn',
     link: 'https://www.linkedin.com/in/rizky-ramadhani3056/',
   },
-  // {
-  //   label: 'Instagram',
-  //   link: 'https://www.instagram.com/ibelick',
-  // },
 ]
 
 export const EMAIL = 'hello@walk-llc.com'
