@@ -62,13 +62,13 @@ sudo nano /etc/netplan/50-cloud-init.yaml
 
 I used `Ctrl+O` to write out the changes to the file, then `Enter` and `Ctrl+X` to exit. 
 
-I automated security and other upgrades with the unattended-upgrades package:
+I automated security and other upgrades with the unattended-upgrades package. 
 
 ```
-sudo apt install unattended-upgrades 
+sudo apt install unattended-upgrades
 ```
 
-It saves me a bit of time and effort to ensure my server is always up-to-date with the latest security patches, reducing risk of vulnerabilities. It also ensures stability of installed packages. 
+It comes already installed with Ubuntu Server 25. It saves me a bit of time and effort to ensure my server is always up-to-date with the latest security patches, reducing risk of vulnerabilities. It also ensures stability of installed packages. 
 
 I enabled unattended-upgrades so it starts on boot without having to manually check:
 
