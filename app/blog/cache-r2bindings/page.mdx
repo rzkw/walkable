@@ -1,53 +1,68 @@
 export const metadata = {
-  title: 'Setting up my website with Cloudflare',
+  title: 'Troubleshooting: adding a storage bucket to my blog',
   description:
-    'From domain registrar to routes',
+    'Configuring an R2 storage bucket on Cloudflare',
   alternates: {
     canonical: '/blog/setting-up-cloudflare',
   },
+  tags: ['troubleshooting', 'blog', 'cloudflare', 'storage', 'cache', 'debug']
 };
 
-<Cover
-  src="https://cdn.stocksnap.io/img-thumbs/960w/sunset-sea_YAA7WLGAQU.jpg"
-  alt="Sergei Gussev"
-  caption="stocksnap.io"
-/>
 
-# Setting up my website with Cloudflare
+# Troubleshooting: adding a storage bucket to my blog
 
-Figuring out what hosting is, how to route my traffic through Cloudflare, and setting up DNS records.
+Configuring an R2 storage bucket for caching purposes on Cloudflare
 
 ---
 
-## Buying my domain
+## Adapting my blog to Cloudflare Workers
 
-I bought a domain with the idea to create a portfolio website under my LLC (US-based) to show my projects, homelabs and whatever else I may do in future. I bought one through [Cloudflare's registrar](https://www.cloudflare.com/en-au/products/registrar/) for around $10-16 a year. Afterwards, I used a template from [Vercel](https://vercel.com/templates/portfolio) that looked neat and professional, after trying to build one from scratch (still active in my GitHub!). After [picking](https://vercel.com/templates/portfolio/nim-minimalist-personal-site) one, it took a bit of configuring and trying out multiple deployments to figure out how to set up my deployment on GitHub and connect it to Cloudflare.
+After I bought a custom domain with Cloudflare, I tried deploying it from GitHub and ran into a few issues. Initally I began with the [Cloudflare documentation](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/#deploy-an-existing-nextjs-project-on-workers) that outlines how to deploy an existing Next.js project on Workers, their serverless computing platform. 
+
+I kept getting error messages - at first a missing build command that meant I could commit my changes to GitHub, but it wasn't deploying to Cloudflare. The message said "[ERROR] The entry-point file at ".open-next/worker.js" was not found." Digging through the logs on Cloudflare led to troubleshooting the build command using the official [opennextjs documentation](https://opennext.js.org/cloudflare/get-started#existing-nextjs-apps). 
 
 ## How?
 
-I faffed with the deployment a few times before settling on using the template off of the original GitHub repo. After editing the data, I committed/pushed on to my remote [repo](https://github.com/rzkw/walkable). I then used the Cloudflare Docs to [deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/), namely installing opennextjs, Wrangler CLI and a Wrangler/OpenNext config file. I'm still deploying from the GitHub repo instead of the workers.dev subdomain as that's how I started. I then altered the Custom Domain through Routes, which took a bit of reading and AI help as well (setting up a placeholder DNS A record pointing at 192.0.2.1 before setting up .walk-llc.com/).
+There's a mismatch between the Cloudflare docs and OpenNext - the Cloudflare guide is missing a build command in the package.json scripts. I chose to uninstall Wrangler and its associated config file and start the process all over again using the guide. I also updated my build command in the Cloudflare Workers & Pages settings:
+
+ ```
+ npx opennextjs-cloudflare build
+ ```
+
+ and for deployment:
+
+ ```
+ npx opennextjs-cloudflare deploy
+ ```
+
+After correcting the build process, I found the given OpenNext deploy script requires a Cloudflare R2 storage bucket to be connected to my blog to save cache data. It took a bit of help from Gemini for me to work out its performance benefits - to serve visitors a copy from the cache instead of making Workers rebuild the page with every visit. 
+
+I created an R2 Object Storage bucket in Cloudflare. I connected the bucket to my Worker blog project using Bindings to allow the blog to interact with the bucket. I updated my wrangler.jsonc file using OpenNext's caching guide to include this binding. 
 
 ### Challenges
 
-- **DNS Records**: This was covered in my CompTIA A+ exam but it didn't go through actual configurations, and Cloudflare allows me to set them up manually, something I haven't done with other cloud providers where I didn't have a custom domain. Took a lot of consulting documentation and Gemini/AI help to ensure I correctly set up A and CNAME records. 
-- **Routing**: I thought setting up www and connecting it to my custom domain was simple, but the template I used was a full stack Next.js app. So I had to go backwards and figure out what routing was! I probably need a refresher already but the Cloudflare docs combined with AI and good old Google makes it easy enough. 
-- **Build Errors**: I had multiple build errors initially when figuring out deployment issues - turned out to be compatibility and probably bits leftover in the build cache.
+- **Debugging**: Nearly everything -  I didn't understand what half the terms meant from buckets, bindings, to build commands. It took a lot of Google, scouring documentation and Gemini to translate very technical information into digestible terms I could understand as a self-taught techy.
+
+- **Build Errors**: Took multiple crashes, build errors, rebuilds, analysing Cloudflare logs and local preview error logs to finally get it to a working state!
 
 ---
 
 ## Conclusion
 
-I probably wouldn't have gone with a template off Vercel for a starter website while I'm also trying to figure out DNS config as a beginner. It was a bit of an uphill climb but here we are!
+Probably would have been easier to use a premade template that had all of this preconfigured as I very much consider myself a beginner, but it did teach me a lot about scratching the surface of backend dev. 
 
 ---
-
 
 ### References
 
 - [Cloudflare Docs: Deploy an existing Next.js project on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/#deploy-an-existing-nextjs-project-on-workers)
-- [What is Cloudflare Workers?](https://developers.cloudflare.com/workers/)
-- [What is a DNS CNAME record?](https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/)
-
+- [OpenNext.js: Cloudflare/Get Started](hhttps://opennext.js.org/cloudflare/get-started)
+- [Gemini transcript: Debugging build commands and R2 bucket binding](https://g.co/gemini/share/3a6bb4839610)
+- [Reddit post: Deploy NextJS on Cloudlfare workers (similar issue)](https://www.reddit.com/r/nextjs/comments/1jlmqnn/deploy_nextjs_on_cloudlfare_workers/)
+- [Cloudflare Workers vs Cloudflare Functions vs Cloudflare Pages: A Comprehensive Comparison](https://medium.com/@sehban.alam/cloudflare-workers-vs-cloudflare-functions-vs-cloudflare-pages-a-comprehensive-comparison-370dac4a858c)
+- [OpenNext How-Tos: Develop and Deploy](https://opennext.js.org/cloudflare/howtos/dev-deploy)
+- [How R2 works](https://developers.cloudflare.com/r2/how-r2-works/)
+- [OpenNext: Cloudflare/Caching](https://opennext.js.org/cloudflare/caching) 
 ---
 
 

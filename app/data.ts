@@ -75,22 +75,23 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
-    uid: 'blog-2',
+    uid: 'blog-1',
   },
   {
     title: 'Setting up Cloudflare',
     description:
       'Figuring out how to set up a domain through Cloudflare',
     link: '/blog/setting-up-cloudflare',
-    uid: 'blog-3',
+    uid: 'blog-2',
   },
     {
-    title: 'Deploy previews on Netlify',
+    title: 'Troubleshooting: adding a storage bucket to my blog',
     description:
-      'for working non-production branches',
-    link: '/blog/deploy-preview',
-    uid: 'blog-4',
+      'Configuring R2 storage on Cloudflare',
+    link: '/blog/cache-r2bindings',
+    uid: 'blog-3',
   },
+
 
 ]
 
