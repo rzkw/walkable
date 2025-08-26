@@ -30,9 +30,9 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
-    name: 'My $0 Home Lab: Converting an old Windows 10 Laptop into a performance-optimised server',
+    name: 'My $0 Home Lab: Converting an old Windows 10 Laptop into a server',
     description:
-      'turning a resource-constrained machine into a headless Ubuntu node',
+      'Turning a resource-constrained machine into a headless Ubuntu node',
     link: '/projects/old-laptop-server',
     video:
       'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
@@ -75,21 +75,35 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       'Linking an email/SMTP provider to my custom domain, configuring DNS records',
     link: '/blog/setting-up-smtp',
-    uid: 'blog-2',
+    uid: 'blog-1',
   },
   {
     title: 'Setting up Cloudflare',
     description:
       'Figuring out how to set up a domain through Cloudflare',
     link: '/blog/setting-up-cloudflare',
-    uid: 'blog-3',
+    uid: 'blog-2',
   },
     {
-    title: 'Deploy previews on Netlify',
+    title: 'Troubleshooting: adding a storage bucket to my blog',
     description:
-      'for working non-production branches',
-    link: '/blog/deploy-preview',
+      'Configuring R2 storage on Cloudflare',
+    link: '/blog/cache-r2bindings',
+    uid: 'blog-3',
+  },
+  {
+    title: 'SSH security hardening and other bits',
+    description:
+      'ufw firewall, fail2ban and configs',
+    link: '/blog/ssh-hardening',
     uid: 'blog-4',
+  },
+    {
+    title: 'Integrating Grafana',
+    description:
+      'for monitoring purposes',
+    link: '/blog/grafana',
+    uid: 'blog-5',
   },
 
 ]
