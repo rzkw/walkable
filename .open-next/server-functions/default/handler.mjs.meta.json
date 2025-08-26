@@ -4014,8 +4014,8 @@
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js": {
-      "bytes": 7981,
+    ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page_client-reference-manifest.js": {
+      "bytes": 7967,
       "imports": [],
       "format": "cjs"
     },
@@ -4034,8 +4034,13 @@
       "imports": [],
       "format": "cjs"
     },
+    ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js": {
+      "bytes": 7981,
+      "imports": [],
+      "format": "cjs"
+    },
     ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-      "bytes": 31442,
+      "bytes": 33065,
       "imports": [
         {
           "path": "path",
@@ -4083,9 +4088,9 @@
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/projects/exploring-virt/page_client-reference-manifest.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js",
+          "path": ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js"
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/blog/setting-up-smtp/page_client-reference-manifest.js",
@@ -4101,6 +4106,11 @@
           "path": ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page_client-reference-manifest.js",
           "kind": "require-call",
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page_client-reference-manifest.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js",
+          "kind": "require-call",
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js"
         }
       ],
       "format": "cjs"
@@ -4835,6 +4845,72 @@
       ],
       "format": "cjs"
     },
+    ".open-next/server-functions/default/.next/server/app/_not-found/page.js": {
+      "bytes": 14802,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
     ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
       "bytes": 155034,
       "imports": [
@@ -4936,52 +5012,6 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/robots.txt/route.js": {
-      "bytes": 10816,
-      "imports": [
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/app-paths"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
-          "kind": "require-call",
-          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
-          "kind": "require-call",
-          "original": "next/dist/compiled/next-server/app-route.runtime.prod.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/no-fallback-error.external"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
-          "kind": "require-call",
-          "original": "../../webpack-runtime.js"
-        }
-      ],
-      "format": "cjs"
-    },
     ".open-next/server-functions/default/.next/server/app/favicon.ico/route.js": {
       "bytes": 41179,
       "imports": [
@@ -5028,8 +5058,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/_not-found/page.js": {
-      "bytes": 14802,
+    ".open-next/server-functions/default/.next/server/app/robots.txt/route.js": {
+      "bytes": 10816,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5047,34 +5077,14 @@
           "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
         },
         {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/action-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/is-bot"
-        },
-        {
-          "path": "util",
-          "kind": "require-call",
-          "external": true
-        },
-        {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
           "kind": "require-call",
           "original": "next/dist/server/app-render/work-async-storage.external.js"
         },
         {
-          "path": "path",
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
           "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+          "original": "next/dist/compiled/next-server/app-route.runtime.prod.js"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
@@ -5095,7 +5105,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/page.js": {
-      "bytes": 29189,
+      "bytes": 29332,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5156,6 +5166,72 @@
           "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
           "kind": "require-call",
           "original": "../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js": {
+      "bytes": 22785,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../../webpack-runtime.js"
         }
       ],
       "format": "cjs"
@@ -5226,8 +5302,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js": {
-      "bytes": 20577,
+    ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page.js": {
+      "bytes": 23973,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5293,7 +5369,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/blog/cache-r2bindings/page.js": {
-      "bytes": 22755,
+      "bytes": 23705,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5358,8 +5434,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js": {
-      "bytes": 22785,
+    ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js": {
+      "bytes": 20577,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5491,7 +5567,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/projects/old-laptop-server/page.js": {
-      "bytes": 26647,
+      "bytes": 26715,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5557,7 +5633,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
-      "bytes": 22356,
+      "bytes": 22591,
       "imports": [
         {
           "path": "path",
@@ -5620,9 +5696,9 @@
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/pages/_document.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/robots.txt/route.js",
+          "path": ".open-next/server-functions/default/.next/server/app/_not-found/page.js",
           "kind": "require-call",
-          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/robots.txt/route.js"
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/_not-found/page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/favicon.ico/route.js",
@@ -5630,9 +5706,9 @@
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/favicon.ico/route.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/_not-found/page.js",
+          "path": ".open-next/server-functions/default/.next/server/app/robots.txt/route.js",
           "kind": "require-call",
-          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/_not-found/page.js"
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/robots.txt/route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/page.js",
@@ -5640,14 +5716,19 @@
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/page.js"
         },
         {
+          "path": ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js",
+          "kind": "require-call",
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js"
+        },
+        {
           "path": ".open-next/server-functions/default/.next/server/app/blog/setting-up-smtp/page.js",
           "kind": "require-call",
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/setting-up-smtp/page.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js",
+          "path": ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page.js",
           "kind": "require-call",
-          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js"
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/blog/cache-r2bindings/page.js",
@@ -5655,9 +5736,9 @@
           "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/cache-r2bindings/page.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js",
+          "path": ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js",
           "kind": "require-call",
-          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js"
+          "original": "/Users/rizky/Documents/GitHub/walkable/.open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/projects/exploring-virt/page.js",
@@ -7534,7 +7615,7 @@
       "format": "esm"
     },
     ".open-next/server-functions/default/index.mjs": {
-      "bytes": 74606,
+      "bytes": 74798,
       "imports": [
         {
           "path": "node:module",
@@ -7935,6 +8016,16 @@
         },
         {
           "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
           "kind": "require-call",
           "external": true
         },
@@ -9110,8 +9201,8 @@
         ".open-next/server-functions/default/.next/server/app/projects/exploring-virt/page_client-reference-manifest.js": {
           "bytesInOutput": 7404
         },
-        ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js": {
-          "bytesInOutput": 7402
+        ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page_client-reference-manifest.js": {
+          "bytesInOutput": 7381
         },
         ".open-next/server-functions/default/.next/server/app/blog/setting-up-smtp/page_client-reference-manifest.js": {
           "bytesInOutput": 7387
@@ -9122,8 +9213,11 @@
         ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page_client-reference-manifest.js": {
           "bytesInOutput": 7405
         },
+        ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page_client-reference-manifest.js": {
+          "bytesInOutput": 7402
+        },
         ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-          "bytesInOutput": 22342
+          "bytesInOutput": 23475
         },
         ".open-next/server-functions/default/node_modules/react/cjs/react-jsx-runtime.production.js": {
           "bytesInOutput": 740
@@ -9239,41 +9333,44 @@
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js": {
           "bytesInOutput": 516
         },
-        ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
-          "bytesInOutput": 164475
-        },
-        ".open-next/server-functions/default/.next/server/app/robots.txt/route.js": {
-          "bytesInOutput": 11076
-        },
-        ".open-next/server-functions/default/.next/server/app/favicon.ico/route.js": {
-          "bytesInOutput": 41278
-        },
         ".open-next/server-functions/default/.next/server/app/_not-found/page.js": {
           "bytesInOutput": 14926
         },
+        ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
+          "bytesInOutput": 164475
+        },
+        ".open-next/server-functions/default/.next/server/app/favicon.ico/route.js": {
+          "bytesInOutput": 41277
+        },
+        ".open-next/server-functions/default/.next/server/app/robots.txt/route.js": {
+          "bytesInOutput": 11077
+        },
         ".open-next/server-functions/default/.next/server/app/page.js": {
-          "bytesInOutput": 29741
+          "bytesInOutput": 29884
+        },
+        ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js": {
+          "bytesInOutput": 23048
         },
         ".open-next/server-functions/default/.next/server/app/blog/setting-up-smtp/page.js": {
           "bytesInOutput": 21897
         },
-        ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js": {
-          "bytesInOutput": 20821
+        ".open-next/server-functions/default/.next/server/app/blog/ssh-hardening/page.js": {
+          "bytesInOutput": 24219
         },
         ".open-next/server-functions/default/.next/server/app/blog/cache-r2bindings/page.js": {
-          "bytesInOutput": 23013
+          "bytesInOutput": 23954
         },
-        ".open-next/server-functions/default/.next/server/app/blog/setting-up-cloudflare/page.js": {
-          "bytesInOutput": 23048
+        ".open-next/server-functions/default/.next/server/app/blog/example-mdx-metadata/page.js": {
+          "bytesInOutput": 20821
         },
         ".open-next/server-functions/default/.next/server/app/projects/exploring-virt/page.js": {
           "bytesInOutput": 23459
         },
         ".open-next/server-functions/default/.next/server/app/projects/old-laptop-server/page.js": {
-          "bytesInOutput": 26911
+          "bytesInOutput": 26979
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
-          "bytesInOutput": 18398
+          "bytesInOutput": 18496
         },
         ".open-next/server-functions/default/node_modules/next/dist/lib/wait.js": {
           "bytesInOutput": 341
@@ -9543,10 +9640,10 @@
           "bytesInOutput": 8659
         },
         ".open-next/server-functions/default/index.mjs": {
-          "bytesInOutput": 52240
+          "bytesInOutput": 52412
         }
       },
-      "bytes": 6732613
+      "bytes": 6766768
     }
   }
 }

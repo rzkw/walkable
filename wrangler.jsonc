@@ -27,6 +27,11 @@
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
       "bucket_name": "walkable-blog-cache",
       "preview_bucket_name": "walkable-blog-cache"
+    },
+    {
+      "binding": "IMAGES_R2_BUCKET",
+      "bucket_name": "images",
+      "preview_bucket_name": "walkable-blog-images"
     }
   ],
   "routes": [

@@ -1,0 +1,129 @@
+export const metadata = {
+  title: 'SSH security hardening and other bits',
+  description:
+    'ufw firewall, fail2ban and configs',
+  alternates: {
+    canonical: '/blog/setting-up-smtp',
+  },
+  tags: ['security', 'blog', 'linux', 'firewall', 'configuration']
+
+};
+
+<Cover
+  src="https://www.walk-llc.com/public/ssh.jpg"
+  alt=""
+  caption="Photo by Markus Spiske on Unsplash"
+/>
+
+# SSH security hardening and other bits
+
+Securing my Linux server with ufw, fail2ban and altering my SSH configuration
+
+---
+
+## Why?
+
+After installing Ubuntu Server 25 on my old laptop I found a guide to secure it. I didn't know that bot scripts can scour my newly setup server for misconfigurations and vulnerabilities. Even though my server wasn't yet publicly accessible, I didn't want to wait until it was compromised.
+
+## How?
+
+At first I copied the SSH public key* I generated on my Mac to my Linux server:
+
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub myusername@myserver.ip
+```
+
+I used a custom SSH port from the default 22 for my ufw firewall to reduce the number of brute force attacks:
+
+```
+sudo ufw allow 5678/tcp
+```
+
+I updated my SSH configuration file to the change the default port:
+
+```
+sudo nano /etc/ssh/sshd_config
+Port 5678
+```
+
+I disabled root login via SSH:
+
+```
+PermitRootLogin no
+```
+
+I allowed public key authentication:
+
+```
+PubkeyAuthentication yes
+```
+
+I disabled .rhosts files for authentication, considered to be less than secure:
+
+```
+IgnoreRhosts yes
+```
+
+I also disabled password-based SSH auth:
+
+```
+PasswordAuthentication no
+```
+
+Finally, I disabled SSH access with empty passwords:
+
+```
+PermitEmptyPasswords no
+```
+
+After saving the config file I enabled the firewall and restarted my server to apply the above changes:
+
+```
+sudo ufw enable
+sudo reboot
+```
+
+I also installed fail2ban (a tool to mitigate brute force attacks), started the service and enabled it on boot:
+
+```
+sudo apt install fail2ban
+sudo systemctl start fail2ban
+sudo systemctl enable fail2ban
+
+```
+
+Seeing as I haven't started running other services than SSH, I used fail2ban's default configuration. To check what its status is and if there have been any blocked attempts to access my server, I used:
+
+```
+sudo fail2ban-client status sshd
+```
+
+...with the following output:
+
+ <img src="https://www.walk-llc.com/public/sshdoutput.png" alt="sshd terminal output"/> 
+
+Nothing blocked so far! 
+
+- **Learning Curve**: 
+
+(*): I later learned the RSA algorithm is being phased out so I generated a new key with ED25519, and removed the older id_rsa.pub from my Mac and server.
+
+## Conclusion
+
+As I will be self-hosting other services in future, I will need to reconfigure fail2ban to monitor their logs. I'm also planning to set up alerting either through the service's mail config option or preferably through Slack, which I'm working on integrating with Grafana for monitoring.
+
+---
+
+
+### References
+
+- [12 Things to do After Installing a Linux Server](https://linuxhandbook.com/things-to-do-after-installing-linux-server/)
+- [10 Actionable SSH Hardening Tips to Secure Your Linux Server ](https://linuxhandbook.com/ssh-hardening-tips/)
+- [SSH Copy ID for Copying SSH Keys to Servers](https://www.ssh.com/academy/ssh/copy-id#test-the-new-key)
+- [SSH Essentials: Working with SSH Servers, Clients, and Keys](https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys)
+- [Comparing SSH Keys: A Comprehensive Guide (RSA, DSA, ECDSA)](https://www.strongdm.com/blog/comparing-ssh-keys)
+- [End of SSH-RSA support for Azure Repos](https://devblogs.microsoft.com/devops/ssh-rsa-deprecation/)
+- [Disable SSH Access via Empty Passwords](https://docs.datadoghq.com/security/default_rules/def-000-uig/)
+
+
+

@@ -57,6 +57,12 @@
       "namedRegex": "^/blog/setting\\-up\\-smtp(?:/)?$"
     },
     {
+      "page": "/blog/ssh-hardening",
+      "regex": "^/blog/ssh\\-hardening(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/ssh\\-hardening(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
