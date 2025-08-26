@@ -91,12 +91,19 @@ export const BLOG_POSTS: BlogPost[] = [
     link: '/blog/cache-r2bindings',
     uid: 'blog-3',
   },
-    {
+  {
     title: 'SSH security hardening and other bits',
     description:
       'ufw firewall, fail2ban and configs',
     link: '/blog/ssh-hardening',
     uid: 'blog-4',
+  },
+    {
+    title: 'Integrating Grafana',
+    description:
+      'for monitoring purposes',
+    link: '/blog/grafana',
+    uid: 'blog-5',
   },
 
 ]

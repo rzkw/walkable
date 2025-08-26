@@ -1,0 +1,74 @@
+export const metadata = {
+  title: 'Integrating Grafana',
+  description:
+    'for monitoring purposes',
+  alternates: {
+    canonical: '/blog/grafana',
+  },
+  tags: ['grafana', 'blog', 'monitoring', 'observability', 'configuration']
+
+};
+
+# Integrating Grafana
+
+Learning how to integrate Grafana to monitor my server 
+
+---
+
+## Why?
+
+I wanted a way to monitor my Linux node in a visually appealing way. I saw that Grafana is widely used as an observability tool to collect data, examine logs and metrics. I figured this would be a great opportunity to gain experience using an industry-standard platform.
+
+## How?
+
+I set up an account with Grafana Cloud's free tier. Inside the Grafana Cloud portal, I chose *Add new connection* in the sidebar. Under Integrations I chose Linux Server and followed the wizard to install Grafana Alloy locally on my server, first generating an API token. The wizard on Grafana Cloud has a *Test Alloy connection* button which will throw an error that I (learned to) ignore, because Alloy has to be configured with a file that comes in the next few steps.
+
+I chose *Include logs* under *Make optional selections*, *include alerts* and *Advanced set-up* as I'm running the integration on a remote host (through SSH).
+
+To copy and append the given code snippets, I used:
+
+```
+sudo nano /etc/alloy/config.alloy
+```
+
+After that, I restarted the service:
+
+```
+sudo systemctl restart alloy.service
+```
+
+I also allowed port 443 through ufw to allow outbound HTTPS, which I probably should have done before installation:
+
+```
+sudo ufw ...
+```
+
+I restarted the service and enabled it on boot:
+
+```
+sudo systemctl restart alloy.service
+sudo systemctl enable alloy 
+```
+
+After getting a successful *Test connection*, I installed the pre-configured dashboards and alerts. A snapshot of the overview dashboard can be seen [here.](https://rzkw.grafana.net/dashboard/snapshot/NtLngNCimIzOwUs64dvflT4GTl6NG3Cv?orgId=1&from=2025-08-26T05%3A09%3A40.670Z&to=2025-08-26T05%3A39%3A40.670Z&timezone=browser&var-env=%24__all&var-site=%24__all&var-prometheus_datasource=grafanacloud-prom&var-cluster=%24__all&var-job=%24__all&var-instance=acerubuntuserver&var-loki_datasource=grafanacloud-logs&refresh=30s)
+
+
+- **Learning Curve**: 
+
+  - Allowing port 443: I didn't know Grafana needs this port open for my server to be able to send out data to the Cloud instance
+  - Wizard mix-ups: I initially confused a local instance installation guide with the Grafana Cloud wizard, leading to errors in testing the connection
+
+## Conclusion
+
+Grafana looks like a complex tool (and it is!). I feel I've barely started on all its possibilities. My next steps are to configure alerting, integrating it with Slack as opposed to email.
+
+---
+
+
+### References
+
+- [Troubleshoot an Integration installation on Linux using Grafana Alloy](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/troubleshoot/install-troubleshoot-linux-alloy/)
+- [Run Grafana Alloy on Linux](https://grafana.com/docs/alloy/latest/set-up/run/linux/)
+- [Get started with monitoring using an integration](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/get-started/)
+
+

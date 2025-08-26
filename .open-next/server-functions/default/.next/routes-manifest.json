@@ -45,6 +45,12 @@
       "namedRegex": "^/blog/example\\-mdx\\-metadata(?:/)?$"
     },
     {
+      "page": "/blog/grafana",
+      "regex": "^/blog/grafana(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/grafana(?:/)?$"
+    },
+    {
       "page": "/blog/setting-up-cloudflare",
       "regex": "^/blog/setting\\-up\\-cloudflare(?:/)?$",
       "routeKeys": {},
