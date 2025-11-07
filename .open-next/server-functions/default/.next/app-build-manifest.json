@@ -56,6 +56,20 @@
       "static/chunks/main-app-5e0ad8d1048dc814.js",
       "static/chunks/app/blog/grafana/page-48ec781c949ef9c7.js"
     ],
+    "/blog/alerting/page": [
+      "static/chunks/webpack-6caf1cd8559327c9.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-540481dc452dbf61.js",
+      "static/chunks/main-app-5e0ad8d1048dc814.js",
+      "static/chunks/app/blog/alerting/page-48ec781c949ef9c7.js"
+    ],
+    "/blog/setting-up-cloudflare/page": [
+      "static/chunks/webpack-6caf1cd8559327c9.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-540481dc452dbf61.js",
+      "static/chunks/main-app-5e0ad8d1048dc814.js",
+      "static/chunks/app/blog/setting-up-cloudflare/page-48ec781c949ef9c7.js"
+    ],
     "/blog/example-mdx-metadata/page": [
       "static/chunks/webpack-6caf1cd8559327c9.js",
       "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
@@ -63,12 +77,12 @@
       "static/chunks/main-app-5e0ad8d1048dc814.js",
       "static/chunks/app/blog/example-mdx-metadata/page-48ec781c949ef9c7.js"
     ],
-    "/blog/ssh-hardening/page": [
+    "/blog/setting-up-smtp/page": [
       "static/chunks/webpack-6caf1cd8559327c9.js",
       "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
       "static/chunks/964-540481dc452dbf61.js",
       "static/chunks/main-app-5e0ad8d1048dc814.js",
-      "static/chunks/app/blog/ssh-hardening/page-48ec781c949ef9c7.js"
+      "static/chunks/app/blog/setting-up-smtp/page-48ec781c949ef9c7.js"
     ],
     "/projects/layout": [
       "static/chunks/webpack-6caf1cd8559327c9.js",
@@ -79,40 +93,26 @@
       "static/chunks/601-5e7d8c4406619052.js",
       "static/chunks/app/projects/layout-40e6942bc601556e.js"
     ],
-    "/projects/exploring-virt/page": [
-      "static/chunks/webpack-6caf1cd8559327c9.js",
-      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
-      "static/chunks/964-540481dc452dbf61.js",
-      "static/chunks/main-app-5e0ad8d1048dc814.js",
-      "static/chunks/app/projects/exploring-virt/page-48ec781c949ef9c7.js"
-    ],
-    "/blog/setting-up-cloudflare/page": [
-      "static/chunks/webpack-6caf1cd8559327c9.js",
-      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
-      "static/chunks/964-540481dc452dbf61.js",
-      "static/chunks/main-app-5e0ad8d1048dc814.js",
-      "static/chunks/app/blog/setting-up-cloudflare/page-48ec781c949ef9c7.js"
-    ],
-    "/blog/alerting/page": [
-      "static/chunks/webpack-6caf1cd8559327c9.js",
-      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
-      "static/chunks/964-540481dc452dbf61.js",
-      "static/chunks/main-app-5e0ad8d1048dc814.js",
-      "static/chunks/app/blog/alerting/page-48ec781c949ef9c7.js"
-    ],
-    "/blog/setting-up-smtp/page": [
-      "static/chunks/webpack-6caf1cd8559327c9.js",
-      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
-      "static/chunks/964-540481dc452dbf61.js",
-      "static/chunks/main-app-5e0ad8d1048dc814.js",
-      "static/chunks/app/blog/setting-up-smtp/page-48ec781c949ef9c7.js"
-    ],
     "/projects/old-laptop-server/page": [
       "static/chunks/webpack-6caf1cd8559327c9.js",
       "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
       "static/chunks/964-540481dc452dbf61.js",
       "static/chunks/main-app-5e0ad8d1048dc814.js",
       "static/chunks/app/projects/old-laptop-server/page-48ec781c949ef9c7.js"
+    ],
+    "/blog/ssh-hardening/page": [
+      "static/chunks/webpack-6caf1cd8559327c9.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-540481dc452dbf61.js",
+      "static/chunks/main-app-5e0ad8d1048dc814.js",
+      "static/chunks/app/blog/ssh-hardening/page-48ec781c949ef9c7.js"
+    ],
+    "/projects/exploring-virt/page": [
+      "static/chunks/webpack-6caf1cd8559327c9.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-540481dc452dbf61.js",
+      "static/chunks/main-app-5e0ad8d1048dc814.js",
+      "static/chunks/app/projects/exploring-virt/page-48ec781c949ef9c7.js"
     ]
   }
 }

@@ -7,16 +7,16 @@ export function Header() {
     <header className="mb-8 flex items-center justify-between">
       <div>
         <Link href="/" className="font-medium text-black dark:text-white">
-          Rizky Ramadhani
+          Walkable Limited Liability Company
         </Link>
-        <TextEffect
+         <TextEffect
           as="p"
           preset="fade"
           per="char"
           className="text-zinc-600 dark:text-zinc-500"
           delay={0.5}
         >
-          Independent IT/Cloud Support Specialist
+          Independent IT/Cloud Support
         </TextEffect>
       </div>
     </header>

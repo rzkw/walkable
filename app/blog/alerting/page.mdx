@@ -22,35 +22,35 @@ This guide is for sending an alert to a macOS device (Apple Silicon) from a Linu
 
 ## Instructions
 
-1. Install Slack CLI on macOS node - open Terminal, paste in the following command:
+1. Set up Slack Developer Program account to access token that will be used to integrate Slack with Grafana Cloud (assuming you already have a Slack workspace and channels set up)
 
-```
-curl -fsSL https://downloads.slack-edge.com/slack-cli/install.sh
-```
+2. Follow steps 1-2 of Slack's quickstart: [Creating an app from app settings](https://docs.slack.dev/app-management/quickstart-app-settings). Create an app > From scratch > Enter your App Name > Select your Workspace (in this case Walkable Limited Liability Company) > Create app. In the sidebar within OAuth & Permissions: scroll down to Scopes > select Add an OAuthScope under Bot Token Scopes > add the chat:write scope and accept the channels:read prompt
 
-2. Set up Slack Developer Program account to access token that will be used to integrate Slack with Grafana Cloud (assuming you already have a Slack workspace and channels set up)
-4. Follow steps 1-2 of Slack's quickstart: [Creating an app from app settings](https://docs.slack.dev/app-management/quickstart-app-settings). Create an app > From scratch > Enter your App Name > Select your Workspace (in this case Walkable Limited Liability Company) > Create app. In the sidebar within OAuth & Permissions: scroll down to Scopes > select Add an OAuthScope under Bot Token Scopes > add the chat:write scope and accept the channels:read prompt
-5. Scroll up to OAuth Tokens and click the Install to Walkable Limited Liability Company button > Review app permissions and Install. Tokens will be generated when install is successful
-6. Copy the Bot User OAuth Token; open your Slack workplace > right click channel to receive notifications in > scroll down, copy Channel ID
-7. In Grafana Cloud sidebar:
-    a. Alerts & IRM -> Alerting -> Contact points.
-    b. Click + Add contact point. 
-    c. Enter a contact point name.
-    d. From the Integration list, select Slack.
-    e. If you are using a Slack API token:
-        i. In the Recipient field, copy in the channel ID.
-        ii. In the Token field, copy in the Bot User OAuth Token that starts with “xoxb-”.
-8. In the Slack workspace you’re choosing to send the alert to:
+3. Scroll up to OAuth Tokens and click the Install to Walkable Limited Liability Company button > Review app permissions and Install. Tokens will be generated when install is successful
+
+4. Copy the Bot User OAuth Token; open your Slack workplace > right click channel to receive notifications in > scroll down, copy Channel ID
+
+5. In Grafana Cloud sidebar:
+    - Alerts & IRM -> Alerting -> Contact points.
+    - Click + Add contact point. 
+    - Enter a contact point name.
+    - From the Integration list, select Slack.
+    - If you are using a Slack API token:
+        - In the Recipient field, copy in the channel ID.
+        - In the Token field, copy in the Bot User OAuth Token that starts with “xoxb-”.
+
+6. In the Slack workspace you’re choosing to send the alert to:
   Three dots in top right corner/breadcrumbs > Open channel details > Integrations tab: Add apps > In the In your workspace area, select the app you created earlier in Slack for Developers
-9. Back in Grafana Cloud: click the Test button in the contact point you’re adding to send a test notification. You should get a notification in your Slack channel!
-10. Click Save contact point.
+
+7. Back in Grafana Cloud: click the Test button in the contact point you’re adding to send a test notification. You should get a notification in your Slack channel!
+
+8. Click Save contact point.
 
 ---
 
 ### References
 
 - [Configure Slack for Alerting | Grafana Documentation](https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/integrations/configure-slack/)
-- [Installing the Slack CLI for Mac & Linux | Slack Developer Docs](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-mac-and-linux)
 - [Slack Developer Program](https://api.slack.com/developer-program)
 
 ---
