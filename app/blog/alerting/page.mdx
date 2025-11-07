@@ -9,31 +9,37 @@ export const metadata = {
 };
 
 
-# Send Slack notifications from Grafana Cloud when my server alerts are firing. This guide is for sending an alert to a macOS device (Apple Silicon) from a Linux node
+# Setting up Slack alerting from Grafana Cloud 
+
+This guide is for sending an alert to a macOS device (Apple Silicon) from a Linux node
 
 ---
 
 ## Prerequisites
-Grafana Alloy installed in an instance/node
-Grafana Cloud account
-Slack workspace and channel
+- Grafana Alloy installed in an instance/node
+- Grafana Cloud account
+- Slack workspace and channel
 
 ## Instructions
 
 1. Install Slack CLI on macOS node - open Terminal, paste in the following command:
+
+```
 curl -fsSL https://downloads.slack-edge.com/slack-cli/install.sh
-2. Set up Slack Developer Program account to access token that willbe used to integrate Slack with Grafana Cloud (assuming you already have a Slack workspace and channels set up)
-4. Follow steps 1-2 of Slack's quickstart: Creating an app from app settingsa. Create an app > From scratch > Enter your App Name > Select your Workspace (in this case Walkable Limited Liability Company) > Create app. In the sidebar within OAuth & Permissions: scroll down to Scopes > select Add an OAuthScope under Bot Token Scopes > add the chat:write scope and accept the channels:read prompt
+```
+
+2. Set up Slack Developer Program account to access token that will be used to integrate Slack with Grafana Cloud (assuming you already have a Slack workspace and channels set up)
+4. Follow steps 1-2 of Slack's quickstart: [Creating an app from app settings](https://docs.slack.dev/app-management/quickstart-app-settings). Create an app > From scratch > Enter your App Name > Select your Workspace (in this case Walkable Limited Liability Company) > Create app. In the sidebar within OAuth & Permissions: scroll down to Scopes > select Add an OAuthScope under Bot Token Scopes > add the chat:write scope and accept the channels:read prompt
 5. Scroll up to OAuth Tokens and click the Install to Walkable Limited Liability Company button > Review app permissions and Install. Tokens will be generated when install is successful
 6. Copy the Bot User OAuth Token; open your Slack workplace > right click channel to receive notifications in > scroll down, copy Channel ID
 7. In Grafana Cloud sidebar:
-  a. Alerts & IRM -> Alerting -> Contact points.
-  b. Click + Add contact point. 
-  c. Enter a contact point name.
-  d. From the Integration list, select Slack.
-  e. If you are using a Slack API token:
-    i. In the Recipient field, copy in the channel ID.
-    ii. In the Token field, copy in the Bot User OAuth Token that starts with “xoxb-”.
+    a. Alerts & IRM -> Alerting -> Contact points.
+    b. Click + Add contact point. 
+    c. Enter a contact point name.
+    d. From the Integration list, select Slack.
+    e. If you are using a Slack API token:
+        i. In the Recipient field, copy in the channel ID.
+        ii. In the Token field, copy in the Bot User OAuth Token that starts with “xoxb-”.
 8. In the Slack workspace you’re choosing to send the alert to:
   Three dots in top right corner/breadcrumbs > Open channel details > Integrations tab: Add apps > In the In your workspace area, select the app you created earlier in Slack for Developers
 9. Back in Grafana Cloud: click the Test button in the contact point you’re adding to send a test notification. You should get a notification in your Slack channel!
@@ -41,11 +47,11 @@ curl -fsSL https://downloads.slack-edge.com/slack-cli/install.sh
 
 ---
 
-### References
+### Referencesb
 
 - [Configure Slack for Alerting | Grafana Documentation](https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/integrations/configure-slack/)
-- [Installing the Slack CLI for MAc & Linux | Slack Developer Docs](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-mac-and-linux)
-- [Slack Developer Program] (https://api.slack.com/developer-program)
+- [Installing the Slack CLI for Mac & Linux | Slack Developer Docs](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-mac-and-linux)
+- [Slack Developer Program](https://api.slack.com/developer-program)
 
 ---
 

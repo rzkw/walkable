@@ -33,6 +33,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/blog/alerting",
+      "regex": "^/blog/alerting(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/alerting(?:/)?$"
+    },
+    {
       "page": "/blog/cache-r2bindings",
       "regex": "^/blog/cache\\-r2bindings(?:/)?$",
       "routeKeys": {},
