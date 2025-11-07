@@ -39,7 +39,23 @@
       "pattern": "*.walk-llc.com/*",
       "zone_name": "walk-llc.com"
     }
-  ]
+  ],
+
+  "observability": {
+    "traces": {
+      "enabled": true,
+      // Must match the destination name in the Cloudflare dashboard
+      "destinations": ["grafana-traces"]
+    },
+    "logs": {
+      "enabled": true,
+      // Must match the destination name in the Cloudflare dashboard
+      "destinations": ["grafana-logs"]
+    }
+  }
 
   
 }
+    
+
+  
