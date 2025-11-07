@@ -105,7 +105,13 @@ export const BLOG_POSTS: BlogPost[] = [
     link: '/blog/grafana',
     uid: 'blog-5',
   },
-
+     {
+    title: 'Setting up Slack alerting from Grafana',
+    description:
+      'to receive alerts from Linux node',
+    link: '/blog/alerting',
+    uid: 'blog-6',
+  },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [

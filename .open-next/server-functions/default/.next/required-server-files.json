@@ -99,7 +99,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Users/rizky/Documents/GitHub/walkable",
+    "outputFileTracingRoot": "/Users/rizky/Documents/Documents/GitHub/walkable",
     "experimental": {
       "useSkewCookie": false,
       "nodeMiddleware": false,
@@ -290,10 +290,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.mjs",
     "turbopack": {
-      "root": "/Users/rizky/Documents/GitHub/walkable"
+      "root": "/Users/rizky/Documents/Documents/GitHub/walkable"
     }
   },
-  "appDir": "/Users/rizky/Documents/GitHub/walkable",
+  "appDir": "/Users/rizky/Documents/Documents/GitHub/walkable",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",

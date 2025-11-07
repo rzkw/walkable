@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     default: 'Walkable',
     template: '%s | Walkable'
   },
-  description:  'Walkable is a US-based LLC to structure my home labs, professional development and projects.',
+  description:  'Walkable is a US-based LLC for structured labs, professional development and project-based work',
 };
 
 const geist = Geist({
