@@ -8,7 +8,6 @@ initOpenNextCloudflareForDev();
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-  output: 'standalone',
 };
 
 const withMDX = createMDX({
