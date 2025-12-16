@@ -1,34 +1,71 @@
 <img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable, my LLC Website" width="100%" />
 
-A website for my LLC to structure my self-driven projects and professional development. I'll be using this to document my homelabs. 
+Walkable is an independent venture focused on building, documenting and operating infra projects. This repo serves as a working app codebase and a public record of ongoing design decisions, and professional development.
 
-Live: [Walkable Limited Liability Company](https://www.walk-llc.com)
+## About this repo
 
-## Features
+This repo contains the source code for a Next.js web app developed under Walkable.
 
-- Minimal one-page portfolio layout.
-- Blog support with MDX.
-- Responsive and accessible design.
-- Easy to use
-- [Motion-Primitives](https://motion-primitives.com) for animated components.
+The exact same code is used to:
+- Deploy the app to Cloudflare Workers, and
+- Package the app into a Docker container as a standalone unit
+
+Cloudflare-specific components are intentionally kept in both to avoid maintaining multiple versions of the app.
+
+## Docker image
+
+A [multi-architecture Docker image](https://hub.docker.com/r/rzkw/walkable) is available for this app. The image packages the entire Walkable app into a self-contained artifact that can be built and run consistently across environments. It is intended for testing and/or deployment, both local and remote. 
+
+  - Based on slim Node.js image
+  - Dockerfile based off of official [Next.js Docker example](https://github.com/vercel/next.js/tree/canary/examples/with-docker)
+
+## Purpose and scope
+
+- Demonstrating experience with production/deployment workflows
+- Understanding of containerisation in operations
+- Serve as a foundation for future contracting work and external collabs
 
 ## Getting Started
 
-For detailed setup instructions, refer to the [Installation Guide](./INSTALLATION.md).
+This project can be run locally, viewed live, or executed as a Docker container.
 
-```bash
-git clone https://github.com/ibelick/nim.git
-cd nim
-npm install
-npm run dev
-```
+- Locally:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  - Clone repo:
+    ```
+    git clone https://github.com/rzkw/walkable.git
+    cd walkable
+    ```
+  - Install dependencies:
+    ```
+    npm install
+    ```
+  - Start dev server (may need to disable Cloudflare-related configs):
+    ```
+    npm run dev
+    ```
+- Live:
 
-## Contributing
+The [live version](https://www.walk-llc.com) is deployed to Cloudflare Workers directly from this repo, not from the Docker image. 
 
-Contributions are welcome! Feel free to open issues or submit pull requests to improve my website.
 
-## About
+- Docker container:
+
+  - Pull the image:
+    ```
+    docker pull rzkw/walkable
+    ```
+  - Run the container:
+    ```
+    docker run -p 3000:3000 rzkw/walkable
+    ```
+
+## Contact
+
+Walkable is operated independently. For contracting, technical discussions or feedback, feel free to contact via associated professional profiles.
+
+Or submit a pull request! 
+
+## Template
 
 Used a [template](https://github.com/ibelick/nim) built with Next.js 15, React 19, Tailwind CSS v4, and [Motion-Primitives Pro](https://pro.motion-primitives.com/).
