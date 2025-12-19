@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM node:25-bookworm-slim AS base
+FROM dhi.io/node:25-debian13-dev AS base
 
 
 # Copy relevant files for npm before installing dependencies
