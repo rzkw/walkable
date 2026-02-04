@@ -15,17 +15,17 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.1.1",
-    "@opennextjs/cloudflare": "^1.14.8",
+    "@next/mdx": "^16.1.6",
+    "@opennextjs/cloudflare": "^1.16.2",
     "@tailwindcss/typography": "^0.5.19",
     "@types/mdx": "^2.0.13",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.562.0",
-    "motion": "^12.26.2",
+    "lucide-react": "^0.563.0",
+    "motion": "^12.31.0",
     "next": "^16.1.6",
     "next-themes": "^0.4.6",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "sugar-high": "^0.9.5",
     "tailwind-merge": "^3.4.0"
   },
@@ -36,12 +36,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
+    "eslint-config-next": "16.1.6",
     "postcss": "^8",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5",
-    "wrangler": "^4.61.1"
+    "wrangler": "^4.62.0"
   }
 }
