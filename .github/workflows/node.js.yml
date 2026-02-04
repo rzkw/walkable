@@ -2,7 +2,7 @@
 # Written with help from Gemini, Peter Evans' example and Michael Currin's.
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Upgrade NPM packages
+name: Upgrade NPM packages weekly
 permissions:
   contents: read
   pull-requests: write
@@ -10,10 +10,10 @@ permissions:
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   schedule:
     - cron: "0 0 * * 0" # Weekly rebuild (Sunday at midnight)
+  workflow_dispatch:
+    
 
 jobs:
 
@@ -60,6 +60,6 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-pull-request
           branch: update-dependencies
-
+          base: main
 
  
