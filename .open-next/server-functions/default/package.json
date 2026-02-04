@@ -27,7 +27,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sugar-high": "^0.9.3",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
