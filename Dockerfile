@@ -1,19 +1,19 @@
-# syntax=docker.io/docker/dockerfile:1
 # Dockerfile built with dhi.io hardened image for testing
 
-FROM dhi.io/node:25-debian13-dev AS base
+FROM dhi.io/node:24.13.1-dev AS base
 
 
 # Copy relevant files for npm before installing dependencies
 FROM base AS builder
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm --no-fund --no-update-notifier ci
 COPY . .
 RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 
 # Production image, copy all the files and run next
-FROM base AS app
+FROM dhi.io/node:24 AS app
 WORKDIR /app
 
 COPY --from=builder /app/public ./public
