@@ -5,3 +5,14 @@ npm-debug.log
 README.md
 .next/
 .git
+*.md
+.env
+.DS_Store
+coverage/
+.cache
+.vscode
+*.log
+.github/
+.wrangler
+.open-next
+.dev.vars

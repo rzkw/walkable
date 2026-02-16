@@ -2,8 +2,8 @@
 
 FROM dhi.io/node:24.13.1-dev AS base
 
-
 # Copy relevant files for npm before installing dependencies
+
 FROM base AS builder
 WORKDIR /app
 
@@ -13,6 +13,7 @@ COPY . .
 RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 
 # Production image, copy all the files and run next
+
 FROM dhi.io/node:24 AS app
 WORKDIR /app
 
