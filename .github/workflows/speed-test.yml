@@ -18,17 +18,17 @@ jobs:
     
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
 
       # Caching is vital for 'ubuntu-latest', less critical for 'self-hosted' 
       # but still good practice to keep them identical for testing.
       - name: Cache Next.js Build
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.3
         with:
           path: |
             ${{ github.workspace }}/.next/cache
@@ -38,7 +38,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm --no-fund --no-update-notifier ci
 
       - name: OpenNext Build
         run: npx opennextjs-cloudflare build
