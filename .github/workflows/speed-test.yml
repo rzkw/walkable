@@ -9,8 +9,8 @@ on:
         default: 'ubuntu-latest'
         type: choice
         options:
-          - ubuntu-latest
-         # - self-hosted
+         # - ubuntu-latest
+          - self-hosted
 
 jobs:
   build-and-deploy:
