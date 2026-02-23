@@ -5,8 +5,6 @@
 name: Upgrade NPM packages weekly
 
 on:
-  push:
-    branches: [ "main" ]
   schedule:
     - cron: "0 0 * * 0" # Weekly rebuild (Sunday at midnight)
   workflow_dispatch:
