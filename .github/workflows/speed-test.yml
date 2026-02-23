@@ -12,6 +12,9 @@ on:
           - ubuntu-latest
          # - self-hosted
 
+permissions:
+      contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ${{ github.event.inputs.runner_type }}
