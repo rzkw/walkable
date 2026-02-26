@@ -8,29 +8,32 @@ on:
   workflow_run:
     workflows: ["Upgrade NPM packages weekly"]
     types: [completed]
+    branches: [main]
 
 
 jobs:
   docker:
-    if: $ {{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
 
+      # Login to Docker Hub
       - uses: docker/login-action@v3.7.0
         with:
           username: $ {{ vars.DOCKERHUB_USERNAME }}
           password: $ {{ secrets.DOCKERHUB_TOKEN }}
 
 
-    # Checks out code
+      # Checks out code
       - uses: actions/checkout@v6.0.2
 
-    # Sets up SSH agent so runner can talk to ARM node
+      # Sets up SSH agent so runner can talk to ARM node
       - uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: $ {{ secrets.SSH_GH_KEY }}
 
+      # Setup Buildx
       - uses: docker/setup-buildx-action@v3.12.0
         with:
           driver: docker-container
@@ -40,9 +43,10 @@ jobs:
             endpoint: ssh://rizky@100.125.121.96
             platforms: linux/arm64
 
+      # Push image to registry
       - uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: user/app:date
+          tags: user/walkable:date
           cache-binary: true
