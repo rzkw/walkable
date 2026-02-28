@@ -1,16 +1,17 @@
 # Dockerfile built with dhi.io hardened image for testing
+# syntax=docker/dockerfile:1
 
 FROM dhi.io/node:24.13.1-dev AS base
 
-# Copy relevant files for npm before installing dependencies
+# Copy relevant files for npm before installing dependencies 
 
 FROM base AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm --no-fund --no-update-notifier ci
+RUN  --mount=type=cache,target=/root/.npm npm --no-fund --no-update-notifier ci
 COPY . .
-RUN NEXT_TELEMETRY_DISABLED=1 npm run build
+RUN --mount=type=cache,target=.next/cache NEXT_TELEMETRY_DISABLED=1 npm run build
 
 # Production image, copy all the files and run next
 
