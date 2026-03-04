@@ -1,11 +1,9 @@
 # Dockerfile built with dhi.io hardened image for testing
 # syntax=docker/dockerfile:1
 
-FROM dhi.io/node:24.13.1-dev AS base
-
 # Copy relevant files for npm before installing dependencies 
 
-FROM base AS builder
+FROM dhi.io/node:24.13.1-dev AS builder
 WORKDIR /app
 
 COPY package*.json ./
