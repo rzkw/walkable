@@ -4,9 +4,25 @@ updates:
     directory: /
     schedule:
       interval: daily
+      time: "00:00"
+      timezone: "Asia/Jakarta"
+    assignees:
+      - rzkw
+    labels:
+      - github-actions
+    cooldown:
+      default-days: 7
+      
 
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
-
+      time: "00:00"
+      timezone: "Asia/Jakarta"
+    assignees:
+      - rzkw
+    labels:
+      - docker
+    cooldown:
+      default-days: 7
