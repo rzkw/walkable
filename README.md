@@ -1,22 +1,20 @@
-<img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable, my LLC Website" width="100%" />
+<img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable LLC Website" width="100%" />
 
-Walkable is an independent venture focused on building, documenting and operating infra projects. This repo serves as a working app codebase and a public record of ongoing design decisions, and professional development.
+Walkable is focused on building, documenting and operating infra projects. This repo is a working codebase and record of ongoing design decisions, and professional development.
 
 ## About this repo
 
 This repo contains the source code for a Next.js web app developed under Walkable.
 
-The exact same code is used to:
+The code is used to:
 - Deploy the app to Cloudflare Workers, and
-- Package the app into a Docker container as a standalone unit
-
-Cloudflare-specific components are intentionally kept in both to avoid maintaining multiple versions of the app.
+- Package the app into a Docker container (with Cloudflare-specific plugins removed)
 
 ## Docker image
 
 A [multi-architecture Docker image](https://hub.docker.com/r/rzkw/walkable) is available for this app. The image packages the entire Walkable app into a self-contained artifact that can be built and run consistently across environments. It is intended for testing and/or deployment, both local and remote. 
 
-  - Based on slim Node.js image
+  - Based on slim hardened Node.js image
   - Dockerfile based off of official [Next.js Docker example](https://github.com/vercel/next.js/tree/canary/examples/with-docker)
 
 ## Purpose and scope
@@ -27,7 +25,7 @@ A [multi-architecture Docker image](https://hub.docker.com/r/rzkw/walkable) is a
 
 ## Getting Started
 
-This project can be run locally, viewed live, or executed as a Docker container.
+This project can be run locally, viewed live, or as a Docker container.
 
 - Locally:
 
@@ -62,7 +60,7 @@ The [live version](https://www.walk-llc.com) is deployed to Cloudflare Workers d
 
 ## Contact
 
-Walkable is operated independently. For contracting, technical discussions or feedback, feel free to contact via associated professional profiles.
+For contracting, technical discussions or feedback, feel free to contact via the usual profiles.
 
 Or submit a pull request! 
 
