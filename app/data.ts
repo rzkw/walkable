@@ -2,7 +2,6 @@ type Project = {
   name: string
   description: string
   link: string
-  video: string
   id: string
 }
 
@@ -10,8 +9,8 @@ type Project = {
 type Certifications = {
   company: string
   title: string
-  start: string
-  end: string
+  issued: string
+  expiry: string
   link: string
   id: string
 }
@@ -34,36 +33,40 @@ export const PROJECTS: Project[] = [
     description:
       'Turning a resource-constrained machine into a headless Ubuntu node',
     link: '/projects/old-laptop-server',
-    video:
-      'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
     id: 'project1',
   },
   {
     name: 'Exploring Virtualisation',
     description: 'Using VMWare Fusion',
     link: '/projects/exploring-virt',
-    video:
-      'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/XSfIvT7BUWbPRXhrbLed/ee6871c9-8400-49d2-8be9-e32675eabf7e.mp4?_a=DATAdtAAZAA0',
     id: 'project2',
   },
 ]
 
 export const CERTIFICATIONS: Certifications[] = [
   {
+    company: 'Red Hat',
+    title: 'Certified System Administrator (RHCSA)',
+    issued: '2025',
+    expiry: '2028',
+    link: 'https://rhtapps.redhat.com/verify?certId=250-168-689',
+    id: 'cert1',
+  },
+  {
     company: 'Microsoft',
     title: 'Azure Fundamentals',
-    start: '2025',
-    end: 'Present',
+    issued: '2025',
+    expiry: '2028',
     link: 'https://learn.microsoft.com/api/credentials/share/en-us/rzkw-8395/BFCE0D9347A25B10?sharingId=6C88A99A20F976E9',
-    id: 'cert1',
+    id: 'cert2',
   },
   {
     company: 'CompTIA',
     title: 'A+',
-    start: '2025',
-    end: '2028',
+    issued: '2025',
+    expiry: '2028',
     link: 'https://www.credly.com/badges/d70f98c5-f558-466f-a2f9-b770485c14d0',
-    id: 'cert2',
+    id: 'cert3',
   },
 
 ]
@@ -116,17 +119,22 @@ export const BLOG_POSTS: BlogPost[] = [
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
+    label: 'LinkedIn',
+    link: 'https://www.linkedin.com/in/rizky-ramadhani3056/',
+  },
+  {
     label: 'GitHub',
     link: 'https://github.com/rzkw',
+  },
+  {
+    label: 'Medium',
+    link: 'https://medium.com/@walkable-llc',
   },
   {
     label: 'Seek',
     link: 'http://seek.com.au/profile/rizky-ramadhani-l8CSc2jM2s',
   },
-  {
-    label: 'LinkedIn',
-    link: 'https://www.linkedin.com/in/rizky-ramadhani3056/',
-  },
+
 ]
 
 export const EMAIL = 'hello@walk-llc.com'
