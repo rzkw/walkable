@@ -137,13 +137,7 @@ export default function Personal() {
       >
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Documentation, design and deployment of infrastructure projects and Linux-related administration
-          </p>
-          <p className="text-zinc-600 dark:text-zinc-400">
-             
-          </p>
-          <p className="text-zinc-600 dark:text-zinc-400">
-           ⚠️ Actively maintained - projects continuously iterated and refined
+            Documentation, design and deployment of infra projects and Linux systems admin.
           </p>
         </div>
       </motion.section>
