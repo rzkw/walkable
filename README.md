@@ -1,10 +1,8 @@
 <img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable LLC Website" width="100%" />
 
-Walkable is focused on building, documenting and operating infra projects. This repo is a working codebase and record of ongoing design decisions, and professional development.
+Walkable LLC is focused on building, documenting and operating infra projects. 
 
 ## About this repo
-
-This repo contains the source code for a Next.js web app developed under Walkable.
 
 The code is used to:
 - Deploy the app to Cloudflare Workers, and
