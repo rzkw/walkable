@@ -13,7 +13,6 @@ Certifications: Red Hat Certified System Administrator (RHCSA), Microsoft Azure 
 - [Multi-arch container build optimization: 10m to 6.5s](https://medium.com/@walkable-llc/i-cut-my-multi-arch-build-times-from-10m-to-6.5s-8af80437fd82) - Using Buildx with native nodes instead of QEMU emulation
 - [SSH security hardening](https://www.walk-llc.com/blog/ssh-hardening) - UFW firewall, fail2ban, and configs
 
-
 ## Linked Content
 
 - [Scheduled backups with rsync](https://medium.com/@walkable-llc/scheduled-backups-with-rsync-e06725246df4) - Systemd timers and automated backup scripts
