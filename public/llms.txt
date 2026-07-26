@@ -1,0 +1,29 @@
+# Walkable LLC
+
+> Linux engineer and DevOps consultant. Infrastructure projects, container optimization, and systems administration. RHCSA certified.
+
+## About
+
+Walkable LLC is operated by Rizky Ramadhani, a Linux engineer and DevOps consultant currently based in Southeast Asia. Former chef turned systems professional. Focus areas: Linux administration,container optimization, cloud infrastructure (OCI), automation (Ansible, Terraform), and monitoring (Grafana).
+
+Certifications: Red Hat Certified System Administrator (RHCSA), Microsoft Azure Fundamentals, CompTIA A+.
+
+## Key Content
+
+- [Multi-arch container build optimization: 10m to 6.5s](https://medium.com/@walkable-llc/i-cut-my-multi-arch-build-times-from-10m-to-6.5s-8af80437fd82) - Using Buildx with native nodes instead of QEMU emulation
+- [SSH security hardening](https://www.walk-llc.com/blog/ssh-hardening) - UFW firewall, fail2ban, and configs
+
+## Linked Content
+
+- [Scheduled backups with rsync](https://medium.com/@walkable-llc/scheduled-backups-with-rsync-e06725246df4) - Systemd timers and automated backup scripts
+- [Allowing agent read-only access in OCI tenancy](https://medium.com/@walkable-llc/allowing-agent-read-only-access-in-oci-tenancy-bee62f464fee) - Oracle Cloud IAM policies for agentic workflows
+- [Importing OCI VCN into Terraform via Object Storage](https://medium.com/@walkable-llc/importing-my-oci-vcn-into-terraform-via-object-storage-bucket-023b89097f69) - Remote state backends and IAM policies
+- [Building multi-architecture Docker images for Next.js + Cloudflare](https://medium.com/@walkable-llc/building-multi-architecture-docker-images-for-a-next-js-cloudflare-workers-project-0529bb67cade) - Dockerfile patterns for ARM and Intel
+
+## Contact
+
+- Website: https://www.walk-llc.com
+- Email: hello@walk-llc.com
+- LinkedIn: https://www.linkedin.com/in/rizky-ramadhani3056/
+- GitHub: https://github.com/rzkw
+- Medium: https://medium.com/@walkable-llc
