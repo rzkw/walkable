@@ -1,7 +1,7 @@
 # Walkable LLC — Project Instructions
 
-## AI SEO Plan
+## Planning
 
-- Plans live in `plans/` directory.
+- All plans live in `plans/` directory as markdown files.
 - Always commit and push plan to GitHub before implementation begins.
 - One plan file per phase or feature.
