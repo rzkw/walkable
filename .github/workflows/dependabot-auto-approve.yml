@@ -1,0 +1,44 @@
+name: Dependabot Auto-approve
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Weekly, Sunday midnight
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - name: Approve and merge Dependabot minor/patch PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          prs=$(gh pr list --author "app/dependabot" --state open --json number,title)
+          count=$(echo "$prs" | jq length)
+          if [ "$count" -eq 0 ]; then
+            echo "No open Dependabot PRs."
+            exit 0
+          fi
+          for i in $(seq 0 $((count - 1))); do
+            number=$(echo "$prs" | jq -r ".[$i].number")
+            title=$(echo "$prs" | jq -r ".[$i].title")
+            meta=$(gh api "repos/$GH_REPO/pulls/$number" --jq '.body' 2>/dev/null | grep -o 'version-update:semver-[a-z]*' || true)
+            echo "PR #$number: $title [$meta]"
+            if echo "$meta" | grep -qE 'semver-(minor|patch)'; then
+              echo "  -> Approving"
+              gh pr review "$number" --approve
+              echo "  -> Merging (squash)"
+              gh pr merge "$number" --squash
+            else
+              echo "  -> Skipping (major or unparseable)"
+            fi
+          done
