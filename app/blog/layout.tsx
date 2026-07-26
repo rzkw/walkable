@@ -24,12 +24,12 @@ export default function LayoutBlogPost({
       <footer className="mt-16 border-t border-gray-200 pt-8 dark:border-zinc-800">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FACC6E] font-medium text-gray-600 dark:text-gray-300">
-            RR
+            W
           </div>
           <div>
-            <p className="text-sm font-medium">Rizky Ramadhani</p>
+            <p className="text-sm font-medium">Walkable LLC</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Linux Engineer · RHCSA · Azure Fundamentals · CompTIA A+
+              Linux Engineering · RHCSA · Azure Fundamentals · CompTIA A+
             </p>
           </div>
         </div>
