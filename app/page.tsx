@@ -18,6 +18,7 @@ import {
   BLOG_POSTS,
   EMAIL,
   SOCIAL_LINKS,
+  TECH_STACK,
 } from './data'
 
 const VARIANTS_CONTAINER = {
@@ -139,6 +140,25 @@ export default function Personal() {
           <p className="text-zinc-600 dark:text-zinc-400">
             Documentation of infra projects and Linux systems admin.
           </p>
+        </div>
+      </motion.section>
+
+      <motion.section
+        variants={VARIANTS_SECTION}
+        transition={TRANSITION_SECTION}
+      >
+        <h3 className="mb-5 text-lg font-medium">Tech Stack</h3>
+        <div className="flex flex-col space-y-2">
+          {TECH_STACK.map((item) => (
+            <div key={item.category}>
+              <span className="font-normal dark:text-zinc-100">
+                {item.category}
+              </span>{' '}
+              <span className="text-zinc-500 dark:text-zinc-400">
+                {item.skills}
+              </span>
+            </div>
+          ))}
         </div>
       </motion.section>
 
