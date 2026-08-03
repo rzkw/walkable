@@ -2,7 +2,6 @@ type Project = {
   name: string
   description: string
   link: string
-  video: string
   id: string
 }
 
@@ -34,16 +33,12 @@ export const PROJECTS: Project[] = [
     description:
       'using better caching, image layering and native nodes',
     link: 'https://medium.com/@walkable-llc/i-cut-my-multi-arch-build-times-from-10m-to-6-5s-8af80437fd82',
-    video:
-      'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/newProfileItem/d898be8a-7037-4c71-af0c-8997239b050d.mp4?_a=DATAdtAAZAA0',
     id: 'project1',
   },
   {
     name: 'Automating NPM package upgrades ',
     description: 'with added security agent',
     link: 'https://medium.com/@walkable-llc/automating-npm-package-upgrades-with-added-security-agent-b0aa3256d537',
-    video:
-      'https://res.cloudinary.com/read-cv/video/upload/t_v_b/v1/1/profileItems/W2azTw5BVbMXfj7F53G92hMVIn32/XSfIvT7BUWbPRXhrbLed/ee6871c9-8400-49d2-8be9-e32675eabf7e.mp4?_a=DATAdtAAZAA0',
     id: 'project2',
   },
 ]
