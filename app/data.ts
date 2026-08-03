@@ -23,6 +23,11 @@ type BlogPost = {
   uid: string
 }
 
+type TechStack = {
+  category: string
+  skills: string
+}
+
 type SocialLink = {
   label: string
   link: string
@@ -151,6 +156,24 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     label: 'Seek',
     link: 'http://seek.com.au/profile/rizky-ramadhani-l8CSc2jM2s',
+  },
+]
+
+export const TECH_STACK: TechStack[] = [
+  {
+    category: 'Proficient in:',
+    skills:
+      'Git • Docker • Linux • Bash • Ubuntu • GitHub • RHEL • Networking (TCP/IP, DNS) • VS Code • macOS',
+  },
+  {
+    category: 'Experienced with:',
+    skills:
+      'GitHub Actions • Jira • Cloudflare • Grafana • MCP (Model Context Protocol) • Opencode • Slack • Claude',
+  },
+  {
+    category: 'Exposure to:',
+    skills:
+      'Oracle Cloud Infrastructure • Terraform • YAML • AWS • Ansible • Azure • PowerShell • Python • JavaScript • Vercel • Kubernetes',
   },
 ]
 
