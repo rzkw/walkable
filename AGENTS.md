@@ -11,6 +11,7 @@ Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 ## Commit signing
 
 All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is configured globally (`gpg.format = ssh`, `user.signingkey = ~/.ssh/agent-gh-signing.pub`, `commit.gpgsign = true`). Verify with `git log --show-signature -1` before pushing.
+
 # Walkable LLC — Project Instructions
 
 ## Planning
@@ -18,3 +19,4 @@ All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is config
 - All plans live in `plans/` directory as markdown files.
 - Always commit and push plan to GitHub before implementation begins.
 - One plan file per phase or feature.
+- All plans and reports MUST include a References section citing sources for every design decision (libraries, services, runtime behavior, security controls). Acceptable sources: official product documentation, personal blogs from engineers/devs/sysadmins, and product engineering blogs. Academic papers are never acceptable.
