@@ -137,7 +137,9 @@ export default function Personal() {
       >
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Documentation of infra projects and Linux systems admin.
+            Documentation of Linux systems administration, projects, infrastructure.
+
+            Most recent proof of work in <a href="https://medium.com/@walkable-llc">Medium.</a> 
           </p>
         </div>
       </motion.section>
