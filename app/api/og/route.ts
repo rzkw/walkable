@@ -1,5 +1,7 @@
 export const runtime = 'edge'
 
+const FEED_URL = 'https://medium.com/feed/@walkable-llc'
+
 export async function GET(request: Request) {
   const raw = new URL(request.url).searchParams.get('url')
   let url: URL | null = null
@@ -18,8 +20,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    const res = await fetch(`https://r.jina.ai/${url.href}`, {
-      headers: { Accept: 'text/markdown' },
+    const res = await fetch(FEED_URL, {
+      headers: { Accept: 'application/rss+xml' },
       signal: AbortSignal.timeout(15000),
     })
     if (!res.ok) {
@@ -28,11 +30,23 @@ export async function GET(request: Request) {
         headers: { 'Content-Type': 'application/json' },
       })
     }
-    const body = await res.text()
-    const image =
-      body.match(
-        /!\[[^\]]*\]\(((?:https?:\/\/)[^)]*resize:fit:[^)]*)\)/,
-      )?.[1] ?? null
+    const xml = await res.text()
+    // ponytail: feed only holds the latest 10 posts; relink a project (or add
+    // an explicit image field) if a project falls off the feed.
+    const target = url.pathname.replace(/\/$/, '')
+    let image: string | null = null
+
+    for (const item of xml.split('<item>').slice(1)) {
+      const link = item.match(/<link>(.*?)<\/link>/)?.[1] ?? ''
+      const itemPath = new URL(link).pathname.replace(/\/$/, '')
+      if (itemPath === target) {
+        image =
+          item.match(
+            /<content:encoded>[\s\S]*?<img[^>]*src=["']([^"']+)["']/,
+          )?.[1] ?? null
+        break
+      }
+    }
 
     return new Response(JSON.stringify({ image }), {
       headers: {
