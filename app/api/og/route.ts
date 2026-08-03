@@ -1,8 +1,16 @@
 export const runtime = 'edge'
 
 export async function GET(request: Request) {
-  const url = new URL(request.url).searchParams.get('url')
-  if (!url || !url.startsWith('https://medium.com/')) {
+  const raw = new URL(request.url).searchParams.get('url')
+  let url: URL | null = null
+  if (raw) {
+    try {
+      url = new URL(raw)
+    } catch {
+      url = null
+    }
+  }
+  if (!url || url.protocol !== 'https:' || url.hostname !== 'medium.com') {
     return new Response(JSON.stringify({ image: null }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -10,7 +18,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const res = await fetch(`https://r.jina.ai/${url}`, {
+    const res = await fetch(`https://r.jina.ai/${url.href}`, {
       headers: { Accept: 'text/markdown' },
       signal: AbortSignal.timeout(15000),
     })
