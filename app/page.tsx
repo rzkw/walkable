@@ -111,9 +111,12 @@ export default function Personal() {
       >
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Documentation of Linux systems administration, projects, infrastructure.
-
-            Most recent proof of work in <a className="underline" href="https://medium.com/@walkable-llc">Medium</a>.
+            Documentation of Linux systems administration, projects,
+            infrastructure. Most recent proof of work in{' '}
+            <a className="underline" href="https://medium.com/@walkable-llc">
+              Medium
+            </a>
+            .
           </p>
         </div>
       </motion.section>
@@ -126,10 +129,10 @@ export default function Personal() {
         <div className="flex flex-col space-y-2">
           {TECH_STACK.map((item) => (
             <div key={item.category}>
-              <span className="font-normal dark:text-zinc-100">
+              <span className="block font-normal dark:text-zinc-100">
                 {item.category}
-              </span>{' '}
-              <span className="text-zinc-500 dark:text-zinc-400">
+              </span>
+              <span className="block text-zinc-500 dark:text-zinc-400">
                 {item.skills}
               </span>
             </div>
@@ -155,7 +158,7 @@ export default function Personal() {
                   target="_blank"
                 >
                   {project.name}
-                  <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 dark:bg-zinc-50 transition-all duration-200 group-hover:max-w-full"></span>
+                  <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 transition-all duration-200 group-hover:max-w-full dark:bg-zinc-50"></span>
                 </a>
                 <p className="text-base text-zinc-600 dark:text-zinc-400">
                   {project.description}
@@ -166,7 +169,7 @@ export default function Personal() {
         </div>
       </motion.section>
 
-            <motion.section
+      <motion.section
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
