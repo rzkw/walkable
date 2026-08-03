@@ -51,8 +51,9 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify({ image }), {
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control':
-          'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400',
+        // private: response varies by ?url=, but some CDNs (Netlify) key the
+        // cache by path only and would serve one URL's image for all of them.
+        'Cache-Control': 'private, max-age=300, stale-while-revalidate=300',
       },
     })
   } catch {
