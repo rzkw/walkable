@@ -139,7 +139,7 @@ export default function Personal() {
           <p className="text-zinc-600 dark:text-zinc-400">
             Documentation of Linux systems administration, projects, infrastructure.
 
-            Most recent proof of work in <a href="https://medium.com/@walkable-llc">Medium.</a> 
+            Most recent proof of work in <a className="underline" href="https://medium.com/@walkable-llc">Medium.</a> 
           </p>
         </div>
       </motion.section>
