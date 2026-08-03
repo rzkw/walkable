@@ -14,7 +14,7 @@ Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-ima
 | Resolve covers from Medium RSS feed; drop third-party reader; relink projects to recent posts | this session | `app/api/og/route.ts`, `app/data.ts`                 | On `docs/ai-seo-plans` (PR #159)                            |
 | Tech Stack section on home page                                                               | `c9e7f59`    | `app/data.ts`, `app/page.tsx`                        | Merged to main, then into `docs/ai-seo-plans` via `a758fe8` |
 | Fix `/api/og` shared-cache bug (path-keyed CDN responses)                                     | `6ef69b2`    | `app/api/og/route.ts`                                | On `docs/ai-seo-plans` (PR #159)                            |
-| Drop edge runtime from `/api/og` (500s on OpenNext Cloudflare)                                | `c445d6e`    | `app/api/og/route.ts`                                | On `fix/edge-runtime-og` — **not yet deployed**             |
+| Drop edge runtime from `/api/og` (500s on OpenNext Cloudflare)                                | `c445d6e`    | `app/api/og/route.ts`                                | Merged to main (PR #164) + verified on `walk-llc.com`       |
 | Plan review docs                                                                              | —            | `plans/2026-08-03-pr159-review-fixes.md`             | Merged via PR #161                                          |
 
 `docs/ai-seo-plans` (PR #159) was rebased onto `main` after PR #161 merged, keeping history linear.
@@ -44,7 +44,7 @@ Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-ima
 - Local endpoint tests: valid medium.com URLs → 200 with `miro.medium.com`/`cdn-images-1.medium.com` cover; non-medium / non-https / malformed `url` → 400; unknown-but-valid medium URL → 200 with `{ image: null }`.
 - Deployed Netlify preview (deploy `6a7064591cd3de00082f955e`): `/api/og` returns distinct covers for the Terraform-docs and `ip route` projects, `{ image: null }` for an older post, 400 for `evil.com` and for a missing `url`; response header is `cache-control: private,max-age=300` (was `public,s-maxage=86400`).
 - Workerd (real Cloudflare runtime, `opennextjs-cloudflare build && preview`): after removing `runtime = 'edge'`, `/api/og` returns the Terraform-docs cover for project 1, the `ip route` cover for project 2, `{ image: null }` for an older post, and 400 for `evil.com` / missing `url`.
-- Production `walk-llc.com` before the fix: every `/api/og` request (valid and invalid) → `500 Internal Server Error`; control paths → 404. Deploy of the fix is pending (needs Cloudflare auth).
+- Production `walk-llc.com` before the fix: every `/api/og` request (valid and invalid) → `500 Internal Server Error`; control paths → 404. After PR #164 merged and the CD pipeline deployed, `/api/og` returns 200 + the Terraform-docs cover for project 1, 200 + the `ip route` cover for project 2, 400 for `evil.com`, and 400 for a missing `url` — verified live, no manual Cloudflare deploy.
 - `npm run build` passes (TypeScript + Next build).
 - CodeQL SSRF alerts: previous alert on the reader-proxy fetch no longer applies since no user input reaches `fetch()`; pending confirmation on next push.
 - Note: `npm run lint` is broken repo-wide (Next 16 removed `next lint`; ESLint 9 flat-config error) — pre-existing, unrelated to this session.
