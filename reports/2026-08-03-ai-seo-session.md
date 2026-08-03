@@ -4,16 +4,17 @@ Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-ima
 
 ## Changes implemented
 
-| Change                                                                                        | Commit       | Files                                                | Status                                                              |
-| --------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------- |
-| Author-bio footer on `/projects/*` posts                                                      | `0aeac32`    | `app/projects/layout.tsx`                            | On `docs/ai-seo-plans` (PR #159)                                    |
-| Footer `W` black for visibility on `#FACC6E` circle                                           | `82ecb52`    | `app/blog/layout.tsx`, `app/projects/layout.tsx`     | On `docs/ai-seo-plans` (PR #159)                                    |
-| Underline Medium link in home page header                                                     | `335369c`    | `app/page.tsx`                                       | On `docs/ai-seo-plans` (PR #159)                                    |
-| Replace project video boxes with auto-fetched Medium cover images                             | `d2e3150`    | `app/data.ts`, `app/page.tsx`, `app/api/og/route.ts` | On `docs/ai-seo-plans` (PR #159)                                    |
-| Harden `/api/og` against SSRF (strict host allowlist)                                         | `06bd3e0`    | `app/api/og/route.ts`                                | On `docs/ai-seo-plans` (PR #159)                                    |
-| Resolve covers from Medium RSS feed; drop third-party reader; relink projects to recent posts | this session | `app/api/og/route.ts`, `app/data.ts`                 | On `docs/ai-seo-plans` (PR #159)                                    |
-| Tech Stack section on home page                                                               | `c9e7f59`    | `app/data.ts`, `app/page.tsx`                        | On `feat/tech-stack-section` (PR #162) — **not yet merged to main** |
-| Plan review docs                                                                              | —            | `plans/2026-08-03-pr159-review-fixes.md`             | Merged via PR #161                                                  |
+| Change                                                                                        | Commit       | Files                                                | Status                                                      |
+| --------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------- | ----------------------------------------------------------- |
+| Author-bio footer on `/projects/*` posts                                                      | `0aeac32`    | `app/projects/layout.tsx`                            | On `docs/ai-seo-plans` (PR #159)                            |
+| Footer `W` black for visibility on `#FACC6E` circle                                           | `82ecb52`    | `app/blog/layout.tsx`, `app/projects/layout.tsx`     | On `docs/ai-seo-plans` (PR #159)                            |
+| Underline Medium link in home page header                                                     | `335369c`    | `app/page.tsx`                                       | On `docs/ai-seo-plans` (PR #159)                            |
+| Replace project video boxes with auto-fetched Medium cover images                             | `d2e3150`    | `app/data.ts`, `app/page.tsx`, `app/api/og/route.ts` | On `docs/ai-seo-plans` (PR #159)                            |
+| Harden `/api/og` against SSRF (strict host allowlist)                                         | `06bd3e0`    | `app/api/og/route.ts`                                | On `docs/ai-seo-plans` (PR #159)                            |
+| Resolve covers from Medium RSS feed; drop third-party reader; relink projects to recent posts | this session | `app/api/og/route.ts`, `app/data.ts`                 | On `docs/ai-seo-plans` (PR #159)                            |
+| Tech Stack section on home page                                                               | `c9e7f59`    | `app/data.ts`, `app/page.tsx`                        | Merged to main, then into `docs/ai-seo-plans` via `a758fe8` |
+| Fix `/api/og` shared-cache bug (path-keyed CDN responses)                                     | `6ef69b2`    | `app/api/og/route.ts`                                | On `docs/ai-seo-plans` (PR #159)                            |
+| Plan review docs                                                                              | —            | `plans/2026-08-03-pr159-review-fixes.md`             | Merged via PR #161                                          |
 
 `docs/ai-seo-plans` (PR #159) was rebased onto `main` after PR #161 merged, keeping history linear.
 
@@ -33,9 +34,12 @@ Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-ima
 
 7. **Client unchanged:** `ProjectImage` (`app/page.tsx`) still calls `/api/og?url=…` and renders `{ image }` inside the fixed `aspect-video` box; null → animated placeholder.
 
+8. **Deploy-preview bug — shared cache keyed by path:** the preview showed the same (first post's) image for every project. Local build and dev-server tests were correct, and the deployed function returned the first feed item's image even for invalid URLs that must 400. Diagnosis: a fresh, never-before-seen `?cb=<nanosecond timestamp>` URL returned `age: 796` — proof the shared cache ignored the query string and reused one path-keyed response. The old route set `public, s-maxage=86400`, so Netlify cached it. Fix: the response now sets `Cache-Control: private, max-age=300, stale-while-revalidate=300`. Per Netlify's caching docs, `private` means its shared cache will not store the response, so every request reaches the edge function and resolves its own post's image; the browser still caches per-URL.
+
 ## Verification
 
 - Local endpoint tests: valid medium.com URLs → 200 with `miro.medium.com`/`cdn-images-1.medium.com` cover; non-medium / non-https / malformed `url` → 400; unknown-but-valid medium URL → 200 with `{ image: null }`.
+- Deployed Netlify preview (deploy `6a7064591cd3de00082f955e`): `/api/og` returns distinct covers for the Terraform-docs and `ip route` projects, `{ image: null }` for an older post, 400 for `evil.com` and for a missing `url`; response header is `cache-control: private,max-age=300` (was `public,s-maxage=86400`).
 - `npm run build` passes (TypeScript + Next build).
 - CodeQL SSRF alerts: previous alert on the reader-proxy fetch no longer applies since no user input reaches `fetch()`; pending confirmation on next push.
 - Note: `npm run lint` is broken repo-wide (Next 16 removed `next lint`; ESLint 9 flat-config error) — pre-existing, unrelated to this session.
@@ -51,3 +55,4 @@ Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-ima
 - OWASP — _Server-Side Request Forgery Prevention Cheat Sheet_: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html (hostname allowlist rationale)
 - Next.js Docs — _Route Handlers_: https://nextjs.org/docs/app/building-your-application/routing/route-handlers (edge route handlers)
 - Next.js Docs — _Caching_: https://nextjs.org/docs/app/building-your-application/caching (Cache-Control behavior)
+- Netlify Docs — _Caching overview_: https://docs.netlify.com/build/caching/caching-overview/ (function/proxy responses are not cached by default and become cacheable only via cache-control headers; `private` is not stored in Netlify's shared cache)
