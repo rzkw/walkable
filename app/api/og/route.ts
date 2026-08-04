@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 const FEED_URL = 'https://medium.com/feed/@walkable-llc'
 
 export async function GET(request: Request) {
