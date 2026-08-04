@@ -1,8 +1,13 @@
+# Workflow to auto-merge minor/patch updates. Reference: https://theroks.com/automating-dependabot-minor-patch-updates/
+# Initially written by OpenCode - rewrite 04/08/2026
+
 name: Dependabot Auto-approve
 
 on:
-  schedule:
-    - cron: "0 0 * * 0" # Weekly, Sunday midnight
+  pull_request:
+    types:
+      - opened
+      - reopened
   workflow_dispatch:
 
 permissions:
@@ -12,34 +17,41 @@ permissions:
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
-      - name: Approve and merge Dependabot minor/patch PRs
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Fetch Metadata from Dependabot PRs
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      
+      - name: Enable auto-merge for minor, patch updates
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
-          prs=$(gh pr list --author "app/dependabot" --state open --json number,title)
-          count=$(echo "$prs" | jq length)
-          if [ "$count" -eq 0 ]; then
-            echo "No open Dependabot PRs."
-            exit 0
-          fi
-          for i in $(seq 0 $((count - 1))); do
-            number=$(echo "$prs" | jq -r ".[$i].number")
-            title=$(echo "$prs" | jq -r ".[$i].title")
-            meta=$(gh api "repos/$GH_REPO/pulls/$number" --jq '.body' 2>/dev/null | grep -o 'version-update:semver-[a-z]*' || true)
-            echo "PR #$number: $title [$meta]"
-            if echo "$meta" | grep -qE 'semver-(minor|patch)'; then
-              echo "  -> Approving"
-              gh pr review "$number" --approve
-              echo "  -> Merging (squash)"
-              gh pr merge "$number" --squash
-            else
-              echo "  -> Skipping (major or unparseable)"
-            fi
-          done
+          gh pr merge --auto --squash "$PR_URL"
+          gh pr edit "$PR_URL" --add-label "automerged"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Comment on PR
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Auto-approve enabled. This PR will merge once checks pass.'
+            })
