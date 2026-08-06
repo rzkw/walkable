@@ -1,2 +1,4 @@
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
+/llms.txt
+  Cache-Control: public,max-age=86400
