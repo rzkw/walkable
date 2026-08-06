@@ -47,7 +47,7 @@ Replace current content with full site inventory:
 - **Articles — OCI & Terraform** — 4 Medium posts
 - **Articles — Security & GitHub** — 3 Medium posts
 - **Articles — Linux & Networking** — 3 Medium posts
-- **On-site Blog** — 6 MDX posts (hardcoded,不会再发布新内容)
+- **On-site Blog** — 6 MDX posts (hardcoded, no new content will be published)
 - **Projects** — 2 MDX projects
 - **Certifications** — RHCSA, Azure Fundamentals, CompTIA A+
 - **Contact** — email, social links
