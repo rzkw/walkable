@@ -12,6 +12,12 @@ Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 
 All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is configured globally (`gpg.format = ssh`, `user.signingkey = ~/.ssh/agent-gh-signing.pub`, `commit.gpgsign = true`). Verify with `git log --show-signature -1` before pushing.
 
+## Testing before PR
+
+- **Always test before submitting a PR, regardless of content** (code, plans, references, etc).
+- Run the exact commands and include the commands + their output in the PR description.
+- For non-code changes (docs, plans), verify whatever is verifiable (e.g. `git diff --stat`, build succeeds, config parses).
+
 # Walkable LLC — Project Instructions
 
 ## Planning
