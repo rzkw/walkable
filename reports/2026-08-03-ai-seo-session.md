@@ -1,3 +1,14 @@
+> **Edit 08/08/2026:** This report outlines changes I directed for the agent to edit my [website](https://www.walk-llc.com). It follows initial prompting resulting in an implementation plan requiring merge to main before I gave permission to execute: initially to improve [AI SEO](https://github.com/rzkw/walkable/blob/main/plans/ai-seo-implementation.md); to [link images](https://github.com/rzkw/walkable/blob/main/plans/2026-08-03-project-images-rss.md) from my Medium posts and [lastly fix minor bugs](https://github.com/rzkw/walkable/blob/main/plans/2026-08-03-pr159-review-fixes.md). I prompted the agent to specify the exact changes it made, explain design decisions, any tests ran before submitting as SSH-signed PR, and required references to external documentation.
+>
+> *Related PRs:*
+>
+> - [ai-seo: add author bio, dateModified schema, lastUpdated to blog posts - #151](https://github.com/rzkw/walkable/pull/151)
+> - [Pending layout, content, and JSON-LD updates - #159](https://github.com/rzkw/walkable/pull/159/changes#top)
+> - [Fix PR #159 review: blog footer on projects posts + Tech Stack section - #161](https://github.com/rzkw/walkable/pull/161)
+> - [feat: add Tech Stack section to home page - #162](https://github.com/rzkw/walkable/pull/162)
+> - [fix: drop edge runtime from /api/og (500s on OpenNext Cloudflare) - #164](https://github.com/rzkw/walkable/pull/164)
+
+
 # AI SEO Work — Session Report (2026-08-03)
 
 Session covering PR #159 review fixes, Tech Stack (PR #162), and the project-image resolution work on `docs/ai-seo-plans`.
