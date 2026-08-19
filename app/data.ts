@@ -154,12 +154,12 @@ export const TECH_STACK: TechStack[] = [
   {
     category: 'Experienced with',
     skills:
-      'GitHub Actions • Jira • Cloudflare • Grafana • MCP (Model Context Protocol) • Opencode • Slack • Claude',
+      'GitHub Actions • Oracle Cloud Infrastructure (OCI) • Cloudflare • YAML • MCP (Model Context Protocol) • OpenCode • Slack • Claude',
   },
   {
     category: 'Exposure to',
     skills:
-      'Oracle Cloud Infrastructure • Terraform • YAML • AWS • Ansible • Azure • PowerShell • Python • JavaScript • Vercel • Kubernetes',
+      'Jira • Terraform • Grafana • AWS • Ansible • Azure • PowerShell • Python • JavaScript • Vercel • Kubernetes',
   },
 ]
 
