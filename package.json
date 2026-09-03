@@ -16,7 +16,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.2.6",
-    "@opennextjs/cloudflare": "^1.19.8",
+    "@opennextjs/cloudflare": "^1.20.4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/mdx": "^2.0.13",
     "clsx": "^2.1.1",
