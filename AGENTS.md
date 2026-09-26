@@ -12,6 +12,11 @@ Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 
 All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is configured globally (`gpg.format = ssh`, `user.signingkey = ~/.ssh/agent-gh-signing.pub`, `commit.gpgsign = true`). Verify with `git log --show-signature -1` before pushing.
 
+## Writing and code review
+
+- Use simple English in pull request titles, descriptions, comments and replies, documentation, and conversation threads. Keep sentences short and direct. Avoid jargon and filler.
+- Before submitting a pull request with code changes, run Ponytail's `/ponytail-review` on the diff. Remove code only when the requested behavior and its checks remain intact. If Ponytail is not available, install it globally first.
+
 ## Testing before PR
 
 - **Always test before submitting a PR, regardless of content** (code, plans, references, etc).
