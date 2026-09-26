@@ -1,49 +1,34 @@
-# Medium RSS Blog Feed Implementation Plan
+# Medium RSS Blog Feed Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** Use the executing-plans workflow to do these steps. Check off each step as you finish it.
 
-**Goal:** Show the 10 most recent Medium stories at the top of the Blog section, above the existing blog titles, without making the home page wait for Medium.
+**Goal:** Show up to 10 recent Medium stories above the existing titles in the Blog section.
 
-**Architecture:** One new app endpoint (`app/api/medium-feed/route.ts`) reads the fixed Medium RSS feed and returns plain JSON. The home page requests that endpoint after it renders, so Medium is never on the critical path. Existing `BLOG_POSTS` entries stay exactly as they are, below the new stories.
+**How it works:** Add an endpoint that reads Medium's RSS feed. The home page requests it after rendering, so the page does not wait for Medium. Keep all existing blog titles below the new stories.
 
-**Tech Stack:** Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, deployed through `@opennextjs/cloudflare`.
+**Tools:** Next.js App Router, React, TypeScript.
 
-## Global Constraints
+## Rules
 
-- Use the fixed feed URL `https://medium.com/feed/@walkable-llc` in server code. Never accept a feed URL from the browser.
-- Do not add any new package.
-- Do not add timed revalidation, cron, or a queue. The browser fetches the endpoint after the page renders.
-- Show at most 10 stories, in the order Medium gives them.
-- Keep every `BLOG_POSTS` entry, its title, description, link, and position unchanged.
-- Use the same title and description classes the existing blog links use.
-- If the endpoint fails, the existing blog titles must still show. No error text, no spinner.
-- Do not add `runtime = 'edge'` to the new route. OpenNext on Cloudflare does not support the edge runtime (see `reports/2026-08-03-ai-seo-session.md`).
+- Use the fixed feed URL `https://medium.com/feed/@walkable-llc`. Do not take a URL from the browser.
+- Add no packages, shared cache, schedules, or Cloudflare bindings.
+- Show up to 10 stories in the order Medium sends them.
+- Keep the existing `BLOG_POSTS` data and links unchanged.
+- Use the existing Blog title and description styles.
+- If the feed fails, show the existing titles without an error message.
+- Do not set the route to `runtime = 'edge'`; OpenNext on Cloudflare does not support it.
 
-## What the Medium feed actually looks like
+## Feed format
 
-Checked on 2026-09-26 against the live feed. These facts drive the parsing code:
-
-- The feed has exactly 10 `<item>` blocks. That is the ceiling, so the plan never needs more than 10.
-- Each item has `<title>`, `<link>`, `<guid>`, `<category>`, `<dc:creator>`, `<pubDate>`, and `<content:encoded>`.
-- **There is no `<description>` inside an item.** The only `<description>` in the file belongs to the channel. So the short description is taken from the first real paragraph inside `<content:encoded>`.
-- `<title>` is wrapped in CDATA: `<title><![CDATA[Deploying a budget to OCI by Terraform]]></title>`. CDATA must be unwrapped before tags are stripped, otherwise the whole title disappears.
-- `<link>` carries a tracking suffix: `https://medium.com/@walkable-llc/<slug>?source=rss-274e4807a939------2`. Cut everything from `?` onward.
-- `<guid isPermaLink="true">https://medium.com/p/faab5c664403</guid>` is stable per story, so it makes a good React key and `data-id`.
+The live feed was checked on 2026-09-26. Each item has a title, link, GUID, and article content. It has no story-level `<description>`, so use the first useful paragraph from `<content:encoded>`. Titles are wrapped in CDATA. Links have a `?source=...` suffix that should be removed. The GUID is a stable story ID.
 
 ---
 
 ## Task 1: Add the feed endpoint
 
-**Files:**
+**File:** Create `app/api/medium-feed/route.ts`.
 
-- Create: `app/api/medium-feed/route.ts`
-
-**Interfaces:**
-
-- Consumes: nothing. It fetches the feed on its own.
-- Produces: `GET /api/medium-feed` returns `{ posts: MediumPost[] }`, where `MediumPost` is `{ id: string, title: string, description: string, link: string }`. On failure it returns status `502` with `{ posts: [] }`.
-
-- [ ] **Step 1:** Create `app/api/medium-feed/route.ts` with this content:
+- [ ] **Step 1:** Add this route:
 
 ```ts
 const FEED_URL = 'https://medium.com/feed/@walkable-llc'
@@ -57,156 +42,106 @@ type MediumPost = {
   link: string
 }
 
-function toPlainText(raw: string): string {
-  return raw
-    .trim()
-    .replace(/^<!\[CDATA\[/, '')
-    .replace(/\]\]>$/, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
+function value(item: string, tag: string): string {
+  const match = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`))
+  return match?.[1]?.trim() ?? ''
 }
 
-function decodeEntities(text: string): string {
-  return text
-    .replace(/&#(\d+);/g, (_, code: string) =>
-      String.fromCharCode(Number(code)),
-    )
-    .replace(/&#x([0-9a-f]+);/gi, (_, code: string) =>
-      String.fromCharCode(parseInt(code, 16)),
+function text(raw: string): string {
+  return raw
+    .replace(/^<!\[CDATA\[|\]\]>$/g, '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&#(x[0-9a-f]+|\d+);/gi, (_, code: string) =>
+      String.fromCodePoint(
+        code[0].toLowerCase() === 'x'
+          ? parseInt(code.slice(1), 16)
+          : Number(code),
+      ),
     )
     .replace(/&quot;/g, '"')
     .replace(/&apos;/g, "'")
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
-function tagValue(item: string, tag: string): string {
-  const match = item.match(
-    new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`),
-  )
-  return match ? match[1] : ''
-}
-
-function firstParagraph(content: string): string {
-  const paragraphs = content.match(/<p(?:\s[^>]*)?>[\s\S]*?<\/p>/g) ?? []
+function description(item: string): string {
+  const content = value(item, 'content:encoded')
+  const paragraphs = content.match(/<p[^>]*>[\s\S]*?<\/p>/g) ?? []
   for (const paragraph of paragraphs) {
-    const text = decodeEntities(toPlainText(paragraph))
-    if (text.length > 20) {
-      return text
-    }
+    const result = text(paragraph)
+    if (result.length > 20) return result
   }
   return ''
 }
 
-function isMediumLink(link: string): boolean {
-  try {
-    const url = new URL(link)
-    return url.protocol === 'https:' && url.hostname === 'medium.com'
-  } catch {
-    return false
-  }
-}
-
-function shorten(text: string, limit: number): string {
-  if (text.length <= limit) {
-    return text
-  }
-  return `${text.slice(0, limit).trimEnd()}…`
-}
-
 export async function GET() {
+  const headers = { 'Cache-Control': 'no-store' }
+
   try {
     const response = await fetch(FEED_URL, {
       headers: { Accept: 'application/rss+xml' },
       cache: 'no-store',
       signal: AbortSignal.timeout(15000),
     })
-    if (!response.ok) {
-      throw new Error(`feed status ${response.status}`)
-    }
+    if (!response.ok) throw new Error('Medium feed request failed')
+
     const xml = await response.text()
     const posts: MediumPost[] = []
 
+    // ponytail: Medium's feed holds at most 10 stories. Keep the on-site posts below them.
     for (const item of xml.split('<item>').slice(1)) {
-      if (posts.length === MAX_POSTS) {
-        break
-      }
-      const link = tagValue(item, 'link').trim().split('?')[0]
-      const title = decodeEntities(toPlainText(tagValue(item, 'title')))
-      if (!title || !isMediumLink(link)) {
-        continue
-      }
+      if (posts.length >= MAX_POSTS) break
+
+      const title = text(value(item, 'title'))
+      const link = value(item, 'link').split('?')[0]
+      if (!title || !link.startsWith('https://medium.com/')) continue
+
+      const summary = description(item)
       posts.push({
-        id: tagValue(item, 'guid').trim() || link,
+        id: value(item, 'guid') || link,
         title,
-        description: shorten(
-          firstParagraph(tagValue(item, 'content:encoded')),
-          DESCRIPTION_LIMIT,
-        ),
+        description:
+          summary.length <= DESCRIPTION_LIMIT
+            ? summary
+            : `${summary.slice(0, DESCRIPTION_LIMIT).trimEnd()}…`,
         link,
       })
     }
 
-    return Response.json(
-      { posts },
-      { headers: { 'Cache-Control': 'no-store' } },
-    )
+    return Response.json({ posts }, { headers })
   } catch {
-    return Response.json(
-      { posts: [] as MediumPost[] },
-      { status: 502, headers: { 'Cache-Control': 'no-store' } },
-    )
+    return Response.json({ posts: [] }, { status: 502, headers })
   }
 }
 ```
 
-Notes on the code:
-
-- `toPlainText` removes CDATA first, then tags. Doing it in this order is what keeps the title readable.
-- `firstParagraph` gives a plain sentence from the article body, because the feed has no per-item description. It ignores very short paragraphs so captions and stray words are not used.
-- `isMediumLink` keeps only `https` links on `medium.com`. The link comes from the feed, not the browser, and this check makes sure a strange feed value can never become a link to another site.
-- `Response.json` is used instead of `new Response(JSON.stringify(...))` for less code.
-
-- [ ] **Step 2:** Check the types and build:
+- [ ] **Step 2:** Check types and build:
 
 ```bash
 ./node_modules/.bin/tsc --noEmit
 npm run build
 ```
 
-Expected: both commands finish with no errors.
+Both commands should pass. The build should list `ƒ /api/medium-feed`.
 
-- [ ] **Step 3:** Check the endpoint by hand. Start the app with `npm run dev`, then run:
-
-```bash
-curl -s http://localhost:3000/api/medium-feed | head -c 600
-```
-
-Expected: JSON that starts with `{"posts":[{"id":"https://medium.com/p/faab5c664403","title":"Deploying a budget to OCI by Terraform","description":"...","link":"https://medium.com/@walkable-llc/deploying-a-budget-to-oci-by-terraform-faab5c664403"}`. Titles must be readable, links must not contain `?source=`.
-
-- [ ] **Step 4:** Commit:
+- [ ] **Step 3:** Start the app with `npm run dev`, then check the endpoint:
 
 ```bash
-git add app/api/medium-feed/route.ts
-git commit -S -m "feat: add Medium RSS feed endpoint"
+curl -s http://localhost:3000/api/medium-feed
 ```
+
+It should return up to 10 stories. Titles should be readable, and links should not have a `?source=` suffix.
 
 ---
 
-## Task 2: Show the stories above the existing blog titles
+## Task 2: Show the stories in the Blog section
 
-**Files:**
+**File:** Modify `app/page.tsx`. `useState` and `useEffect` are already imported. Do not change `app/data.ts`.
 
-- Modify: `app/page.tsx` only. No new import is needed, because `useState` and `useEffect` are already imported at the top of the file. No change to `app/data.ts`.
-
-**Interfaces:**
-
-- Consumes: `GET /api/medium-feed` returning `{ posts: MediumPost[] }` from Task 1.
-- Produces: nothing new for other files.
-
-- [ ] **Step 1:** Add the type and state near the top of `app/page.tsx`, after the `ProjectImageProps` type:
+- [ ] **Step 1:** Add this type after `ProjectImageProps`:
 
 ```tsx
 type MediumPost = {
@@ -217,143 +152,94 @@ type MediumPost = {
 }
 ```
 
-- [ ] **Step 2:** Add the fetch inside `Personal()`, right after `export default function Personal() {`:
+- [ ] **Step 2:** At the start of `Personal()`, add state and fetch the endpoint after the page mounts:
 
 ```tsx
 const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([])
 
 useEffect(() => {
-  let cancelled = false
   fetch('/api/medium-feed')
-    .then((res) => (res.ok ? res.json() : null))
-    .then((data) => {
-      if (cancelled || !Array.isArray(data?.posts)) {
-        return
-      }
-      setMediumPosts(data.posts)
-    })
+    .then((response) => (response.ok ? response.json() : { posts: [] }))
+    .then((data) => setMediumPosts(data.posts ?? []))
     .catch(() => setMediumPosts([]))
-  return () => {
-    cancelled = true
-  }
 }, [])
 ```
 
-This copies the request pattern already used by `ProjectImage` in the same file, so the home page loads without waiting for the feed. On any failure the list stays empty and the existing titles remain.
-
-- [ ] **Step 3:** Build one list of links and give it to the existing block. In `Personal()`, right after the `useEffect`, add:
+- [ ] **Step 3:** Make one list from the Medium stories and existing posts. Add this below the effect:
 
 ```tsx
 const blogLinks = [
-  ...mediumPosts.map((post) => (
-    <a
-      key={post.id}
-      data-id={post.id}
-      href={post.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="-mx-3 rounded-xl px-3 py-3"
-    >
-      <div className="flex flex-col space-y-1">
-        <h4 className="font-normal dark:text-zinc-100">{post.title}</h4>
-        <p className="text-zinc-500 dark:text-zinc-400">{post.description}</p>
-      </div>
-    </a>
-  )),
-  ...BLOG_POSTS.map((post) => (
-    <Link
-      key={post.uid}
-      data-id={post.uid}
-      href={post.link}
-      className="-mx-3 rounded-xl px-3 py-3"
-    >
-      <div className="flex flex-col space-y-1">
-        <h4 className="font-normal dark:text-zinc-100">{post.title}</h4>
-        <p className="text-zinc-500 dark:text-zinc-400">{post.description}</p>
-      </div>
-    </Link>
-  )),
+  ...mediumPosts,
+  ...BLOG_POSTS.map((post) => ({
+    id: post.uid,
+    title: post.title,
+    description: post.description,
+    link: post.link,
+  })),
 ]
 ```
 
-Then replace the whole `{BLOG_POSTS.map((post) => ( ... ))}` block inside `AnimatedBackground` with:
+- [ ] **Step 4:** In `AnimatedBackground`, replace the existing `BLOG_POSTS.map(...)` with this one map. This keeps the title and description markup in one place and fixes the child type issue from using two separate maps.
 
 ```tsx
 {
-  blogLinks
+  blogLinks.map((post) => {
+    const content = (
+      <div className="flex flex-col space-y-1">
+        <h4 className="font-normal dark:text-zinc-100">{post.title}</h4>
+        <p className="text-zinc-500 dark:text-zinc-400">{post.description}</p>
+      </div>
+    )
+    const className = '-mx-3 rounded-xl px-3 py-3'
+
+    return post.link.startsWith('/') ? (
+      <Link
+        key={post.id}
+        className={className}
+        href={post.link}
+        data-id={post.id}
+      >
+        {content}
+      </Link>
+    ) : (
+      <a
+        key={post.id}
+        className={className}
+        href={post.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-id={post.id}
+      >
+        {content}
+      </a>
+    )
+  })
 }
 ```
 
-The Medium stories come first, then the existing titles. Both kinds of link stay in the same `AnimatedBackground` block, so the hover highlight still works on every row. Nothing in `app/data.ts` changes.
-
-**Why one list and not two `.map()` calls next to each other:** `AnimatedBackground` types `children` as one element or an array of elements. Two sibling `.map()` expressions do not match that type and the type check fails with `TS2739`. One array variable does match it. This was confirmed by running the type check.
-
-- [ ] **Step 4:** Check types and build again:
+- [ ] **Step 5:** Check types and build again:
 
 ```bash
 ./node_modules/.bin/tsc --noEmit
 npm run build
 ```
 
-Expected: both commands finish with no errors, and the build output lists `ƒ /api/medium-feed`.
-
-- [ ] **Step 5:** Commit:
-
-```bash
-git add app/page.tsx
-git commit -S -m "feat: show recent Medium stories above blog titles"
-```
+Both commands should pass.
 
 ---
 
-## Task 3: Verify the whole thing by hand
+## Task 3: Check the page
 
-**Files:** none
-
-- [ ] **Step 1:** Run `npm run dev` and open `http://localhost:3000`.
-- [ ] **Step 2:** Confirm the page shows the text at once, and the Medium stories appear a moment later inside the Blog section.
-- [ ] **Step 3:** Confirm there are at most 10 stories, the newest first, and that all 8 existing blog titles still sit below them in the same order.
-- [ ] **Step 4:** Click a Medium story. Confirm a new tab opens on the Medium article and the address has no `?source=` in it.
-- [ ] **Step 5:** Turn off the network in the browser tab and reload. Confirm the existing blog titles still show and no error text appears.
-- [ ] **Step 6:** Run the commands below and paste the real output into the pull request description:
-
-```bash
-./node_modules/.bin/tsc --noEmit
-npm run build
-curl -s http://localhost:3000/api/medium-feed | head -c 600
-```
-
-## Already verified
-
-The code in this plan was written and run on 2026-09-26 before the plan was submitted. Results:
-
-- `./node_modules/.bin/tsc --noEmit` → exit 0. Use the local binary, because plain `npx tsc` installs an unrelated package instead of the project's TypeScript.
-- `npm run build` → succeeded, and the route list included `ƒ /api/medium-feed`.
-- `GET /api/medium-feed` → `200` with 10 posts. Every title was non-empty, every link was a clean `https://medium.com/@walkable-llc/...` link with no `?source=`, all 10 ids were unique, and the longest description was 121 characters (120 plus the ellipsis).
-- `GET /` → `200`, and the server-rendered HTML still contained the existing blog title "SSH security hardening and other bits", so the old links do not depend on the feed.
-
-## PR checklist
-
-- [ ] Feed stories appear at the top of the Blog section.
-- [ ] Links open the Medium article directly.
-- [ ] Title and description styling match the existing blog links.
-- [ ] Existing blog titles and links are unchanged.
-- [ ] New posts show up after a page reload, with no deploy and no code change.
-- [ ] `./node_modules/.bin/tsc --noEmit` and `npm run build` pass, and the output is in the PR description.
-
-## Deliberate simplifications
-
-- No package for XML parsing. The feed is read with the same small regex style already used in `app/api/og/route.ts`.
-- No cache and no revalidation. The browser asks the endpoint after the page renders. That is enough for this small site, and it means no new Cloudflare bindings.
-- No loading state. The list simply appears when it arrives.
-- The feed only holds the latest 10 stories, so the list shows 10 items and then the older on-site titles.
+- [ ] Open the home page. It should appear before the feed request finishes.
+- [ ] Confirm the Medium stories appear above the old titles, with the same title and description styles.
+- [ ] Confirm each Medium link opens its article in a new tab.
+- [ ] Block `/api/medium-feed` in the browser and reload. The old titles should still appear without an error message.
+- [ ] Put the type-check and build commands and their output in the implementation PR description.
 
 ## References
 
-- Medium Help Center, _Using RSS feeds of profiles, publications, and topics_ — https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics (official docs; the `medium.com/feed/@username` URL and the note that only part of the profile feed is available)
-- Next.js, _Route Handlers_ — https://nextjs.org/docs/app/api-reference/file-conventions/route (official docs; how `app/api/*/route.ts` handlers work, and the rule that a route file should only export handlers and route config)
-- Next.js, _Server and Client Components_ — https://nextjs.org/docs/app/getting-started/server-and-client-components (official docs; the file is marked `'use client'`, so the fetch runs in the browser)
-- React, _useEffect_ — https://react.dev/reference/react/useEffect (official docs; used to run the request after the page renders instead of blocking it)
-- OpenNext Cloudflare, _Caching_ — https://opennextjs.org/cloudflare/caching (official docs; timed revalidation needs a Durable Object queue, which is why this plan skips timed revalidation)
-- RSS 2.0 specification, _Rich Site Summary (RSS) Specification_ — https://www.rssboard.org/rss-specification (the `<item>`, `<title>`, `<link>`, and `<guid>` fields this plan reads)
-- Repository precedent: `app/api/og/route.ts` (the existing route that reads the same fixed Medium feed URL) and `reports/2026-08-03-ai-seo-session.md` (why the edge runtime must not be used on Cloudflare)
+- Medium Help Center, [Using RSS feeds of profiles, publications, and topics](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics) — Medium's official guide to profile feeds and using them on a website.
+- Next.js, [Route Handlers](https://nextjs.org/docs/app/api-reference/file-conventions/route) — how App Router API endpoints work.
+- React, [useEffect](https://react.dev/reference/react/useEffect) — how to run the browser request after the page mounts.
+- RSS 2.0, [Specification](https://www.rssboard.org/rss-specification) — the item, title, link, and GUID fields used by the route.
+- Repository note: `reports/2026-08-03-ai-seo-session.md` explains why OpenNext on Cloudflare must not use the Edge runtime.
