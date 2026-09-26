@@ -37,6 +37,13 @@ type ProjectImageProps = {
   link: string
 }
 
+type MediumPost = {
+  id: string
+  title: string
+  description: string
+  link: string
+}
+
 function ProjectImage({ link }: ProjectImageProps) {
   const [src, setSrc] = useState<string | null>(null)
 
@@ -98,6 +105,25 @@ function MagneticSocialLink({
 }
 
 export default function Personal() {
+  const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([])
+
+  useEffect(() => {
+    fetch('/api/medium-feed')
+      .then((response) => (response.ok ? response.json() : { posts: [] }))
+      .then((data) => setMediumPosts(data.posts ?? []))
+      .catch(() => setMediumPosts([]))
+  }, [])
+
+  const blogLinks = [
+    ...mediumPosts,
+    ...BLOG_POSTS.map((post) => ({
+      id: post.uid,
+      title: post.title,
+      description: post.description,
+      link: post.link,
+    })),
+  ]
+
   return (
     <motion.main
       className="space-y-24"
@@ -181,13 +207,8 @@ export default function Personal() {
               duration: 0.2,
             }}
           >
-            {BLOG_POSTS.map((post) => (
-              <Link
-                key={post.uid}
-                className="-mx-3 rounded-xl px-3 py-3"
-                href={post.link}
-                data-id={post.uid}
-              >
+            {blogLinks.map((post) => {
+              const content = (
                 <div className="flex flex-col space-y-1">
                   <h4 className="font-normal dark:text-zinc-100">
                     {post.title}
@@ -196,8 +217,31 @@ export default function Personal() {
                     {post.description}
                   </p>
                 </div>
-              </Link>
-            ))}
+              )
+              const className = '-mx-3 rounded-xl px-3 py-3'
+
+              return post.link.startsWith('/') ? (
+                <Link
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  data-id={post.id}
+                >
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-id={post.id}
+                >
+                  {content}
+                </a>
+              )
+            })}
           </AnimatedBackground>
         </div>
       </motion.section>
