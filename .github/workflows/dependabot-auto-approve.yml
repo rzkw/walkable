@@ -4,18 +4,12 @@
 name: Dependabot Auto-approve
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
-      - reopened
       - synchronize
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: List eligible PRs without changing them
-        required: false
-        default: true
-        type: boolean
+      - reopened
+      - ready_for_review
 
 permissions:
   contents: write
@@ -24,7 +18,7 @@ permissions:
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request_target' && github.event.pull_request.user.login == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]'
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -57,80 +51,15 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  backfill:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+      - name: Comment on PR
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
-          egress-policy: audit
-
-      - name: Process open Dependabot minor and patch updates
-        env:
-          DRY_RUN: ${{ inputs.dry_run }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          failures=0
-          pr_numbers=$(gh pr list --author app/dependabot --state open --limit 1000 --json number --jq '.[].number')
-
-          if [[ -z "$pr_numbers" ]]; then
-            echo "No open Dependabot PRs."
-            exit 0
-          fi
-
-          for number in $pr_numbers; do
-            if ! commit_message=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$number/commits" --jq '.[-1].commit.message'); then
-              echo "::error::Could not read Dependabot metadata for PR #$number"
-              failures=1
-              continue
-            fi
-
-            update_types=$(printf '%s\n' "$commit_message" | sed -nE 's/.*update-type: version-update:semver-(major|minor|patch).*/\1/p')
-            if [[ "$update_types" == *major* ]]; then
-              update_type=major
-            elif [[ "$update_types" == *minor* ]]; then
-              update_type=minor
-            elif [[ "$update_types" == *patch* ]]; then
-              update_type=patch
-            else
-              update_type=unknown
-            fi
-
-            if [[ "$update_type" != minor && "$update_type" != patch ]]; then
-              echo "Skipping PR #$number ($update_type update)."
-              continue
-            fi
-
-            echo "Eligible PR #$number ($update_type update)."
-            [[ "$DRY_RUN" == true ]] && continue
-
-            pr_url="https://github.com/$GITHUB_REPOSITORY/pull/$number"
-            if ! head_sha=$(gh pr view "$pr_url" --json headRefOid --jq .headRefOid); then
-              echo "::error::Could not read head commit for PR #$number"
-              failures=1
-              continue
-            fi
-            if ! bot_review=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$number/reviews" --jq '.[] | select(.user.login == "github-actions[bot]") | [.state, .commit_id] | @tsv' | tail -n 1); then
-              echo "::error::Could not read reviews for PR #$number"
-              failures=1
-              continue
-            fi
-            IFS=$'\t' read -r review_state review_commit <<< "$bot_review"
-            if [[ "$review_state" != APPROVED || "$review_commit" != "$head_sha" ]] && ! gh pr review "$pr_url" --approve; then
-              echo "::error::Could not approve PR #$number"
-              failures=1
-              continue
-            fi
-            if ! gh pr merge --auto --squash "$pr_url"; then
-              echo "::error::Could not enable auto-merge for PR #$number"
-              failures=1
-              continue
-            fi
-            if ! gh pr edit "$pr_url" --add-label automerged; then
-              echo "::error::Could not label PR #$number"
-              failures=1
-            fi
-          done
-
-          exit "$failures"
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: 'Auto-merge enabled. This PR will merge once checks pass.'
+            })
