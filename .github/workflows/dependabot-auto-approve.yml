@@ -42,7 +42,10 @@ jobs:
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
-          if [[ "$(gh pr view "$PR_URL" --json reviewDecision --jq .reviewDecision)" != "APPROVED" ]]; then
+          head_sha=$(gh pr view "$PR_URL" --json headRefOid --jq .headRefOid)
+          bot_review=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews" --jq '.[] | select(.user.login == "github-actions[bot]") | [.state, .commit_id] | @tsv' | tail -n 1)
+          IFS=$'\t' read -r review_state review_commit <<< "$bot_review"
+          if [[ "$review_state" != APPROVED || "$review_commit" != "$head_sha" ]]; then
             gh pr review "$PR_URL" --approve
           else
             echo "PR already approved; skipping review."
@@ -51,6 +54,7 @@ jobs:
           gh pr edit "$PR_URL" --add-label "automerged"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   backfill:
@@ -102,12 +106,18 @@ jobs:
             [[ "$DRY_RUN" == true ]] && continue
 
             pr_url="https://github.com/$GITHUB_REPOSITORY/pull/$number"
-            if ! decision=$(gh pr view "$pr_url" --json reviewDecision --jq .reviewDecision); then
-              echo "::error::Could not read review decision for PR #$number"
+            if ! head_sha=$(gh pr view "$pr_url" --json headRefOid --jq .headRefOid); then
+              echo "::error::Could not read head commit for PR #$number"
               failures=1
               continue
             fi
-            if [[ "$decision" != APPROVED ]] && ! gh pr review "$pr_url" --approve; then
+            if ! bot_review=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$number/reviews" --jq '.[] | select(.user.login == "github-actions[bot]") | [.state, .commit_id] | @tsv' | tail -n 1); then
+              echo "::error::Could not read reviews for PR #$number"
+              failures=1
+              continue
+            fi
+            IFS=$'\t' read -r review_state review_commit <<< "$bot_review"
+            if [[ "$review_state" != APPROVED || "$review_commit" != "$head_sha" ]] && ! gh pr review "$pr_url" --approve; then
               echo "::error::Could not approve PR #$number"
               failures=1
               continue
