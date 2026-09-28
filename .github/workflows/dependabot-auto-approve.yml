@@ -9,6 +9,13 @@ on:
       - opened
       - reopened
       - synchronize
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: List eligible PRs without changing them
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -30,8 +37,8 @@ jobs:
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      
-      - name: Approve minor and patch updates
+
+      - name: Approve and enable auto-merge for minor and patch updates
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
@@ -40,16 +47,80 @@ jobs:
           else
             echo "PR already approved; skipping review."
           fi
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for minor, patch updates
-        if: |
-          steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: |
           gh pr merge --auto --squash "$PR_URL"
           gh pr edit "$PR_URL" --add-label "automerged"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  backfill:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Process open Dependabot minor and patch updates
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          failures=0
+          pr_numbers=$(gh pr list --author app/dependabot --state open --limit 1000 --json number --jq '.[].number')
+
+          if [[ -z "$pr_numbers" ]]; then
+            echo "No open Dependabot PRs."
+            exit 0
+          fi
+
+          for number in $pr_numbers; do
+            if ! commit_message=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$number/commits" --jq '.[-1].commit.message'); then
+              echo "::error::Could not read Dependabot metadata for PR #$number"
+              failures=1
+              continue
+            fi
+
+            update_types=$(printf '%s\n' "$commit_message" | sed -nE 's/.*update-type: version-update:semver-(major|minor|patch).*/\1/p')
+            if [[ "$update_types" == *major* ]]; then
+              update_type=major
+            elif [[ "$update_types" == *minor* ]]; then
+              update_type=minor
+            elif [[ "$update_types" == *patch* ]]; then
+              update_type=patch
+            else
+              update_type=unknown
+            fi
+
+            if [[ "$update_type" != minor && "$update_type" != patch ]]; then
+              echo "Skipping PR #$number ($update_type update)."
+              continue
+            fi
+
+            echo "Eligible PR #$number ($update_type update)."
+            [[ "$DRY_RUN" == true ]] && continue
+
+            pr_url="https://github.com/$GITHUB_REPOSITORY/pull/$number"
+            if ! decision=$(gh pr view "$pr_url" --json reviewDecision --jq .reviewDecision); then
+              echo "::error::Could not read review decision for PR #$number"
+              failures=1
+              continue
+            fi
+            if [[ "$decision" != APPROVED ]] && ! gh pr review "$pr_url" --approve; then
+              echo "::error::Could not approve PR #$number"
+              failures=1
+              continue
+            fi
+            if ! gh pr merge --auto --squash "$pr_url"; then
+              echo "::error::Could not enable auto-merge for PR #$number"
+              failures=1
+              continue
+            fi
+            if ! gh pr edit "$pr_url" --add-label automerged; then
+              echo "::error::Could not label PR #$number"
+              failures=1
+            fi
+          done
+
+          exit "$failures"
