@@ -175,7 +175,16 @@ export default function Personal() {
           {PROJECTS.map((project) => (
             <div key={project.name} className="space-y-2">
               <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                <ProjectImage link={project.link} />
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
+                  />
+                ) : (
+                  <ProjectImage link={project.link} />
+                )}
               </div>
               <div className="px-1">
                 <a
