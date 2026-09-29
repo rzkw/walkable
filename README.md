@@ -45,6 +45,26 @@ This project can be run locally, viewed live, or as a Docker container.
 The [live version](https://www.walk-llc.com) is deployed to Cloudflare Workers directly from this repo, not from the Docker image. 
 
 
+## Project screenshots
+
+The AWS Labs and OCI CloudInfra project screenshots are stored in the `images` R2 bucket under `projects/`. Replace an image by uploading a new WebP file to the same key:
+
+```sh
+npx wrangler r2 object put images/projects/aws-labs.webp \
+  --file=./aws-labs.webp \
+  --content-type=image/webp \
+  --cache-control='public, max-age=60' \
+  --remote
+
+npx wrangler r2 object put images/projects/oci-cloudinfra.webp \
+  --file=./oci-cloudinfra.webp \
+  --content-type=image/webp \
+  --cache-control='public, max-age=60' \
+  --remote
+```
+
+If a project uses a different object name, update its `image` value in `app/data.ts` too. The Terraform Docs and Using `ip route` screenshots continue to come from their Medium articles.
+
 - Docker container:
 
   - Pull the image:
