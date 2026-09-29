@@ -35,7 +35,6 @@ const TRANSITION_SECTION = {
 
 type ProjectImageProps = {
   link: string
-  imageKey?: string
 }
 
 type MediumPost = {
@@ -45,27 +44,21 @@ type MediumPost = {
   link: string
 }
 
-function ProjectImage({ link, imageKey }: ProjectImageProps) {
+function ProjectImage({ link }: ProjectImageProps) {
   const [src, setSrc] = useState<string | null>(null)
 
   useEffect(() => {
-    if (imageKey) return
-
     fetch(`/api/og?url=${encodeURIComponent(link)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setSrc(data?.image ?? null))
       .catch(() => setSrc(null))
-  }, [imageKey, link])
-
-  const imageSrc = imageKey
-    ? `/api/project-images/${encodeURIComponent(imageKey)}`
-    : src
+  }, [link])
 
   return (
     <div className="aspect-video w-full overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900">
-      {imageSrc ? (
+      {src ? (
         <img
-          src={imageSrc}
+          src={src}
           alt=""
           loading="lazy"
           className="h-full w-full object-cover"
@@ -182,7 +175,16 @@ export default function Personal() {
           {PROJECTS.map((project) => (
             <div key={project.name} className="space-y-2">
               <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                <ProjectImage link={project.link} imageKey={project.image} />
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
+                  />
+                ) : (
+                  <ProjectImage link={project.link} />
+                )}
               </div>
               <div className="px-1">
                 <a
