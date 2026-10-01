@@ -4,12 +4,14 @@
     "@dietrichgebert/ponytail"
   ],
   "mcp": {
-    "cloudflare": {
-      "type": "remote",
-      "url": "https://mcp.cloudflare.com/mcp",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer {env:CLOUDFLARE_API_TOKEN}"
+    "servers": {
+      "cloudflare": {
+        "type": "remote",
+        "url": "https://mcp.cloudflare.com/mcp",
+        "disabled": false,
+        "headers": {
+          "Authorization": "Bearer {env:CLOUDFLARE_API_TOKEN}"
+        }
       }
     }
   }
