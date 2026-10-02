@@ -30,24 +30,16 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
 
       - name: Approve and enable auto-merge for minor and patch updates
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
-          head_sha=$(gh pr view "$PR_URL" --json headRefOid --jq .headRefOid)
-          bot_review=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews" --jq '.[] | select(.user.login == "github-actions[bot]") | [.state, .commit_id] | @tsv' | tail -n 1)
-          IFS=$'\t' read -r review_state review_commit <<< "$bot_review"
-          if [[ "$review_state" != APPROVED || "$review_commit" != "$head_sha" ]]; then
-            gh pr review "$PR_URL" --approve
-          else
-            echo "PR already approved; skipping review."
-          fi
-          gh pr merge --auto --squash "$PR_URL"
-          gh pr edit "$PR_URL" --add-label "automerged"
+          gh pr review "$PR_NUMBER" --approve
+          gh pr merge --auto --squash "$PR_NUMBER"
+          gh pr edit "$PR_NUMBER" --add-label "automerged"
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -55,11 +47,14 @@ jobs:
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
         with:
           script: |
+            const kind = process.env.UPDATE_TYPE.includes('minor') ? 'minor' : 'patch';
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: 'Auto-merge enabled. This PR will merge once checks pass.'
+              body: `Auto-merge enabled for ${kind} update. This PR will merge once checks pass.`
             })
