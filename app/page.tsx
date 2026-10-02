@@ -37,6 +37,13 @@ type ProjectImageProps = {
   link: string
 }
 
+type MediumPost = {
+  id: string
+  title: string
+  description: string
+  link: string
+}
+
 function ProjectImage({ link }: ProjectImageProps) {
   const [src, setSrc] = useState<string | null>(null)
 
@@ -98,6 +105,25 @@ function MagneticSocialLink({
 }
 
 export default function Personal() {
+  const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([])
+
+  useEffect(() => {
+    fetch('/api/medium-feed')
+      .then((response) => (response.ok ? response.json() : { posts: [] }))
+      .then((data) => setMediumPosts(data.posts ?? []))
+      .catch(() => setMediumPosts([]))
+  }, [])
+
+  const blogLinks = [
+    ...mediumPosts,
+    ...BLOG_POSTS.map((post) => ({
+      id: post.uid,
+      title: post.title,
+      description: post.description,
+      link: post.link,
+    })),
+  ]
+
   return (
     <motion.main
       className="space-y-24"
@@ -111,9 +137,12 @@ export default function Personal() {
       >
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Documentation of Linux systems administration, projects, infrastructure.
-
-            Most recent proof of work in <a className="underline" href="https://medium.com/@walkable-llc">Medium</a>.
+            DevOps, Linux systems administration, CI/CD projects,
+            infrastructure. Most recent proof of work in{' '}
+            <a className="underline" href="https://medium.com/@walkable-llc">
+              Medium
+            </a>
+            .
           </p>
         </div>
       </motion.section>
@@ -146,7 +175,16 @@ export default function Personal() {
           {PROJECTS.map((project) => (
             <div key={project.name} className="space-y-2">
               <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                <ProjectImage link={project.link} />
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
+                  />
+                ) : (
+                  <ProjectImage link={project.link} />
+                )}
               </div>
               <div className="px-1">
                 <a
@@ -181,13 +219,8 @@ export default function Personal() {
               duration: 0.2,
             }}
           >
-            {BLOG_POSTS.map((post) => (
-              <Link
-                key={post.uid}
-                className="-mx-3 rounded-xl px-3 py-3"
-                href={post.link}
-                data-id={post.uid}
-              >
+            {blogLinks.map((post) => {
+              const content = (
                 <div className="flex flex-col space-y-1">
                   <h4 className="font-normal dark:text-zinc-100">
                     {post.title}
@@ -196,8 +229,31 @@ export default function Personal() {
                     {post.description}
                   </p>
                 </div>
-              </Link>
-            ))}
+              )
+              const className = '-mx-3 rounded-xl px-3 py-3'
+
+              return post.link.startsWith('/') ? (
+                <Link
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  data-id={post.id}
+                >
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-id={post.id}
+                >
+                  {content}
+                </a>
+              )
+            })}
           </AnimatedBackground>
         </div>
       </motion.section>
