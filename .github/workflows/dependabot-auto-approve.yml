@@ -7,8 +7,9 @@ on:
   pull_request:
     types:
       - opened
+      - synchronize
       - reopened
-  workflow_dispatch:
+      - ready_for_review
 
 permissions:
   contents: write
@@ -18,40 +19,42 @@ jobs:
   auto-approve:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
-    
+
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
       - name: Fetch Metadata from Dependabot PRs
         id: metadata
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      
-      - name: Enable auto-merge for minor, patch updates
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Approve and enable auto-merge for minor and patch updates
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
-          gh pr merge --auto --squash "$PR_URL"
-          gh pr edit "$PR_URL" --add-label "automerged"
+          gh pr review "$PR_NUMBER" --approve
+          gh pr merge --auto --squash "$PR_NUMBER"
+          gh pr edit "$PR_NUMBER" --add-label "automerged"
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Comment on PR
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
         with:
           script: |
+            const kind = process.env.UPDATE_TYPE.includes('minor') ? 'minor' : 'patch';
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Auto-approve enabled. This PR will merge once checks pass.'
+              issue_number: context.issue.number,
+              body: `Auto-merge enabled for ${kind} update. This PR will merge once checks pass.`
             })
