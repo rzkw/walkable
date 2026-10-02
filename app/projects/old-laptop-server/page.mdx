@@ -4,13 +4,23 @@ export const metadata = {
   alternates: {
     canonical: '/projects/old-laptop-server',
   },
-  tags: ['hardware', 'ubuntu', 'server', 'networking', ]
+  tags: ['hardware', 'ubuntu', 'server', 'networking'],
+  date: '2025-07-10',
+  author: 'Rizky Ramadhani',
 }
 
 <Cover
   src="https://images.pexels.com/photos/17484901/pexels-photo-17484901.png"
   alt="from pexels.com"
   caption="pexels.com"
+/>
+
+<ArticleJsonLd
+  title="My $0 Home Lab: Converting an old Windows 10 Laptop into a performance-optimised server"
+  description="project turning a resource-constrained machine into a headless Ubuntu server"
+  url="https://www.walk-llc.com/projects/old-laptop-server"
+  date="2025-07-10"
+  author="Rizky Ramadhani"
 />
 
 # My $0 Home Lab: Converting an old Windows 10 Laptop into a performance-optimised server
@@ -98,6 +108,20 @@ Setting a static IP - I didn't use advanced router configuration as my router ha
 - Memory Efficiency: With the OS running Windows 10, the system would have used around 1.8-2.5GB or 40-65% of the non-upgradable RAM just sitting idle. Now running as a lightweight headless server, I've managed to reduce that to 378MiB idle or **16.7%**, a huge improvement to breathe new life into an older system. This means there's much more of the RAM available for running services I'd want to include in future, such as a reverse proxy, a web server or even containers. 
 
 - Install: The Ubuntu wizard makes the process very easy, and it's a good distro for all the documentation, forum posts and community support you can find for it. Looking forward to loading my server with services, touching on automation and whatever else I can get it to do!
+
+## Frequently Asked Questions
+
+### Can any old laptop be used as a home server?
+
+Yes, most laptops from the last 10 years with at least 4GB of RAM and a 64-bit processor can run a Linux server. The key requirements are a working network interface and the ability to boot from USB.
+
+### Do I need a static IP from my ISP?
+
+No. Setting a static IP on your server within your local network is sufficient for home access. For external access, you can use a dynamic DNS service or Cloudflare Tunnel instead of a static public IP.
+
+### How much does it cost to run a home server?
+
+The server itself costs $0 if using existing hardware. Ongoing costs are limited to electricity — a lightweight headless laptop server typically draws 10-30W, costing roughly $10-30 per year depending on local power rates.
 
 ## Artifacts
 

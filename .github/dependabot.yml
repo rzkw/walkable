@@ -26,3 +26,16 @@ updates:
       - docker
     cooldown:
       default-days: 7
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      time: "00:00"
+      timezone: "Asia/Jakarta"
+    assignees:
+      - rzkw
+    labels:
+      - npm
+    cooldown:
+      default-days: 7

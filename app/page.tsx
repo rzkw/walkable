@@ -1,15 +1,8 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-import { XIcon } from 'lucide-react'
 import { Spotlight } from '@/components/ui/spotlight'
 import { Magnetic } from '@/components/ui/magnetic'
-import {
-  MorphingDialog,
-  MorphingDialogTrigger,
-  MorphingDialogContent,
-  MorphingDialogClose,
-  MorphingDialogContainer,
-} from '@/components/ui/morphing-dialog'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
 import {
@@ -18,6 +11,7 @@ import {
   BLOG_POSTS,
   EMAIL,
   SOCIAL_LINKS,
+  TECH_STACK,
 } from './data'
 
 const VARIANTS_CONTAINER = {
@@ -39,53 +33,40 @@ const TRANSITION_SECTION = {
   duration: 0.3,
 }
 
-type ProjectVideoProps = {
-  src: string
+type ProjectImageProps = {
+  link: string
 }
 
-function ProjectVideo({ src }: ProjectVideoProps) {
+type MediumPost = {
+  id: string
+  title: string
+  description: string
+  link: string
+}
+
+function ProjectImage({ link }: ProjectImageProps) {
+  const [src, setSrc] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch(`/api/og?url=${encodeURIComponent(link)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setSrc(data?.image ?? null))
+      .catch(() => setSrc(null))
+  }, [link])
+
   return (
-    <MorphingDialog
-      transition={{
-        type: 'spring',
-        bounce: 0,
-        duration: 0.3,
-      }}
-    >
-      <MorphingDialogTrigger>
-        <video
+    <div className="aspect-video w-full overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900">
+      {src ? (
+        <img
           src={src}
-          autoPlay
-          loop
-          muted
-          className="aspect-video w-full cursor-zoom-in rounded-xl"
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover"
         />
-      </MorphingDialogTrigger>
-      <MorphingDialogContainer>
-        <MorphingDialogContent className="relative aspect-video rounded-2xl bg-zinc-50 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950 dark:ring-zinc-800/50">
-          <video
-            src={src}
-            autoPlay
-            loop
-            muted
-            className="aspect-video h-[50vh] w-full rounded-xl md:h-[70vh]"
-          />
-        </MorphingDialogContent>
-        <MorphingDialogClose
-          className="fixed top-6 right-6 h-fit w-fit rounded-full bg-white p-1"
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              transition: { delay: 0.3, duration: 0.1 },
-            },
-            exit: { opacity: 0, transition: { duration: 0 } },
-          }}
-        >
-          <XIcon className="h-5 w-5 text-zinc-500" />
-        </MorphingDialogClose>
-      </MorphingDialogContainer>
-    </MorphingDialog>
+      ) : (
+        <div className="h-full w-full animate-pulse bg-zinc-100 dark:bg-zinc-900" />
+      )}
+    </div>
   )
 }
 
@@ -124,6 +105,25 @@ function MagneticSocialLink({
 }
 
 export default function Personal() {
+  const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([])
+
+  useEffect(() => {
+    fetch('/api/medium-feed')
+      .then((response) => (response.ok ? response.json() : { posts: [] }))
+      .then((data) => setMediumPosts(data.posts ?? []))
+      .catch(() => setMediumPosts([]))
+  }, [])
+
+  const blogLinks = [
+    ...mediumPosts,
+    ...BLOG_POSTS.map((post) => ({
+      id: post.uid,
+      title: post.title,
+      description: post.description,
+      link: post.link,
+    })),
+  ]
+
   return (
     <motion.main
       className="space-y-24"
@@ -137,8 +137,32 @@ export default function Personal() {
       >
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Documentation of infra projects and Linux systems admin.
+            DevOps, Linux systems administration, CI/CD projects,
+            infrastructure. Most recent proof of work in{' '}
+            <a className="underline" href="https://medium.com/@walkable-llc">
+              Medium
+            </a>
+            .
           </p>
+        </div>
+      </motion.section>
+
+      <motion.section
+        variants={VARIANTS_SECTION}
+        transition={TRANSITION_SECTION}
+      >
+        <h3 className="mb-5 text-lg font-medium">Tech Stack</h3>
+        <div className="flex flex-col space-y-2">
+          {TECH_STACK.map((item) => (
+            <div key={item.category}>
+              <span className="block font-normal dark:text-zinc-100">
+                {item.category}
+              </span>
+              <span className="block text-zinc-500 dark:text-zinc-400">
+                {item.skills}
+              </span>
+            </div>
+          ))}
         </div>
       </motion.section>
 
@@ -151,7 +175,16 @@ export default function Personal() {
           {PROJECTS.map((project) => (
             <div key={project.name} className="space-y-2">
               <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                <ProjectVideo src={project.video} />
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
+                  />
+                ) : (
+                  <ProjectImage link={project.link} />
+                )}
               </div>
               <div className="px-1">
                 <a
@@ -160,7 +193,7 @@ export default function Personal() {
                   target="_blank"
                 >
                   {project.name}
-                  <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 dark:bg-zinc-50 transition-all duration-200 group-hover:max-w-full"></span>
+                  <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 transition-all duration-200 group-hover:max-w-full dark:bg-zinc-50"></span>
                 </a>
                 <p className="text-base text-zinc-600 dark:text-zinc-400">
                   {project.description}
@@ -171,7 +204,7 @@ export default function Personal() {
         </div>
       </motion.section>
 
-            <motion.section
+      <motion.section
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
@@ -186,13 +219,8 @@ export default function Personal() {
               duration: 0.2,
             }}
           >
-            {BLOG_POSTS.map((post) => (
-              <Link
-                key={post.uid}
-                className="-mx-3 rounded-xl px-3 py-3"
-                href={post.link}
-                data-id={post.uid}
-              >
+            {blogLinks.map((post) => {
+              const content = (
                 <div className="flex flex-col space-y-1">
                   <h4 className="font-normal dark:text-zinc-100">
                     {post.title}
@@ -201,8 +229,31 @@ export default function Personal() {
                     {post.description}
                   </p>
                 </div>
-              </Link>
-            ))}
+              )
+              const className = '-mx-3 rounded-xl px-3 py-3'
+
+              return post.link.startsWith('/') ? (
+                <Link
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  data-id={post.id}
+                >
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  key={post.id}
+                  className={className}
+                  href={post.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-id={post.id}
+                >
+                  {content}
+                </a>
+              )
+            })}
           </AnimatedBackground>
         </div>
       </motion.section>

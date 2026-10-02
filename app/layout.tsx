@@ -4,6 +4,7 @@ import './globals.css'
 import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
+import { PersonJsonLd } from '@/components/jsonld'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body
         className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased dark:bg-zinc-950`}
       >
+        <PersonJsonLd />
         <ThemeProvider
           enableSystem={true}
           attribute="class"
