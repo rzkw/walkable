@@ -22,6 +22,7 @@ All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is config
 - **Always test before submitting a PR, regardless of content** (code, plans, references, etc).
 - Run the exact commands and include the commands + their output in the PR description.
 - For non-code changes (docs, plans), verify whatever is verifiable (e.g. `git diff --stat`, build succeeds, config parses).
+- Skip `npm run build` for changes that do not affect the website (e.g. workflows, docs, plans). For workflow changes run `actionlint` instead. Always run `git diff --check`.
 
 # Walkable LLC — Project Instructions
 

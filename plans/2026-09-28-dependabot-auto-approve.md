@@ -64,11 +64,11 @@ Keep `pull-requests: write` and `contents: write`. Retain the existing harden-ru
 
 - [ ] **Step 3: Approve eligible updates before enabling auto-merge**
 
-Continue using the pinned `dependabot/fetch-metadata` action. For `version-update:semver-minor` and `version-update:semver-patch`, skip approval only when `github-actions[bot]` already approved the current head; otherwise run `gh pr review --approve` before `gh pr merge --auto --squash`.
+Continue using the pinned `dependabot/fetch-metadata` action. For `version-update:semver-minor` and `version-update:semver-patch`, run `gh pr review --approve` unconditionally before `gh pr merge --auto --squash`. Do not check for an existing bot approval first; a duplicate approval changes no state, and `synchronize` pushes re-approve the new head. Use only `PR_NUMBER`.
 
 - [ ] **Step 4: Fix the comment API call**
 
-Keep the article's comment step and pass `issue_number: context.issue.number`. The current workflow omitted this field, which caused the `/issues//comments` 404 after auto-merge had already been enabled.
+Keep the article's comment step and pass `issue_number: context.issue.number`. The current workflow omitted this field, which caused the `/issues//comments` 404 after auto-merge had already been enabled. Pass `update-type` via `UPDATE_TYPE` env and set the body to `Auto-merge enabled for minor update...` or `...patch update...` with a one-line JS ternary. Branch protection ruleset `main` requires 0 approvals, so approval is not a merge gate; strict CodeQL checks still gate the merge.
 
 - [ ] **Step 5: Validate the workflow file**
 
