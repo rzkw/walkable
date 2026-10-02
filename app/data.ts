@@ -3,6 +3,7 @@ type Project = {
   description: string
   link: string
   id: string
+  image?: string
 }
 
 type Certifications = {
@@ -33,16 +34,31 @@ type SocialLink = {
 
 export const PROJECTS: Project[] = [
   {
+    name: 'AWS labs',
+    description:
+      'Production-ready Terraform baseline with S3 backend, GitHub OIDC, multi-environment support, and security scanning.',
+    link: 'https://github.com/rzkw/aws',
+    id: 'project1',
+    image: '/public/aws-labs.png',
+  },
+  {
+    name: 'oci-cloudinfra',
+    description: "Walkable LLC's Terraform config for our OCI virtual network",
+    link: 'https://github.com/rzkw/oci-cloudinfra',
+    id: 'project2',
+    image: '/public/oci-cloudinfra.png',
+  },
+  {
     name: 'Terraform docs with MCP-verified state',
     description: 'and project-scoped agent configs',
     link: 'https://medium.com/@walkable-llc/terraform-docs-with-mcp-verified-state-and-project-scoped-agent-configs-078a2a41c94f',
-    id: 'project1',
+    id: 'project3',
   },
   {
     name: 'Using ip route to configure two nodes',
     description: 'static route setup between two home lab nodes',
     link: 'https://medium.com/@walkable-llc/using-ip-route-to-configure-two-nodes-f71a6ca5aabc',
-    id: 'project2',
+    id: 'project4',
   },
 ]
 
@@ -149,17 +165,17 @@ export const TECH_STACK: TechStack[] = [
   {
     category: 'Proficient in',
     skills:
-      'Git • Docker • Linux • Bash • Ubuntu • GitHub • RHEL • Networking (TCP/IP, DNS) • VS Code • macOS',
+      'Git • Docker • Linux • Bash • GitHub • Networking (TCP/IP, DNS) • VS Code • macOS',
   },
   {
     category: 'Experienced with',
     skills:
-      'GitHub Actions • Oracle Cloud Infrastructure (OCI) • Cloudflare • YAML • MCP (Model Context Protocol) • OpenCode • Slack • Claude',
+      'GitHub Actions • Oracle Cloud Infrastructure • YAML • AWS • Terraform • OpenCode • MCP (Model Context Protocol)  • Slack • Claude',
   },
   {
     category: 'Exposure to',
     skills:
-      'Jira • Terraform • Grafana • AWS • Ansible • Azure • PowerShell • Python • JavaScript • Vercel • Kubernetes',
+      'Kubernetes • Jira • Cloudflare • Vercel • Grafana • Ansible • Azure • PowerShell • Python • JavaScript',
   },
 ]
 
