@@ -1,67 +1,57 @@
 <img src="/public/Screenshot 2025-07-22 at 3.46.10 PM.png" alt="Cover image representing Walkable LLC Website" width="100%" />
 
-Walkable LLC is focused on building, documenting and operating infra projects. 
+This is the website for Walkable LLC. Walkable builds, documents, and runs infrastructure projects.
 
 ## About this repo
 
-The code is used to:
-- Deploy the app to Cloudflare Workers, and
-- Package the app into a Docker container (with Cloudflare-specific plugins removed)
+This repo holds the code. It does two things:
+
+- Deploys the site to Cloudflare Workers.
+- Packages the site as a Docker container (without Cloudflare plugins).
 
 ## Docker image
 
-A [multi-architecture Docker image](https://hub.docker.com/r/rzkw/walkable) is available for this app. The image packages the entire Walkable app into a self-contained artifact that can be built and run consistently across environments. It is intended for testing and/or deployment, both local and remote. 
+A [multi-arch image](https://hub.docker.com/r/rzkw/walkable) is on Docker Hub. It runs on x86 (`linux/amd64`) and ARM (`linux/arm64`).
 
-  - Based on slim hardened Node.js image
-  - Dockerfile based off of official [Next.js Docker example](https://github.com/vercel/next.js/tree/canary/examples/with-docker)
-
-## Purpose and scope
-
-- Demonstrating experience with production/deployment workflows
-- Understanding of containerisation in operations
-- Serve as a foundation for future contracting work and external collabs
+- Multi-stage build. One stage builds the app. The last stage holds only what is needed to run it.
+- Hardened Node images. Dev image builds it. Slim prod image runs it.
+- Build cache for npm and Next.js. Rebuilds stay fast.
+- Runs rootless as the `node` user.
+- Dockerfile is based on the official [Next.js Docker example](https://github.com/vercel/next.js/tree/canary/examples/with-docker).
 
 ## Getting Started
 
-This project can be run locally, viewed live, or as a Docker container.
+You can run it local, view it live, or run the Docker image.
 
-- Locally:
-
-  - Clone repo:
+- Local:
+  - Clone the repo:
     ```
     git clone https://github.com/rzkw/walkable.git
     cd walkable
     ```
-  - Install dependencies:
+  - Install deps:
     ```
     npm install
     ```
-  - Start dev server (may need to disable Cloudflare-related configs):
+  - Start the dev server:
     ```
     npm run dev
     ```
+
 - Live:
 
-The [live version](https://www.walk-llc.com) is deployed to Cloudflare Workers directly from this repo, not from the Docker image. 
+  The [live site](https://www.walk-llc.com) runs on Cloudflare Workers. It builds straight from this repo, not from Docker.
 
-
-- Docker container:
-
+- Docker:
   - Pull the image:
     ```
     docker pull rzkw/walkable
     ```
-  - Run the container:
+  - Run it:
     ```
     docker run -p 3000:3000 rzkw/walkable
     ```
 
-## Contact
-
-For contracting, technical discussions or feedback, feel free to contact via the usual profiles.
-
-Or submit a pull request! 
-
 ## Template
 
-Used a [template](https://github.com/ibelick/nim) built with Next.js 15, React 19, Tailwind CSS v4, and [Motion-Primitives Pro](https://pro.motion-primitives.com/).
+Built from this [template](https://github.com/ibelick/nim). It uses Next.js 16, React 19, Tailwind CSS v4, and Motion.
