@@ -1,29 +1,55 @@
 # Walkable LLC
-
 > Linux engineer and DevOps consultant. Infrastructure projects, container optimization, and systems administration. RHCSA certified.
 
 ## About
 
-Walkable LLC is operated by Rizky Ramadhani, a Linux engineer and DevOps consultant currently based in Southeast Asia. Former chef turned systems professional. Focus areas: Linux administration,container optimization, cloud infrastructure (OCI), automation (Ansible, Terraform), and monitoring (Grafana).
+Walkable LLC is operated by Rizky Ramadhani, a Linux engineer and DevOps consultant currently based in Southeast Asia. Former chef turned systems professional. Focus areas: Linux administration, container optimization, cloud infrastructure (OCI), automation (Ansible, Terraform), and monitoring (Grafana).
 
 Certifications: Red Hat Certified System Administrator (RHCSA), Microsoft Azure Fundamentals, CompTIA A+.
 
-## Key Content
+## Articles — OCI & Terraform
 
-- [Multi-arch container build optimization: 10m to 6.5s](https://medium.com/@walkable-llc/i-cut-my-multi-arch-build-times-from-10m-to-6.5s-8af80437fd82) - Using Buildx with native nodes instead of QEMU emulation
-- [SSH security hardening](https://www.walk-llc.com/blog/ssh-hardening) - UFW firewall, fail2ban, and configs
+- [Deploying a budget to OCI by Terraform](https://medium.com/@walkable-llc/deploying-a-budget-to-oci-by-terraform-faab5c664403) — Tags: devops, oracle-cloud, finops, agentic-ai, terraform. My existing budget collided with other modules in the repo: key for remote backend (OCI Object Storage bucket) was removed from modules’ providers.tf . The result was a change in the budget module overwrote existing VCN’s entry, attempting to destroy the VCN. My agent attempted to fix the problem by appending restoring individual backend keys to each module’s providers.tf , but in terraform/vcn it was appended to main.tf . It didn’t detect that a providers.tf didn’t exist.
+- [Terraform Docs with MCP-verified state and project-scoped agent configs](https://medium.com/@walkable-llc/terraform-docs-with-mcp-verified-state-and-project-scoped-agent-configs-078a2a41c94f) — Tags: devops, agentic-workflow, open-code, cloud-computing, terraform. Checking in implementation plans for review Why ditch the wiki for a docs/ directory? GitHub’s repo wikis have no branching, doesn’t allow PR gates with no way of reviewing changes before merging. I’ve also been reiterating on the LLC’s internal dev environment and it would take forever to document my infra by hand, looking up references etc.
+- [Allowing agent read-only access in OCI tenancy](https://medium.com/@walkable-llc/allowing-agent-read-only-access-in-oci-tenancy-bee62f464fee) — Tags: agentic-workflow, cloud-computing, agentic-ai, open-code. Oracle Cloud Infrastructure, agentic workflows I wanted to use my OpenCode agent, with OCI API MCP servers configured to review my tenancy while minimising its blast radius. I’m the admin/IAM user in charge of creating resources, while the agent can find security gaps, recommend better settings, and remind me of unused resources.
+- [Importing my OCI VCN into Terraform via Object Storage bucket](https://medium.com/@walkable-llc/importing-my-oci-vcn-into-terraform-via-object-storage-bucket-023b89097f69) — Tags: object-storage, oracle-cloud, devops, terraform-remote-state, terraform. Remote state backends and IAM policies whoopee I lost my Terraform state file at some point while trying to re-deploy my VCN on OCI. I noticed when I ran terraform plan the diff would say 5 resources to be applied without taking into account whatever’s already deployed, creating a duplicate network. I created a draft implementation plan with Opencode connected to the official Terraform and OCI API MCP servers, but it still generated lots of errors — invented flags that don’t exist, methods/steps...
 
-## Linked Content
+## Articles — Security & GitHub
 
-- [Scheduled backups with rsync](https://medium.com/@walkable-llc/scheduled-backups-with-rsync-e06725246df4) - Systemd timers and automated backup scripts
-- [Allowing agent read-only access in OCI tenancy](https://medium.com/@walkable-llc/allowing-agent-read-only-access-in-oci-tenancy-bee62f464fee) - Oracle Cloud IAM policies for agentic workflows
-- [Importing OCI VCN into Terraform via Object Storage](https://medium.com/@walkable-llc/importing-my-oci-vcn-into-terraform-via-object-storage-bucket-023b89097f69) - Remote state backends and IAM policies
-- [Building multi-architecture Docker images for Next.js + Cloudflare](https://medium.com/@walkable-llc/building-multi-architecture-docker-images-for-a-next-js-cloudflare-workers-project-0529bb67cade) - Dockerfile patterns for ARM and Intel
+- [Setting a classic PAT for my GitHub MCP Server](https://medium.com/@walkable-llc/setting-a-classic-pat-for-my-github-mcp-server-8974e3cf2af8) — Tags: cli, mcp-server, devops, github, open-code. I wanted to limit what my agent has access to through its own GitHub account, so that the blast radius is decreased in case of hijacking, breach or the agent managing to find holes in my security settings. Initially, I want to limit my agent to only maintain my project board (that I invited it to from my personal account). This requires the agent to also have access to my repo to assign issues to, list branches, commits etc. I’ll also need to limit the toolsets the GitHub MCP server has access t...
+- [Reviewing GitHub account security for agents](https://medium.com/@walkable-llc/reviewing-github-account-security-for-agents-0918b557fb03) — Tags: security, github-actions, ai-agent, ci-cd-pipeline, devops. GitHub Actions, permissions, rulesets, branch protection I wanted to secure my repo, project board and account before I let my separate agent account off to work. The idea is to let the agent take over the grunt work — manually clicking around issues, eventually reviewing PRs, writing workflows, and bigger tasks.
+- [Signing Git commits with SSH](https://medium.com/@walkable-llc/signing-git-commits-with-ssh-44e96940f282) — Tags: software-development, git, github. To avoid having to add the -S flag every time I want to make a commit, I ran git config --global commit.gpgsign true to add to my ~/.gitconfig. The contents of my ~/.gitconfig now looks like:
+
+## Articles — Linux & Networking
+
+- [Using ip route to configure two nodes](https://medium.com/@walkable-llc/using-ip-route-to-configure-two-nodes-f71a6ca5aabc) — Tags: linux, sysadmin, systems-engineering, devops, ubuntu. An iximiuz labs puzzle to connect two nodes with a router intermediary. The two nodes are in separate networks and can’t talk to each other yet — there is no default route configured in either routing table. The ip route command manages entries in the kernel routing table.
+- [Installing Docker via CLI and zsh](https://medium.com/@walkable-llc/installing-docker-via-cli-and-zsh-11318408ad7a) — Tags: docker, devops, mac, software-development, zsh. Command archives folder, shows verbose output, zips and shows progress/stats. Source is local, destination is VM I’m in a headless mac Sequoia VM and rebooting my VM = downtime. Plus it’s good to expand my zsh knowledge as I’m more familiar with Bash.
+- [Using git rebase to reconcile divergent branches](https://medium.com/@walkable-llc/using-git-rebase-to-reconcile-divergent-branches-185273ed5cbe) — Tags: git, branching-strategy, github, software-development. It’ll probably take me a good while to fully grasp git rebase 🫠
+
+## On-site Blog
+
+- [SSH security hardening and other bits](https://www.walk-llc.com/blog/ssh-hardening) — ufw firewall, fail2ban and configs
+- [Setting up SMTP with Migadu](https://www.walk-llc.com/blog/setting-up-smtp) — Using Migadu, an email service
+- [Setting up Cloudflare](https://www.walk-llc.com/blog/setting-up-cloudflare) — From domain registrar to routes
+- [Troubleshooting: adding a storage bucket to my blog](https://www.walk-llc.com/blog/cache-r2bindings) — Configuring R2 storage bucket on Cloudflare
+- [Integrating Grafana](https://www.walk-llc.com/blog/grafana) — for monitoring purposes
+- [Setting up Slack alerting from Grafana](https://www.walk-llc.com/blog/alerting) — Slack notifications from Grafana
+
+## Projects
+
+- [My $0 Home Lab: Converting an old Windows 10 Laptop into a server](https://www.walk-llc.com/projects/old-laptop-server) — Turning a resource-constrained machine into a headless Ubuntu node
+- [Exploring Virtualisation](https://www.walk-llc.com/projects/exploring-virt) — Using VMWare Fusion
+
+## Certifications
+
+- Red Hat Certified System Administrator (RHCSA), 2025–2028
+- Microsoft Azure Fundamentals, 2025–Present
+- CompTIA A+, 2025–2028
 
 ## Contact
 
 - Website: https://www.walk-llc.com
-- Email: hello@walk-llc.com
+- Email: [EMAIL]
 - LinkedIn: https://www.linkedin.com/in/rizky-ramadhani3056/
 - GitHub: https://github.com/rzkw
 - Medium: https://medium.com/@walkable-llc
