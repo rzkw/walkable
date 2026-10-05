@@ -9,7 +9,7 @@ updates:
     assignees:
       - rzkw
     labels:
-      - github-actions
+      - github_actions
     cooldown:
       default-days: 7
       
