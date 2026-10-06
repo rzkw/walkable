@@ -1,4 +1,4 @@
-<img src="/public/walk-llc-5oct.png" alt="Cover image representing Walkable LLC Website" width="100%" />
+<img src="/public/walk-llc-5oct.png" alt="Cover image representing Walkable LLC Website" width="50%" />
 
 
 Web app for Walkable LLC, built using a [template](https://github.com/ibelick/nim) built with Next.js 15, React 19, Tailwind CSS v4, and [Motion-Primitives Pro](https://pro.motion-primitives.com/).
