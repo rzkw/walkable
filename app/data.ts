@@ -39,14 +39,14 @@ export const PROJECTS: Project[] = [
       'Production-ready Terraform baseline with S3 backend, GitHub OIDC, multi-environment support, and security scanning.',
     link: 'https://github.com/rzkw/aws',
     id: 'project1',
-    image: '/public/aws-labs.png',
+    image: '/aws-labs.png',
   },
   {
     name: 'oci-cloudinfra',
     description: "Walkable LLC's Terraform config for our OCI virtual network",
     link: 'https://github.com/rzkw/oci-cloudinfra',
     id: 'project2',
-    image: '/public/oci-cloudinfra.png',
+    image: '/oci-cloudinfra.png',
   },
   {
     name: 'Terraform docs with MCP-verified state',
