@@ -12,6 +12,10 @@ Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 
 All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is configured globally (`gpg.format = ssh`, `user.signingkey = ~/.ssh/agent-gh-signing.pub`, `commit.gpgsign = true`). Verify with `git log --show-signature -1` before pushing.
 
+## Problem solving
+
+- Use the simplest solution that works. Avoid overengineering and needless complexity.
+
 ## Writing and code review
 
 - Use simple English in pull request titles, descriptions, comments and replies, documentation, and conversation threads. Keep sentences short and direct. Avoid jargon and filler.
