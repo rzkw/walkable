@@ -2,6 +2,10 @@
 
 Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 
+
+## Problem solving
+When suggesting solutions, problem solving, or implementing changes - always strive for the simplest possible solution that works. Avoid overengineering, overcomplicating, building unnecessarily difficult solutions. 
+
 ## Git Rules
 
 - **Never force push.** `git push --force` is forbidden on any branch. Use `--force-with-lease` when necessary. Add new commits only.
