@@ -2,6 +2,10 @@
 
 Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 
+
+## Problem solving
+When suggesting solutions, problem solving, or implementing changes - always strive for the simplest possible solution that works. Avoid overengineering, overcomplicating, building unnecessarily difficult solutions. 
+
 ## Git Rules
 
 - **Never force push.** `git push --force` is forbidden on any branch. Use `--force-with-lease` when necessary. Add new commits only.
@@ -11,10 +15,6 @@ Next.js website for Walkable LLC. Deployed to Cloudflare Workers and Docker.
 ## Commit signing
 
 All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is configured globally (`gpg.format = ssh`, `user.signingkey = ~/.ssh/agent-gh-signing.pub`, `commit.gpgsign = true`). Verify with `git log --show-signature -1` before pushing.
-
-## Problem solving
-
-- Use the simplest solution that works. Avoid overengineering and needless complexity.
 
 ## Writing and code review
 
