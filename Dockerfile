@@ -6,9 +6,11 @@
 
 # syntax=docker/dockerfile:1
 
+# Use hardened dev image
+
 FROM dhi.io/node:24.13.1-dev AS base
 
-# Copy relevant files for npm before installing dependencies 
+# Builder stage: copy package list into build context before installing dependencies. Use cache mounts to only rebuild layers if package*.json changes.
 
 FROM base AS builder
 WORKDIR /app
@@ -18,7 +20,7 @@ RUN  --mount=type=cache,target=/root/.npm npm --no-fund --no-update-notifier ci
 COPY . .
 RUN --mount=type=cache,target=.next/cache NEXT_TELEMETRY_DISABLED=1 npm run build
 
-# Production image, copy all the files and run next
+# Production image: copy only necessary dirs from builder stage, change ownership to node (rootless), use slim prod image with no build tools
 
 FROM dhi.io/node:24 AS app
 WORKDIR /app
