@@ -215,8 +215,6 @@ export default defineCloudflareConfig({
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
 ```
 
-- [ ] **Step 3:** Do not touch the Docker setup. It refreshes from the file system on its own.
-
 ## Task 4: Check the result
 
 Run each command. Put the output in the PR description.
