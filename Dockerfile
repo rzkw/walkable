@@ -1,4 +1,4 @@
-# Edit 08/08/2026: Dockerfile for walk-llc.com using layer caching, separate dev and prod hardened images, pushed to public Docker Hub registry.
+# Edit 08/08/2026: Dockerfile for walk-llc.com using cache mounts, separate base and build hardened images, pushed to public Docker Hub registry.
 #
 # References: https://docs.docker.com/engine/manage-resources/contexts/; https://blog.jonrshar.pe/2024/Dec/24/nextjs-prisma-docker.html; https://labs.iximiuz.com/tutorials/docker-multi-stage-builds
 #
