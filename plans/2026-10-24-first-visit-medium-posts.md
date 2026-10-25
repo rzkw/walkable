@@ -22,7 +22,8 @@
 - If Medium is down while the site builds, use an empty list. Do not fail the build. If Medium is down at a later refresh, stop with an error. Next.js then keeps the last good page.
 - `app/page.tsx` becomes a plain server page. Do not create a client wrapper.
 - Keep all mouse-over effects: Spotlight, Magnetic, AnimatedBackground, MagneticSocialLink, and the CSS transitions. Remove only the load-in animation (`motion.main`, `motion.section`, the variants and transition constants).
-- Add no packages, no cron jobs, no Cloudflare bindings.
+- Add the Cloudflare queue. OpenNext needs a queue for time-based refresh. Without one, the page never refreshes on Cloudflare. It only changes at the next deploy.
+- Add no packages and no cron jobs.
 
 ## What the feed looks like (checked on 2026-10-24)
 
@@ -185,7 +186,38 @@ export default async function Personal() {
 - [ ] **Step 5:** Keep `Spotlight`, `Magnetic`, `AnimatedBackground`, and `MagneticSocialLink` exactly as they are. Keep all other markup and classes unchanged.
 - [ ] **Step 6:** Delete `app/api/medium-feed/route.ts` and `app/api/og/route.ts`. `app/page.tsx` is their only user (checked on 2026-10-24).
 
-## Task 3: Check the result
+## Task 3: Turn on hourly refresh on Cloudflare
+
+**File:** `open-next.config.ts` and `wrangler.jsonc`.
+
+- [ ] **Step 1:** Add the queue to `open-next.config.ts`:
+
+```ts
+// default open-next.config.ts file created by @opennextjs/cloudflare
+import { defineCloudflareConfig } from '@opennextjs/cloudflare/config'
+import r2IncrementalCache from '@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache'
+import doQueue from '@opennextjs/cloudflare/overrides/queue/do-queue'
+
+export default defineCloudflareConfig({
+  incrementalCache: r2IncrementalCache,
+  queue: doQueue,
+})
+```
+
+- [ ] **Step 2:** Add the queue binding to `wrangler.jsonc`:
+
+```jsonc
+  "durable_objects": {
+    "bindings": [
+      { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+    ],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
+```
+
+- [ ] **Step 3:** Do not touch the Docker setup. It refreshes from the file system on its own.
+
+## Task 4: Check the result
 
 Run each command. Put the output in the PR description.
 
@@ -197,7 +229,18 @@ Run each command. Put the output in the PR description.
   - [ ] it has all 10 Medium post links in the Blog section
   - [ ] it has `miro.medium.com` image links for project3 and project4
 - [ ] **Step 4:** `git diff --check`
-- [ ] **Step 5:** Run `/ponytail-review` on the diff. Apply what it finds.
+- [ ] **Step 5:** Run `npm run preview`. Open `/`. The page source must show the 10 posts and the project images.
+- [ ] **Step 6:** Run `/ponytail-review` on the diff. Apply what it finds.
+
+## Idea for later: a page of plain HTML only (draft, do not build now)
+
+Today a server builds the page and refreshes it every hour. A plain HTML page has no server.
+
+- A scheduled job fetches the feed, writes the 10 titles, links, and image URLs into the HTML file, commits, and deploys.
+- The page stays a plain file. No queue, no cache store, no server code.
+- How fresh the page is depends on how often the job runs (for example every hour).
+- The cost is one deploy per run, and new posts wait for the next run.
+- The repo already does this for `public/llms.txt`: a daily workflow that commits and pushes.
 
 ## References
 
@@ -205,5 +248,5 @@ Run each command. Put the output in the PR description.
 - Cloudflare, [Challenges](https://developers.cloudflare.com/cloudflare-challenges/) — a bot check blocks a request until the browser passes it. Checked on 2026-10-24: `www.walk-llc.com` sent HTTP 403 with `cf-mitigated: challenge` on both `/` and `/api/medium-feed`.
 - Next.js, [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) — the `revalidate = 3600` pattern. If a refresh throws an error, the last good page stays online. An explicit `cache: 'no-store'` rebuilds the page on every visit (see Caveats).
 - Next.js, [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) — a server page can render client components, and can pass children and plain data as props. A third-party component with no `"use client"` line fails on a server page, which is why `motion.main` must go.
-- OpenNext.js, [Cloudflare caching](https://opennext.js.org/cloudflare/caching) — where the built pages are stored on Cloudflare Workers. `open-next.config.ts` already sets `r2IncrementalCache`.
+- OpenNext.js, [Cloudflare caching](https://opennext.js.org/cloudflare/caching) — where built pages are stored on Workers, and why time-based refresh needs a queue. Checked in `node_modules`: the default queue is `dummy`, and it throws when used (`@opennextjs/aws/dist/overrides/queue/dummy.js`). That error is caught and logged, so visitors still get the old page (`dist/core/routing/util.js`).
 - Next.js source, [`PHASE_PRODUCTION_BUILD`](https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/constants.ts) — the build sets `process.env.NEXT_PHASE = 'phase-production-build'`. Checked in `node_modules`: `next/dist/build/index.js` line 1212 sets it, `next/dist/server/web/globals.js` line 34 reads it.
