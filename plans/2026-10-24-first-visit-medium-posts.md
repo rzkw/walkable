@@ -8,9 +8,9 @@
 
 **Tools:** Next.js App Router, React, TypeScript.
 
-## Why it fails today (checked on 2026-10-24)
+## Why it fails today (checked on 2026-10-25)
 
-1. The feed code keeps only posts that link to `medium.com`. The two newest posts live on other Medium sites: `aws.plainenglish.io` (the Checkov post) and `blog.devops.dev`. So both are thrown away. Only 8 of 10 posts can show.
+1. The feed code keeps only posts that link to `medium.com`. One current post lives on another Medium site (`blog.devops.dev`), so it gets thrown away. One of the 10 posts is lost.
 2. The page asks for the feed and the images from the browser. On a first visit, Cloudflare's bot check blocks that request and sends back HTTP 403 with `cf-mitigated: challenge`. The page shows nothing. A refresh works only because the browser then holds Cloudflare's pass cookie.
 
 ## Rules
@@ -22,12 +22,13 @@
 - If Medium is down while the site builds, use an empty list. Do not fail the build. If Medium is down at a later refresh, stop with an error. Next.js then keeps the last good page.
 - `app/page.tsx` becomes a plain server page. Do not create a client wrapper.
 - Keep all mouse-over effects: Spotlight, Magnetic, AnimatedBackground, MagneticSocialLink, and the CSS transitions. Remove only the load-in animation (`motion.main`, `motion.section`, the variants and transition constants).
+- Project links change by hand from time to time. project1 and project2 keep the screenshots in `data.ts`. project3 and project4 take the image from the article they link to. Find the image by link, so a new link picks up the new image with no code change.
 - Add the Cloudflare queue. OpenNext needs a queue for time-based refresh. Without one, the page never refreshes on Cloudflare. It only changes at the next deploy.
 - Add no packages and no cron jobs.
 
-## What the feed looks like (checked on 2026-10-24)
+## What the feed looks like (checked on 2026-10-25)
 
-The feed has 10 items. Each item has a title, a link with a `?source=...` suffix, an id, and the article HTML in `<content:encoded>`. The first `<img>` in that HTML is the article image. Items 1 and 2 link to other Medium sites, not `medium.com`. Item 5 is project3 and item 7 is project4. After the `?source=...` suffix is removed, their links match `app/data.ts`.
+The feed has 10 items. Each item has a title, a link with a `?source=...` suffix, an id, and the article HTML in `<content:encoded>`. The first `<img>` in that HTML is the article image. It comes from `cdn-images-1.medium.com`. Item 2 links to `blog.devops.dev`, not `medium.com`. The links for project3 and project4 match `app/data.ts` once the `?source=...` suffix is removed.
 
 ---
 
@@ -156,11 +157,13 @@ export default async function Personal() {
 ```
 
 - [ ] **Step 3:** Replace `<motion.main ...>` with `<main className="space-y-24">`. Replace every `<motion.section variants={...} transition={...}>` with `<section>`.
-- [ ] **Step 4:** Give every project one image path. Remove the split between `project.image` and `<ProjectImage>`:
+- [ ] **Step 4:** Set the project images. Only project3 and project4 use a Medium image. project1 and project2 keep `image` in `data.ts`. Remove the `ProjectImage` component and use one expression:
 
 ```tsx
 {
   PROJECTS.map((project) => {
+    // project1 and project2: the screenshot in data.ts.
+    // project3 and project4: the image from the article they link to.
     const image = project.image ?? feedImages.get(project.link) ?? null
     return (
       <div key={project.name} className="space-y-2">
@@ -222,10 +225,10 @@ Run each command. Put the output in the PR description.
 - [ ] **Step 1:** `npm run lint`
 - [ ] **Step 2:** `npm run build`. The output must show `/` as a static page, not dynamic.
 - [ ] **Step 3:** Look at the built HTML in `.next/server/app/index.html`:
-  - [ ] it has `d442aa83b259` — the Checkov post
-  - [ ] it has `aws.plainenglish.io` and `blog.devops.dev` — the two posts from other Medium sites
+  - [ ] it has `blog.devops.dev` — the post from another Medium site
   - [ ] it has all 10 Medium post links in the Blog section
-  - [ ] it has `miro.medium.com` image links for project3 and project4
+  - [ ] it has `cdn-images-1.medium.com` image links for project3 and project4
+  - [ ] it has `/aws-labs.png` and `/oci-cloudinfra.png` for project1 and project2
 - [ ] **Step 4:** `git diff --check`
 - [ ] **Step 5:** Run `npm run preview`. Open `/`. The page source must show the 10 posts and the project images.
 - [ ] **Step 6:** Run `/ponytail-review` on the diff. Apply what it finds.
@@ -242,7 +245,7 @@ Today a server builds the page and refreshes it every hour. A plain HTML page ha
 
 ## References
 
-- Medium Help Center, [Using RSS feeds of profiles, publications, and topics](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics) — how a Medium profile feed works. A post keeps the site where it was published. Checked on 2026-10-24: items 1 and 2 link to `aws.plainenglish.io` and `blog.devops.dev`.
+- Medium Help Center, [Using RSS feeds of profiles, publications, and topics](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics) — how a Medium profile feed works. A post keeps the site where it was published. Checked on 2026-10-25: the post on `blog.devops.dev` is in the feed. The Checkov post moved from `aws.plainenglish.io` back to `medium.com`.
 - Cloudflare, [Challenges](https://developers.cloudflare.com/cloudflare-challenges/) — a bot check blocks a request until the browser passes it. Checked on 2026-10-24: `www.walk-llc.com` sent HTTP 403 with `cf-mitigated: challenge` on both `/` and `/api/medium-feed`.
 - Next.js, [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) — the `revalidate = 3600` pattern. If a refresh throws an error, the last good page stays online. An explicit `cache: 'no-store'` rebuilds the page on every visit (see Caveats).
 - Next.js, [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) — a server page can render client components, and can pass children and plain data as props. A third-party component with no `"use client"` line fails on a server page, which is why `motion.main` must go.
