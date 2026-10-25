@@ -30,6 +30,21 @@
 
 The feed has 10 items. Each item has a title, a link with a `?source=...` suffix, an id, and the article HTML in `<content:encoded>`. The first `<img>` in that HTML is the article image. It comes from `cdn-images-1.medium.com`. Item 2 links to `blog.devops.dev`, not `medium.com`. The links for project3 and project4 match `app/data.ts` once the `?source=...` suffix is removed.
 
+## Commit plan
+
+Make small commits. Each one touches 5 files or fewer. Each subject line is 50 to 80 characters.
+
+| Commit | Subject                                                   | Files                                                 |
+| ------ | --------------------------------------------------------- | ----------------------------------------------------- |
+| 1      | `feat: add medium feed reader with article image lookup`  | `lib/medium.ts`                                       |
+| 2      | `refactor: read medium feed on the server in home page`   | `app/page.tsx`                                        |
+| 3      | `chore: delete unused medium feed and og api routes`      | `app/api/medium-feed/route.ts`, `app/api/og/route.ts` |
+| 4      | `build: add durable object queue for hourly revalidation` | `open-next.config.ts`, `wrangler.jsonc`               |
+
+- Keep commits 1 to 3 in this order. Each one builds on the one before.
+- Commit 4 is independent. It can go first or last.
+- Run `npm run build` after commit 2, and again at the end.
+
 ---
 
 ## Task 1: Add `lib/medium.ts`
