@@ -32,16 +32,16 @@ The feed has 10 items. Each item has a title, a link with a `?source=...` suffix
 
 ## Commit plan
 
-Make small commits. Each one touches 5 files or fewer. Each subject line is 50 to 80 characters, tag included.
+Make small commits. Each one touches 5 files or fewer. Each subject line is 50 to 80 characters.
 
-| Commit | Subject                                                                      | Files                                                 |
-| ------ | ---------------------------------------------------------------------------- | ----------------------------------------------------- |
-| 1      | `feat: add medium feed reader with article image lookup [ai-assisted]` (68)  | `lib/medium.ts`                                       |
-| 2      | `refactor: read medium feed on the server in home page [ai-assisted]` (67)   | `app/page.tsx`                                        |
-| 3      | `chore: delete unused medium feed and og api routes [ai-assisted]` (64)      | `app/api/medium-feed/route.ts`, `app/api/og/route.ts` |
-| 4      | `build: add durable object queue for hourly revalidation [ai-assisted]` (69) | `open-next.config.ts`, `wrangler.jsonc`               |
+| Commit | Subject                                                        | Files                                                 |
+| ------ | -------------------------------------------------------------- | ----------------------------------------------------- |
+| 1      | `feat: add medium feed reader with article image lookup` (54)  | `lib/medium.ts`                                       |
+| 2      | `refactor: read medium feed on the server in home page` (53)   | `app/page.tsx`                                        |
+| 3      | `chore: delete unused medium feed and og api routes` (50)      | `app/api/medium-feed/route.ts`, `app/api/og/route.ts` |
+| 4      | `build: add durable object queue for hourly revalidation` (55) | `open-next.config.ts`, `wrangler.jsonc`               |
 
-- Every commit body says why the change was made. Then add two lines: `AI helped with:` and `Human decisions:`.
+- Every commit body says why the change was made.
 - Keep commits 1 to 3 in this order. Each one builds on the one before.
 - Commit 4 is independent. It can go first or last.
 - Run `npm run build` after commit 2, and again at the end.
