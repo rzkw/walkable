@@ -161,12 +161,12 @@ The lint failure is pre-existing on `main` and is described in bug 6.
 
 ## References
 
-- Next.js, [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) — the `revalidate = 3600` pattern, the throw-on-refresh behaviour that keeps the last good page, and the caveat that `cache: 'no-store'` forces dynamic rendering.
-- Next.js, [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) — server pages can render client components and pass children and plain data; a third-party component with no `"use client"` directive fails on a server page, which is why `motion.main` had to go.
-- Next.js source, [`PHASE_PRODUCTION_BUILD`](https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/constants.ts) — `NEXT_PHASE` is set to `phase-production-build` during the build. Checked in `node_modules`: `next/dist/build/index.js` line 1212 sets it, `next/dist/server/web/globals.js` line 34 reads it.
-- Medium Help Center, [Using RSS feeds of profiles, publications, and topics](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics) — how a profile feed works. Checked live on 2026-10-25: one post links to `blog.devops.dev`; the Checkov post moved back to `medium.com`.
-- Cloudflare, [Challenges](https://developers.cloudflare.com/cloudflare-challenges/) — a bot check blocks a request until the browser passes it. Checked live on 2026-10-24: `www.walk-llc.com` returned HTTP 403 with `cf-mitigated: challenge` on `/` and `/api/medium-feed`.
-- OpenNext.js, [Cloudflare caching](https://opennext.js.org/cloudflare/caching) — where built pages are stored, and the statement that a queue is required for time-based revalidation.
-- OpenNext source, `@opennextjs/aws/dist/overrides/queue/dummy.js` — the default queue throws `Dummy queue is not implemented`. Read from `node_modules` in this repo.
-- OpenNext source, `@opennextjs/aws/dist/core/routing/util.js` line ~302 — the `queue.send` call wrapped in try/catch, which is why the failure is silent. Read from `node_modules` in this repo.
-- Prettier config, `.prettierrc.json` — the single-quote and no-semicolon style that reformatted the config files (bug 8).
+- Next.js, [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) — source of `revalidate = 3600`. A failed refresh keeps the last good page. `cache: 'no-store'` forces dynamic rendering.
+- Next.js, [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) — a server page can render client components and pass plain data. A component without `"use client"` fails on a server page, so `motion.main` had to go.
+- Next.js source, [`PHASE_PRODUCTION_BUILD`](https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/constants.ts) — sets `NEXT_PHASE` during the build. In `node_modules`: `next/dist/build/index.js` line 1212 sets it; `next/dist/server/web/globals.js` line 34 reads it.
+- Medium Help Center, [RSS feeds of profiles, publications, and topics](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics) — how a profile feed works. Live check 2026-10-25: one post is on `blog.devops.dev`; the Checkov post moved back to `medium.com`.
+- Cloudflare, [Challenges](https://developers.cloudflare.com/cloudflare-challenges/) — a bot check blocks the request until the browser passes. Live check 2026-10-24: `www.walk-llc.com` sent HTTP 403 and `cf-mitigated: challenge` on `/` and `/api/medium-feed`.
+- OpenNext.js, [Cloudflare caching](https://opennext.js.org/cloudflare/caching) — where built pages are stored. A queue is required for time-based revalidation.
+- OpenNext source, `@opennextjs/aws/dist/overrides/queue/dummy.js` — the default queue throws `Dummy queue is not implemented`. Read from `node_modules`.
+- OpenNext source, `@opennextjs/aws/dist/core/routing/util.js` line ~302 — `queue.send` sits in a try/catch, so the failure is silent. Read from `node_modules`.
+- Prettier config, `.prettierrc.json` — single quotes and no semicolons. It reformatted the config files (bug 8).
