@@ -1,10 +1,8 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
 import { Spotlight } from '@/components/ui/spotlight'
 import { Magnetic } from '@/components/ui/magnetic'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
+import { getMediumPosts } from '@/lib/medium'
 import {
   PROJECTS,
   CERTIFICATIONS,
@@ -14,61 +12,7 @@ import {
   TECH_STACK,
 } from './data'
 
-const VARIANTS_CONTAINER = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-}
-
-const VARIANTS_SECTION = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
-}
-
-const TRANSITION_SECTION = {
-  duration: 0.3,
-}
-
-type ProjectImageProps = {
-  link: string
-}
-
-type MediumPost = {
-  id: string
-  title: string
-  description: string
-  link: string
-}
-
-function ProjectImage({ link }: ProjectImageProps) {
-  const [src, setSrc] = useState<string | null>(null)
-
-  useEffect(() => {
-    fetch(`/api/og?url=${encodeURIComponent(link)}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setSrc(data?.image ?? null))
-      .catch(() => setSrc(null))
-  }, [link])
-
-  return (
-    <div className="aspect-video w-full overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900">
-      {src ? (
-        <img
-          src={src}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="h-full w-full animate-pulse bg-zinc-100 dark:bg-zinc-900" />
-      )}
-    </div>
-  )
-}
+export const revalidate = 3600
 
 function MagneticSocialLink({
   children,
@@ -104,15 +48,9 @@ function MagneticSocialLink({
   )
 }
 
-export default function Personal() {
-  const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([])
-
-  useEffect(() => {
-    fetch('/api/medium-feed')
-      .then((response) => (response.ok ? response.json() : { posts: [] }))
-      .then((data) => setMediumPosts(data.posts ?? []))
-      .catch(() => setMediumPosts([]))
-  }, [])
+export default async function Personal() {
+  const mediumPosts = await getMediumPosts()
+  const feedImages = new Map(mediumPosts.map((post) => [post.link, post.image]))
 
   const blogLinks = [
     ...mediumPosts,
@@ -125,16 +63,8 @@ export default function Personal() {
   ]
 
   return (
-    <motion.main
-      className="space-y-24"
-      variants={VARIANTS_CONTAINER}
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+    <main className="space-y-24">
+      <section>
         <div className="flex flex-1 flex-col space-y-2">
           <p className="text-zinc-600 dark:text-zinc-400">
             DevOps, Linux systems administration, CI/CD projects,
@@ -145,12 +75,9 @@ export default function Personal() {
             .
           </p>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+      <section>
         <h3 className="mb-5 text-lg font-medium">Tech Stack</h3>
         <div className="flex flex-col space-y-2">
           {TECH_STACK.map((item) => (
@@ -164,50 +91,49 @@ export default function Personal() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+      <section>
         <h3 className="mb-5 text-lg font-medium">Selected Projects</h3>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {PROJECTS.map((project) => (
-            <div key={project.name} className="space-y-2">
-              <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt=""
-                    loading="lazy"
-                    className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
-                  />
-                ) : (
-                  <ProjectImage link={project.link} />
-                )}
+          {PROJECTS.map((project) => {
+            // project1 and project2: the screenshot in data.ts.
+            // project3 and project4: the image from the article they link to.
+            const image = project.image ?? feedImages.get(project.link) ?? null
+            return (
+              <div key={project.name} className="space-y-2">
+                <div className="relative rounded-2xl bg-zinc-50/40 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950/40 dark:ring-zinc-800/50">
+                  {image ? (
+                    <img
+                      src={image}
+                      alt=""
+                      loading="lazy"
+                      className="aspect-video w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
+                    />
+                  ) : (
+                    <div className="aspect-video w-full rounded-xl bg-zinc-100 dark:bg-zinc-900" />
+                  )}
+                </div>
+                <div className="px-1">
+                  <a
+                    className="font-base group relative inline-block font-[450] text-zinc-900 dark:text-zinc-50"
+                    href={project.link}
+                    target="_blank"
+                  >
+                    {project.name}
+                    <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 transition-all duration-200 group-hover:max-w-full dark:bg-zinc-50"></span>
+                  </a>
+                  <p className="text-base text-zinc-600 dark:text-zinc-400">
+                    {project.description}
+                  </p>
+                </div>
               </div>
-              <div className="px-1">
-                <a
-                  className="font-base group relative inline-block font-[450] text-zinc-900 dark:text-zinc-50"
-                  href={project.link}
-                  target="_blank"
-                >
-                  {project.name}
-                  <span className="absolute bottom-0.5 left-0 block h-[1px] w-full max-w-0 bg-zinc-900 transition-all duration-200 group-hover:max-w-full dark:bg-zinc-50"></span>
-                </a>
-                <p className="text-base text-zinc-600 dark:text-zinc-400">
-                  {project.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+      <section>
         <h3 className="mb-3 text-lg font-medium">Blog</h3>
         <div className="flex flex-col space-y-0">
           <AnimatedBackground
@@ -256,12 +182,9 @@ export default function Personal() {
             })}
           </AnimatedBackground>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+      <section>
         <h3 className="mb-5 text-lg font-medium">Certifications</h3>
         <div className="flex flex-col space-y-2">
           {CERTIFICATIONS.map((job) => (
@@ -294,12 +217,9 @@ export default function Personal() {
             </a>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
+      <section>
         <h3 className="mb-5 text-lg font-medium">Connect</h3>
         <p className="mb-5 text-zinc-600 dark:text-zinc-400">
           Feel free to contact me at{' '}
@@ -314,7 +234,7 @@ export default function Personal() {
             </MagneticSocialLink>
           ))}
         </div>
-      </motion.section>
-    </motion.main>
+      </section>
+    </main>
   )
 }
