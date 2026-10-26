@@ -1,4 +1,4 @@
-> **TL;DR:** _The home page now writes the 10 latest Medium posts and the project3 and project4 article images into the HTML at build time. First-time visitors see them with no API call, no cookie, and no JavaScript. Four commits, one plan file, and a one-hour refresh on both Cloudflare and Docker. All checks below were run locally before the PR._
+> **TL;DR:** _The home page now writes the 10 latest Medium posts and the project3 and project4 article images into the HTML at build time. First-time visitors see them straight from the HTML, before any JavaScript runs. Four commits, one plan file, and a one-hour refresh on both Cloudflare and Docker. All checks below were run locally before the PR._
 
 > This report covers the work planned in `plans/2026-10-24-first-visit-medium-posts.md` and merged as PR #281. The plan was reviewed and merged first. The commit rules in `AGENTS.md` (PR #279) landed before the code, so they apply to every commit here.
 >
@@ -24,13 +24,13 @@ All four commits are SSH-signed and are 1–2 files each. Subjects are 50–55 c
 
 ## What changed and why
 
-**Commit 1 — `lib/medium.ts`.** The page needed the feed on the server. The old route kept only links starting with `https://medium.com/`, which dropped the post published on `blog.devops.dev`. It also returned no image. The new reader keeps every `https://` link and takes each article image from the first `<img>` in `<content:encoded>`. A build must not fail when Medium is down, so a fetch error during `phase-production-build` returns an empty list. At a later refresh the error is thrown, which makes Next.js keep serving the last good page.
+**Commit 1 — `lib/medium.ts` (new).** Reads the feed on the server. Keeps every `https://` post, including the one on `blog.devops.dev`, and takes each image from the first `<img>` in the article content. If Medium is down at build time the list is empty; if a later refresh fails, Next.js keeps the last good page.
 
-**Commit 2 — `app/page.tsx`.** The page was a client component that fetched `/api/medium-feed` and `/api/og` from the browser. Cloudflare's bot check answers those calls with HTTP 403 on a first visit (`cf-mitigated: challenge`), and the page treated the error as "no data". The page is now a plain server component with `revalidate = 3600`, so the posts and image URLs are written into the HTML. `ProjectImage` and its two fetch calls are gone. `project.image ?? feedImages.get(project.link)` keeps the local screenshots for project1 and project2 and uses the article image for project3 and project4. The load-in animation was removed because `motion` ships no `"use client"` directive and cannot render from a server page. Spotlight, Magnetic, AnimatedBackground and the CSS transitions stay.
+**Commit 2 — `app/page.tsx`.** Was a client page that fetched `/api/medium-feed` and `/api/og`. Now a server page with `revalidate = 3600`, so the posts and image URLs are in the HTML. project1 and project2 keep the screenshots in `data.ts`; project3 and project4 use the image from the linked article. The load-in animation is gone because `motion` cannot render on a server page. Spotlight, Magnetic, AnimatedBackground and the CSS transitions stay.
 
-**Commit 3 — delete both API routes.** `app/page.tsx` was their only caller. Leaving them would keep two endpoints that nothing uses and that the bot check blocks anyway.
+**Commit 3 — delete both API routes.** The page was their only caller.
 
-**Commit 4 — queue config.** OpenNext's default queue is a stub that throws `FatalError`. That throw is caught and logged, so the page would keep serving the old posts until the next deploy. `queue: doQueue` plus the `NEXT_CACHE_DO_QUEUE` Durable Object binding make the hourly refresh work on Workers. Docker is unchanged: it refreshes from the file system.
+**Commit 4 — queue config.** OpenNext's default queue throws, and the caller catches the error, so the page stayed stale until the next deploy on Workers. `queue: doQueue` plus the `NEXT_CACHE_DO_QUEUE` binding fix that. Docker is unchanged: it refreshes from the file system.
 
 ## AI assistance versus human decisions
 
@@ -54,14 +54,14 @@ Work done by the agent:
 
 ## Bugs found
 
-1. **Feed dropped publication posts.** `app/api/medium-feed/route.ts` filtered on `https://medium.com/`, so the post on `blog.devops.dev` was discarded on every load. Confirmed in the live feed. Fixed by accepting any `https://` link.
-2. **First visit showed no feed and no project images.** Both features depended on browser fetches to `/api/*`. The live site answered `HTTP 403` with `cf-mitigated: challenge` on those paths. The client code swallowed the error. A refresh worked only because the browser held a `cf_clearance` cookie afterwards. Fixed by moving the work to build time.
-3. **OpenNext would silently never refresh the page.** The default queue is `dummy`, and `send()` throws. The call site catches and logs the error, so visitors still get a stale page with no visible failure. Fixed with the Durable Object queue.
-4. **Two plan errors, corrected before implementation.** The image host in the plan was written as `miro.medium.com`; the live feed uses `cdn-images-1.medium.com`. The plan also named `aws.plainenglish.io` as a current post host; that post moved back to `medium.com`.
-5. **Stale generated types after deleting routes.** `npm run build` failed with `Cannot find module '../../../app/api/medium-feed/route.js'` because `.next/dev/types/validator.ts` still listed the deleted files. A clean `rm -rf .next` build passes. Not a code defect, but it will bite anyone who deletes a route locally.
-6. **`npm run lint` is broken on `main`.** Two reasons: the script calls `next lint`, which Next 16 removed, and `eslint-config-next` 16.4.1 refuses TypeScript 7 (`typescript-eslint does not support TS 7.0`). Same failure before this branch. Not fixed here; it needs its own PR.
-7. **`.open-next/` is tracked although `.gitignore` lists it.** A local OpenNext build dirties 1300+ files. They were restored so the PR stays at 5 files. Worth a separate cleanup.
-8. **Prettier rewrote whole config files on save.** Adding two lines to `open-next.config.ts` and `wrangler.jsonc` produced 47 changed lines, because the repo style (single quotes, trailing commas) differs from the committed files. Reverted and re-applied as a 16-line patch, so the commit shows only the functional change.
+1. **Publication posts were dropped.** The feed route accepted only `https://medium.com/` links, so the `blog.devops.dev` post never showed. It now accepts any `https://` link.
+2. **First visits got no feed and no project3 or project4 image.** Both came from browser calls to `/api/*`, which Cloudflare answered with HTTP 403 (`cf-mitigated: challenge`). The page hid the error. The work now happens at build time.
+3. **The hourly refresh never ran on Cloudflare.** OpenNext's default queue throws `FatalError`, and the caller catches it, so the page stayed stale until the next deploy. Fixed with the Durable Object queue.
+4. **Two plan errors, corrected before coding.** The image host is `cdn-images-1.medium.com`, not `miro.medium.com`. The Checkov post had moved from `aws.plainenglish.io` back to `medium.com`.
+5. **Stale `.next` types broke the build after deleting the routes.** `validator.ts` still listed the deleted files. `rm -rf .next` clears it.
+6. **`npm run lint` was already broken on `main`.** `next lint` was removed in Next 16, and `eslint-config-next` 16.4.1 rejects TypeScript 7. It needs its own PR.
+7. **`.open-next/` is tracked even though `.gitignore` lists it.** A local OpenNext build changes 1300+ files. Restored here; worth a cleanup PR.
+8. **Prettier rewrote both config files on save.** Two added lines became 47 changed lines. Re-applied as a 16-line patch.
 
 ## Tools used
 
