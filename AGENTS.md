@@ -20,8 +20,17 @@ All commits must be signed with SSH key `~/.ssh/agent-gh-signing`. Git is config
 
 - Break work into small, atomic commits. One logical change per commit.
 - Touch no more than 5 files per commit.
-- Keep the subject line between 50 and 80 characters.
-- Use the imperative mood in the subject. Put the reason in the body.
+- Keep the subject line, including the `[ai-assisted]` tag, between 50 and 80 characters.
+- Use the imperative mood in the subject.
+- Explain why you made the change in the body, not only what changed.
+- Mark AI help in the subject with `[ai-assisted]`. Then say what AI did and what you decided. Example:
+
+  ```
+  feat(auth): add refresh token rotation [ai-assisted]
+  AI helped with: starter code, test cases
+  Human decisions: token length, where to store it
+  ```
+
 - Each commit must build on its own, so any commit can be reverted alone.
 
 ## Writing and code review
