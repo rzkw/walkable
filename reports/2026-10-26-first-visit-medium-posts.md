@@ -1,13 +1,12 @@
-> **TL;DR:** _The home page now writes the 10 latest Medium posts and the project3 and project4 article images into the HTML at build time. First-time visitors see them straight from the HTML, before any JavaScript runs. Four commits, one plan file, and a one-hour refresh on both Cloudflare and Docker. All checks below were run locally before the PR._
+> **TL;DR:** _Report details work iterated with an AI agent updating the Walkable web app to show an RSS feed from a Medium blog. The home page now shows latest Medium posts and project article images at build time. First-time visitors see them immediately before any JavaScript runs. Four commits, one plan file, and a one-hour refresh on Cloudflare. All checks below were run locally before the PR was submitted._
 
-> This report covers the work planned in `plans/2026-10-24-first-visit-medium-posts.md` and merged as PR #281. The plan was reviewed and merged first. The commit rules in `AGENTS.md` (PR #279) landed before the code, so they apply to every commit here.
+> This report covers the work planned in `plans/2026-10-24-first-visit-medium-posts.md` and merged by repo admin as PR #281. 
 >
 > Related PRs:
 >
 > - [Plan: show Medium posts and project images on first visit - #277](https://github.com/rzkw/walkable/pull/277)
 > - [Docs: add commit size and scope rules to AGENTS.md - #279](https://github.com/rzkw/walkable/pull/279)
 > - [Show Medium posts and project images on first visit - #281](https://github.com/rzkw/walkable/pull/281)
-> - This report's own pull request.
 
 # First-Visit Medium Posts — Implementation Report (2026-10-26)
 
@@ -20,7 +19,6 @@
 | 3   | [`712d8d2`](https://github.com/rzkw/walkable/commit/712d8d2d8a07dc1e0e1e7ae2118c78555ee42f5f) | `chore: delete unused medium feed and og api routes`      | Task 2, step 6    | `app/api/medium-feed/route.ts`, `app/api/og/route.ts` (deleted) | −148       |
 | 4   | [`d5b650d`](https://github.com/rzkw/walkable/commit/d5b650db388d4c5d4708e5490a74acdb29126227) | `build: add durable object queue for hourly revalidation` | Task 3            | `open-next.config.ts`, `wrangler.jsonc`                         | +16        |
 
-All four commits are SSH-signed and are 1–2 files each. Subjects are 50–55 characters. Each body states why the change was made and cites the plan by task number.
 
 ## What changed and why
 
@@ -30,27 +28,28 @@ All four commits are SSH-signed and are 1–2 files each. Subjects are 50–55 c
 
 **Commit 3 — delete both API routes.** The page was their only caller.
 
-**Commit 4 — queue config.** OpenNext's default queue throws, and the caller catches the error, so the page stayed stale until the next deploy on Workers. `queue: doQueue` plus the `NEXT_CACHE_DO_QUEUE` binding fix that. Docker is unchanged: it refreshes from the file system.
+**Commit 4 — queue config.** OpenNext's default queue throws, and the caller catches the error, so the page stayed stale until the next deploy on Workers. `queue: doQueue` plus the `NEXT_CACHE_DO_QUEUE` binding fix that.
 
-## AI assistance versus human decisions
+## AI assistance vs human decisions
 
-Decisions made by the human, not the agent:
+Decisions made by the human:
 
-- Choose option 1 for the load-in animation: drop it, keep every mouse-over effect, and build no client child component.
+- Choose option 1 for the load-in animation: drop it, keep every mouse-over effect, and don't build client child component.
 - Only project3 and project4 take images from Medium. project1 and project2 keep local screenshots. Links rotate by hand.
 - Keep the check for `blog.devops.dev` after the Checkov post moved back to `medium.com`.
-- Remove the Docker note from the plan task, and drop the `[ai-assisted]` commit tag because the collaborator account already shows AI authorship.
-- Remove character counts from the plan table.
-- Plan first, then a separate PR for the commit rules, then implementation.
+- Remove the Docker note from the plan task, and drop the `[ai-assisted]` commit tag: collaborator account shows AI authorship.
+- Remove character counts from plan table.
+- Plan first, then separate PR for commit rules, then implementation.
 - Reference the merged plan in every commit body.
 - Simple English in all PR text, plans and reports.
-- Move this report into its own PR, because a PR that changes more than 5 files breaks the commit size rule.
+- Move this report into its own PR
+- Documentation editing, refinement of wording
 
-Work done by the agent:
+Work done by agent:
 
 - Root cause investigation: live header probes, live feed download, and reading the Next.js and OpenNext sources.
-- Writing the plan, the code, the commit messages, and this report.
-- Running every check listed below and reporting the failures honestly, including the ones not caused by this change.
+- Writing plan, code, commit messages, and report.
+- Running every check listed below and reporting failures honestly, including ones not caused by this change.
 
 ## Bugs found
 
@@ -65,10 +64,11 @@ Work done by the agent:
 
 ## Tools used
 
-One model did the work: **DeepSeek V4.1 Flash 1017**, model id `deepseek/deepseek-v4.1-flash-1017` on OpenRouter. No other model was used for this session. It ran inside the opencode agent harness.
+Model used: **DeepSeek V4.1 Flash 1017** on OpenRouter. 
 
 | Tool                     | Version                             | Used for                                   |
 | ------------------------ | ----------------------------------- | ------------------------------------------ |
+| OpenCode                 | 2.0.32                              | agent harness                              |
 | DeepSeek V4.1 Flash 1017 | `deepseek/deepseek-v4.1-flash-1017` | investigation, code, plan, commits, report |
 | Node.js                  | 26.3.0                              | build and scripts                          |
 | Next.js                  | 16.3.5                              | App Router, ISR                            |
@@ -84,7 +84,7 @@ One model did the work: **DeepSeek V4.1 Flash 1017**, model id `deepseek/deepsee
 
 ## Tests and verifications
 
-Run locally on 2026-10-26, in this order.
+Run locally on 2026-10-26.
 
 ```
 $ npx tsc --noEmit
@@ -150,11 +150,11 @@ $ npm run lint
 Invalid project directory provided, no such directory: .../lint
 ```
 
-The lint failure is pre-existing on `main` and is described in bug 6.
+The lint failure is pre-existing on `main`.
 
 ## Known limits
 
-- The feed holds at most 10 posts. A project linked to an older post resolves to a grey placeholder box, not a broken layout.
+- The feed holds 10 posts. A project linked to an older post resolves to a grey placeholder box, not a broken layout.
 - Images are hotlinked from `cdn-images-1.medium.com`. If Medium blocks hotlinking, the same placeholder box shows.
 - The page refreshes within an hour, so a brand-new post can take up to an hour to appear.
 - The load-in animation is gone from the home page. This was a deliberate trade to keep the page a server component.
