@@ -2,12 +2,11 @@ const FEED_URL = 'https://medium.com/feed/@walkable-llc'
 const MAX_POSTS = 10
 const DESCRIPTION_LIMIT = 120
 
-export type MediumPost = {
+type MediumPost = {
   id: string
   title: string
   description: string
   link: string
-  image: string | null
 }
 
 function value(item: string, tag: string): string {
@@ -45,10 +44,13 @@ function description(item: string): string {
   )
 }
 
-export async function getMediumPosts(): Promise<MediumPost[]> {
+export async function GET() {
+  const headers = { 'Cache-Control': 'no-store' }
+
   try {
     const response = await fetch(FEED_URL, {
       headers: { Accept: 'application/rss+xml' },
+      cache: 'no-store',
       signal: AbortSignal.timeout(15000),
     })
     if (!response.ok) throw new Error('Medium feed request failed')
@@ -56,12 +58,13 @@ export async function getMediumPosts(): Promise<MediumPost[]> {
     const xml = await response.text()
     const posts: MediumPost[] = []
 
+    // ponytail: Medium's feed holds at most 10 stories. Keep the on-site posts below them.
     for (const item of xml.split('<item>').slice(1)) {
       if (posts.length >= MAX_POSTS) break
 
       const title = text(value(item, 'title'))
       const link = value(item, 'link').split('?')[0]
-      if (!title || !link.startsWith('https://')) continue
+      if (!title || !link.startsWith('https://medium.com/')) continue
 
       const summary = description(item)
       posts.push({
@@ -72,18 +75,11 @@ export async function getMediumPosts(): Promise<MediumPost[]> {
             ? summary
             : `${summary.slice(0, DESCRIPTION_LIMIT).trimEnd()}…`,
         link,
-        image:
-          item.match(
-            /<content:encoded>[\s\S]*?<img[^>]*src=["']([^"']+)["']/,
-          )?.[1] ?? null,
       })
     }
 
-    return posts
-  } catch (error) {
-    // While the site builds: use an empty list. Never fail the build.
-    if (process.env.NEXT_PHASE === 'phase-production-build') return []
-    // At a later refresh: stop with an error. Next.js keeps the last good page.
-    throw error
+    return Response.json({ posts }, { headers })
+  } catch {
+    return Response.json({ posts: [] }, { status: 502, headers })
   }
 }
