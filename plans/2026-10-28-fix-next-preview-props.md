@@ -14,7 +14,8 @@
 
 - Keep the RSS and project-image feature changes reverted; this PR only fixes the runtime dependency mismatch.
 - Use `@opennextjs/cloudflare` 1.20.12, which includes the upstream preview-props fix and is older than the repo's seven-day npm release-age limit.
-- Keep `.npmrc`'s release-age policy enabled. If required for lock resolution, exempt only the already-locked `next` peer for that one npm command; leave Next pinned at 16.4.3 and verify it is unchanged in the lockfile.
+- Keep `.npmrc`'s release-age policy enabled. If required for lock resolution, exempt only the already-locked `next` and `body-parser` packages for that one npm command; leave them pinned at 16.4.3 and 2.4.0.
+- Override `@node-minify/core`'s vulnerable `glob` 10.3.3 pin to 10.5.0, which fixes its glob CLI command-injection advisory without changing application code.
 - Do not deploy to production as part of this change. Require a successful Worker build and runtime preview first.
 
 ## Review Focus
@@ -28,16 +29,18 @@
 ### Task 1: Update the OpenNext Cloudflare adapter
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `package-lock.json`
 
 **Interfaces:**
+
 - Consumes: Existing Next.js 16.4.3 app and OpenNext build configuration.
 - Produces: Lockfile resolving `@opennextjs/cloudflare` to 1.20.12 within the declared range.
 
 - [ ] **Step 1: Update the adapter and lockfile**
 
-Set the dependency range to `^1.20.12` and refresh the lockfile without changing the app source or other dependencies intentionally. If npm needs an age-policy exception to re-resolve the existing Next peer, use a one-command exception for `next` only; do not edit `.npmrc` or update Next.
+Set the dependency range to `^1.20.12`, add a scoped override for `@node-minify/core`'s `glob` dependency at 10.5.0, and refresh the lockfile. Preserve Next 16.4.3 and body-parser 2.4.0; do not edit `.npmrc` or change app source.
 
 - [ ] **Step 2: Build the Worker**
 
@@ -65,6 +68,7 @@ Use a signed commit. Explain that the adapter update fixes Next.js 16.4's previe
 
 - OpenNext Cloudflare, [Fix: include `preview-props.json` in the loadManifest inliner (#1356)](https://github.com/opennextjs/opennextjs-cloudflare/pull/1356) — adds the Next.js 16.4 manifest to the build-time inlining glob.
 - OpenNext Cloudflare, [Unexpected `loadManifest(preview-props.json)` call on Next.js 16.4 (#1448)](https://github.com/opennextjs/opennextjs-cloudflare/issues/1448) — documents this exact all-routes runtime failure and its compatibility fix.
+- GitHub Security Advisory, [glob CLI command injection](https://github.com/advisories/GHSA-5j98-mcp5-4vw2) — identifies the affected glob range and fixed 10.5.0 version.
 - npm, [`@opennextjs/cloudflare` package metadata](https://registry.npmjs.org/@opennextjs%2fcloudflare/latest) — confirms the published versions and release timestamps.
 - npm, [`min-release-age` configuration](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age) — documents the seven-day installation delay configured by this repo's `.npmrc`.
-- npm, [`min-release-age-exclude` configuration](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age-exclude) — documents the scoped exception used only to retain the already-locked Next peer during lockfile resolution.
+- npm, [`min-release-age-exclude` configuration](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age-exclude) — documents the one-command exclusions used only to retain existing locked packages during lockfile resolution.
