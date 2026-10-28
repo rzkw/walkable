@@ -14,6 +14,7 @@
 
 - Keep the RSS and project-image feature changes reverted; this PR only fixes the runtime dependency mismatch.
 - Use `@opennextjs/cloudflare` 1.20.12, which includes the upstream preview-props fix and is older than the repo's seven-day npm release-age limit.
+- Keep `.npmrc`'s release-age policy enabled. If required for lock resolution, exempt only the already-locked `next` peer for that one npm command; leave Next pinned at 16.4.3 and verify it is unchanged in the lockfile.
 - Do not deploy to production as part of this change. Require a successful Worker build and runtime preview first.
 
 ## Review Focus
@@ -36,7 +37,7 @@
 
 - [ ] **Step 1: Update the adapter and lockfile**
 
-Set the dependency range to `^1.20.12` and refresh the lockfile without changing the app source or other dependencies intentionally. Do not bypass `.npmrc`'s seven-day release-age policy.
+Set the dependency range to `^1.20.12` and refresh the lockfile without changing the app source or other dependencies intentionally. If npm needs an age-policy exception to re-resolve the existing Next peer, use a one-command exception for `next` only; do not edit `.npmrc` or update Next.
 
 - [ ] **Step 2: Build the Worker**
 
@@ -66,3 +67,4 @@ Use a signed commit. Explain that the adapter update fixes Next.js 16.4's previe
 - OpenNext Cloudflare, [Unexpected `loadManifest(preview-props.json)` call on Next.js 16.4 (#1448)](https://github.com/opennextjs/opennextjs-cloudflare/issues/1448) — documents this exact all-routes runtime failure and its compatibility fix.
 - npm, [`@opennextjs/cloudflare` package metadata](https://registry.npmjs.org/@opennextjs%2fcloudflare/latest) — confirms the published versions and release timestamps.
 - npm, [`min-release-age` configuration](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age) — documents the seven-day installation delay configured by this repo's `.npmrc`.
+- npm, [`min-release-age-exclude` configuration](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age-exclude) — documents the scoped exception used only to retain the already-locked Next peer during lockfile resolution.
