@@ -1,4 +1,4 @@
-> **TL;DR:** _Every page on www.walk-llc.com returned HTTP 500 for 3 days and 18 hours. A dependency update on 2026-10-25 moved Next.js to 16.4.3 but left the Cloudflare adapter on OpenNext 1.20.9. Next.js 16.4 reads a new list file when the server starts. The old adapter does not copy that file into the Worker bundle, so the Worker crashed on startup and every route failed. A rollback did not help because the code it restored already had the bad pair. PR #287 moved the adapter to 1.20.12, which has the upstream fix. The site is live again._
+> **TL;DR:** _Every page on www.walk-llc.com returned HTTP 500 for 3 days and 18 hours. A dependency update on 2026-10-25 moved Next.js to 16.4.3 but left the Cloudflare adapter on OpenNext 1.20.9. Next.js 16.4 reads a new list file when the server starts. The old adapter does not copy that file into the Worker bundle, so the Worker crashed on startup and every route failed. A rollback did not help because the code it restored already had the bad pair. Cloudflare marked a deploy check failed on 2026-10-26, but merges continued. PR #287 moved the adapter to 1.20.12, which has the upstream fix. The site is live again._
 
 > Related pull requests:
 >
@@ -24,6 +24,7 @@
 | Root cause       | OpenNext 1.20.9 does not copy the Next.js 16.4 `preview-props.json` list file into the Worker, so the Worker crashes while it starts |
 | Fix              | `@opennextjs/cloudflare` 1.20.9 to 1.20.12, plus a lockfile update                                                                   |
 | App code changed | None                                                                                                                                 |
+| Deploy check     | Red during the outage. PR #281 shows "❌ Deployment failed" with build logs. Merges still went ahead.                                |
 | Live after fix   | Version `10c63611-3af0-4647-b024-a01ecb505630` (v792) took 100% of traffic                                                           |
 
 ## What visitors saw
@@ -48,6 +49,7 @@ Error: Unexpected loadManifest(/.next/server/preview-props.json) call!
 | 2026-10-25 07:33       | PR #278 merges. Next.js goes to 16.4.3. `@opennextjs/cloudflare` goes to 1.20.9.                                                               |
 | 2026-10-25 07:xx       | Errors start. The 07:00 hour has 28 requests and 6 errors. The 08:00 hour has 23 requests and 23 errors. Every hour before 07:00 has 0 errors. |
 | 2026-10-25 11:44       | A Workers Logs export shows the full error and stack trace.                                                                                    |
+| 2026-10-26 03:30-06:20 | Cloudflare posts "❌ Deployment failed" with build logs on PR #281. Merges continue.                                                           |
 | 2026-10-26 06:17       | PR #282 merges. Site still down.                                                                                                               |
 | 2026-10-26 13:33       | PR #281 merges. Site still down.                                                                                                               |
 | 2026-10-26 17:06-17:09 | PRs #283 and #284 merge. Site still down.                                                                                                      |
@@ -139,9 +141,9 @@ One agent error during the work: the agent first said the deploys only uploaded 
 
 ## Bugs found
 
-1. **OpenNext 1.20.9 does not bake in the Next 16.4 preview-props file.** The Worker throws at startup, so every route returns 500. Fixed by 1.20.12.
+1. **OpenNext 1.20.9 does not copy the Next 16.4 preview-props file into the Worker.** The Worker throws at startup, so every route returns 500. Fixed by 1.20.12.
 2. **The rollback did not check the dependency pair.** Tree `88d20e9` already had Next 16.4.3 with OpenNext 1.20.9. A rollback only helps if the target is known good.
-3. **A green build does not mean a working Worker.** The Cloudflare "Workers Builds" check passed on every PR during the outage. The bundle built fine. It failed at startup.
+3. **The deploy check was red, then green, and the site was still down.** On 2026-10-26 Cloudflare posted "❌ Deployment failed" with build logs on [PR #281](https://github.com/rzkw/walkable/pull/281#issuecomment-6407585552), and the `Workers Builds: walkable` check failed. Later PRs went green, because their bundles built, yet they shipped the same broken Worker. A green build only means the bundle was built.
 4. **Wrong early diagnosis about deploys.** The agent said deploys were upload-only. The API showed a version served all traffic. Corrected in the PR.
 5. **The npm age guard broke the lockfile step with a misleading error.** `npm install --package-lock-only` failed with `next@undefined`, because Next 16.4.3 was inside the seven-day hold. Fixed with a one-command exception for the already locked packages, without editing `.npmrc`.
 6. **The adapter pins a vulnerable `glob`.** `@node-minify/core@9.0.2` pins `glob@10.3.3`, which has a high security warning. Fixed with a scoped override to 10.5.0.
@@ -245,7 +247,7 @@ Plain `curl` from the agent host gets HTTP 403 from the Cloudflare anti-bot chec
 
 ## What is still open
 
-1. Add a check after each deploy that requests a real page on the custom domain. A green build alone hid a dead Worker.
+1. Make the Workers Builds check required for merge, and add a check after each deploy that requests a real page on the custom domain. A red deploy check was ignored, and a green one did not prove the site worked.
 2. Do not roll back to a tree that has not been checked for its dependency pair.
 3. Restore the Medium feed and project image work in its own PR, with a runtime check.
 4. Add `.open-next/` and `.wrangler/` to `.gitignore` and untrack them.
@@ -259,6 +261,7 @@ Plain `curl` from the agent host gets HTTP 403 from the Cloudflare anti-bot chec
 - Next.js source, `next/dist/server/route-modules/route-module.js` and `next/dist/server/web/get-edge-preview-props.js` - where the server reads preview props. Read from `node_modules` at 16.4.3.
 - OpenNext source, `@opennextjs/cloudflare/dist/cli/build/patches/plugins/load-manifest.js` - the list of copied files and the error path. 1.20.9 lacks `preview-props.json`. 1.20.12 lists it for Next 16.4 and later.
 - Cloudflare, [Workers error 1101](https://developers.cloudflare.com/workers/observability/errors/#1101) - the error that visitors saw.
+- Cloudflare Workers bot, [deployment failed comment on PR #281](https://github.com/rzkw/walkable/pull/281#issuecomment-6407585552) - the red deploy check during the outage, with build logs.
 - Cloudflare, [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/) and [GraphQL Analytics](https://developers.cloudflare.com/analytics/graphql-api/) - the error text and the request and error counts.
 - Cloudflare, [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) - why merges of unrelated action pins deployed the same broken Worker again.
 - npm, [`min-release-age`](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age) and [`min-release-age-exclude`](https://docs.npmjs.com/cli/v11/using-npm/config#min-release-age-exclude) - the seven-day hold and the one-command exception.
