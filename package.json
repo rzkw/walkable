@@ -15,7 +15,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.4.1",
+    "@next/mdx": "^16.4.2",
     "@opennextjs/cloudflare": "^1.20.12",
     "@tailwindcss/typography": "^0.5.20",
     "@types/mdx": "^2.0.14",
