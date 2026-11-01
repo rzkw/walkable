@@ -20,7 +20,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@types/mdx": "^2.0.14",
     "clsx": "^2.1.1",
-    "glob": "^13.0.6",
+    "glob": "^14.0.2",
     "lucide-react": "^1.53.0",
     "motion": "^14.3.0",
     "next": "^16.4.3",
@@ -42,7 +42,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7",
-    "wrangler": "^4.152.0"
+    "wrangler": "^4.156.0"
   },
   "overrides": {
     "@node-minify/core": {
