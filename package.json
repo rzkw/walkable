@@ -20,10 +20,10 @@
     "@tailwindcss/typography": "^0.5.20",
     "@types/mdx": "^2.0.14",
     "clsx": "^2.1.1",
-    "glob": "^14.0.2",
+    "glob": "^14.0.3",
     "lucide-react": "^1.53.0",
     "motion": "^14.3.0",
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "next-themes": "^0.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.0",
@@ -42,7 +42,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7",
-    "wrangler": "^4.152.0"
+    "wrangler": "^4.163.0"
   },
   "overrides": {
     "@node-minify/core": {
