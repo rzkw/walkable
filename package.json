@@ -42,7 +42,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.5",
     "typescript": "^7",
-    "wrangler": "^4.163.0"
+    "wrangler": "^4.165.0"
   },
   "overrides": {
     "@node-minify/core": {
